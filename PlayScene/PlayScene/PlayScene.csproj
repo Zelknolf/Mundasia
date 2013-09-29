@@ -45,6 +45,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayScene_Resize.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayScene_Paint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayScene_MouseClick.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayScene_MouseMove.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PlayScene.cs">
       <SubType>Component</SubType>
     </Compile>
