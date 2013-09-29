@@ -60,6 +60,7 @@ namespace Mundasia.Interface
             this.Paint += new PaintEventHandler(PlayScene_Paint);
             this.MouseClick += new MouseEventHandler(PlayScene_MouseClick);
             this.MouseMove += new MouseEventHandler(PlayScene_MouseMove);
+            this.Resize += new EventHandler(PlayScene_Resize);
         }
 
         /// <summary>
@@ -254,6 +255,17 @@ namespace Mundasia.Interface
             }
             e.Graphics.DrawImage(Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\RotateCW.png"), new Point(0, 0));
             e.Graphics.DrawImage(Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\RotateCCW.png"), new Point(this.Width-53, 0));
+        }
+
+        void PlayScene_Resize(object sender, EventArgs e)
+        {
+            drawableImages.Clear();
+            foreach (Tile tile in drawableTiles)
+            {
+                drawableImages.Add(tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
+            }
+            drawableImages.Sort();
+            this.Refresh();            
         }
     }
 }

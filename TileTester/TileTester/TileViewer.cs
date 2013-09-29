@@ -81,6 +81,13 @@ namespace TileTester
             scene.ViewCenterZ = 0;
             scene.Add(drawnTiles);
             this.Controls.Add(scene);
+
+            this.Resize += new EventHandler(TileViewer_Resize);
+        }
+
+        void TileViewer_Resize(object sender, EventArgs e)
+        {
+            scene.Size = this.Size;
         }
     }
 }
