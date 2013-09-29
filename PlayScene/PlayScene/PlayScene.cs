@@ -12,48 +12,6 @@ namespace Mundasia.Interface
 {
     public partial class PlayScene : Panel
     {
-        /// <summary>
-        /// TopDirection stores the PlayScene's current idea of which in-game direction translates to
-        /// the top of the panel. It is of no interest to the server.
-        /// </summary>
-        private Direction topDirection = Direction.NorthWest;
-
-        /// <summary>
-        /// A sortable collection of images which contains all that should be visible in the current scene.
-        /// </summary>
-        private List<TileImage> drawableImages = new List<TileImage>();
-
-        /// <summary>
-        /// A collection of tiles which should be visible in the current scene.
-        /// </summary>
-        private List<Tile> drawableTiles = new List<Tile>();
-
-        /// <summary>
-        /// stores which object is currently displaying as moused over to the user,
-        /// and thus what the user would expect to receive a click.
-        /// </summary>
-        private TileImage currentMouseOver = null;
-
-        /// <summary>
-        /// TODO: Turn this into a real system for time of day.
-        /// </summary>
-        int timeOfDay = 0;
-
-        /// <summary>
-        /// Contains the X coordinate of the center of the view.
-        /// </summary>
-        public int ViewCenterX;
-
-        /// <summary>
-        /// Contains the Y coordinate of the center of the view.
-        /// </summary>
-        public int ViewCenterY;
-
-        /// <summary>
-        /// Contains the Z coordinate of the center of the view.
-        /// </summary>
-        public int ViewCenterZ;
-
         public PlayScene()
         {
             this.DoubleBuffered = true;
@@ -122,5 +80,47 @@ namespace Mundasia.Interface
             drawableImages.Remove(tile.CachedImage);
             this.Refresh();
         }
+
+        /// <summary>
+        /// TopDirection stores the PlayScene's current idea of which in-game direction translates to
+        /// the top of the panel. It is of no interest to the server.
+        /// </summary>
+        private Direction topDirection = Direction.NorthWest;
+
+        /// <summary>
+        /// A sortable collection of images which contains all that should be visible in the current scene.
+        /// </summary>
+        private List<TileImage> drawableImages = new List<TileImage>();
+
+        /// <summary>
+        /// A collection of tiles which should be visible in the current scene.
+        /// </summary>
+        private List<Tile> drawableTiles = new List<Tile>();
+
+        /// <summary>
+        /// stores which object is currently displaying as moused over to the user,
+        /// and thus what the user would expect to receive a click.
+        /// </summary>
+        private TileImage currentMouseOver = null;
+
+        /// <summary>
+        /// TODO: Turn this into a real system for time of day.
+        /// </summary>
+        int timeOfDay = 0;
+
+        /// <summary>
+        /// Contains the X coordinate of the center of the view.
+        /// </summary>
+        public int ViewCenterX;
+
+        /// <summary>
+        /// Contains the Y coordinate of the center of the view.
+        /// </summary>
+        public int ViewCenterY;
+
+        /// <summary>
+        /// Contains the Z coordinate of the center of the view.
+        /// </summary>
+        public int ViewCenterZ;
     }
 }
