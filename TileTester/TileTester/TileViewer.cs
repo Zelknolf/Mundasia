@@ -8,37 +8,22 @@ using System.Text;
 using System.Windows.Forms;
 
 using Mundasia.Objects;
+using Mundasia.Interface;
 
 namespace TileTester
-{
-    public class ViewPort : Panel
-    {
-        public ViewPort()
-        {
-            this.DoubleBuffered = true;
-        }
-    }
-    
+{  
     public partial class TileViewer : Form
     {
-        public ViewPort ViewPort = new ViewPort();
-
         List<Tile> drawnTiles = new List<Tile>();
-        List<TileImage> drawableImages = new List<TileImage>();
-        TileImage currentMouseOver = null;
         Direction topDirection = Direction.NorthWest;
-
-        Label topDirectionLabel = new Label();
+        PlayScene scene;
 
         int timeOfDay = 0;
 
         public TileViewer()
         {
             InitializeComponent();
-            ViewPort.Size = this.DisplayRectangle.Size;
-            this.DoubleBuffered = true;
-            this.Controls.Add(topDirectionLabel);
-            this.Controls.Add(ViewPort);
+            scene = new PlayScene();
 
             // Build four little pyramids to show slopes and blocks of every height
             drawnTiles.Add(new Tile("White", Direction.DirectionLess, 4, 5, 5, 4));
@@ -90,153 +75,12 @@ namespace TileTester
                 }
             }
 
-            foreach (Tile tile in drawnTiles)
-            {
-                drawableImages.Add(tile.Image(0,0,0,topDirection, ViewPort));
-            }
-            drawableImages.Sort();
-
-            topDirectionLabel.Text = topDirection.ToString();
-            topDirectionLabel.Size = topDirectionLabel.PreferredSize;
-            topDirectionLabel.Location = new Point(ViewPort.Width / 2 - topDirectionLabel.Width / 2, 10);
-
-            ViewPort.Paint += new PaintEventHandler(ViewPort_Paint);
-            ViewPort.MouseClick += new MouseEventHandler(ViewPort_Click);
-            ViewPort.MouseMove += new MouseEventHandler(ViewPort_MouseMove);
-        }
-
-        void ViewPort_MouseMove(object sender, MouseEventArgs e)
-        {
-            TileImage target = TileImage.GetTarget(e.Location, drawableImages);
-            if (currentMouseOver != null)
-            {
-                ViewPort.Invalidate(new Rectangle(currentMouseOver.ImageLocation, currentMouseOver.DayImage.Size));
-                currentMouseOver.MousedOver = false;
-            }
-            if (target != null)
-            {
-                ViewPort.Invalidate(new Rectangle(target.ImageLocation, target.DayImage.Size));
-                target.MousedOver = true;
-            }
-            currentMouseOver = target;
-            ViewPort.Update();
-        }
-
-        void ViewPort_Click(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (e.Location.X > ViewPort.Width - 63 &&
-                    e.Location.Y < 50)
-                {
-                    switch (topDirection)
-                    {
-                        case Direction.NorthWest:
-                            topDirection = Direction.NorthEast;
-                            break;
-                        case Direction.NorthEast:
-                            topDirection = Direction.SouthEast;
-                            break;
-                        case Direction.SouthEast:
-                            topDirection = Direction.SouthWest;
-                            break;
-                        case Direction.SouthWest:
-                            topDirection = Direction.NorthWest;
-                            break;
-                    }
-                    drawableImages.Clear();
-                    foreach (Tile tile in drawnTiles)
-                    {
-                        drawableImages.Add(tile.Image(0, 0, 0, topDirection, ViewPort));
-                    }
-                    drawableImages.Sort();
-                    topDirectionLabel.Text = topDirection.ToString();
-                    topDirectionLabel.Size = topDirectionLabel.PreferredSize;
-                    topDirectionLabel.Location = new Point(ViewPort.Width / 2 - topDirectionLabel.Width / 2, 10);
-                    ViewPort.Refresh();
-                }
-                else if (e.Location.X < 50 &&
-                        e.Location.Y < 50)
-                {
-                    switch (topDirection)
-                    {    
-                        case Direction.NorthWest:
-                            topDirection = Direction.SouthWest;
-                            break;
-                        case Direction.NorthEast:
-                            topDirection = Direction.NorthWest;
-                            break;
-                        case Direction.SouthEast:
-                            topDirection = Direction.NorthEast;
-                            break;
-                        case Direction.SouthWest:
-                            topDirection = Direction.SouthEast;
-                            break;
-                    }
-                    drawableImages.Clear();
-                    foreach (Tile tile in drawnTiles)
-                    {
-                        drawableImages.Add(tile.Image(0, 0, 0, topDirection, ViewPort));
-                    }
-                    drawableImages.Sort();
-                    topDirectionLabel.Text = topDirection.ToString();
-                    topDirectionLabel.Size = topDirectionLabel.PreferredSize;
-                    topDirectionLabel.Location = new Point(ViewPort.Width / 2 - topDirectionLabel.Width / 2, 10);
-                    ViewPort.Refresh();
-                }
-                else if (currentMouseOver != null)
-                {
-                    currentMouseOver.Selected = !currentMouseOver.Selected;
-                }
-
-            }
-            else
-            {
-                timeOfDay++;
-                if (timeOfDay > 2) timeOfDay = 0;
-                ViewPort.Refresh();
-            }
-        }
-
-        void ViewPort_Paint(object sender, PaintEventArgs e)
-        {
-            switch(timeOfDay)
-            {
-                case 1:
-                    e.Graphics.Clear(Color.LightCoral);
-                    break;
-                case 2:
-                    e.Graphics.Clear(Color.Black);
-                    break;
-                default:
-                    e.Graphics.Clear(Color.LightBlue);
-                    break;
-            }
-            foreach (TileImage image in drawableImages)
-            {
-                switch (timeOfDay)
-                {
-                    case 1:
-                        e.Graphics.DrawImage(image.TwilightImage, image.ImageLocation);
-                        break;
-                    case 2:
-                        e.Graphics.DrawImage(image.NightImage, image.ImageLocation);
-                        break;
-                    default:
-                        e.Graphics.DrawImage(image.DayImage, image.ImageLocation);
-                        break;
-                }
-                if (image.MousedOver)
-                {
-                    e.Graphics.DrawImage(image.MouseOverImage, image.ImageLocation);
-                }
-                if (image.Selected)
-                {
-                    e.Graphics.DrawImage(image.SelectedImage, image.ImageLocation);
-                }
-            }
-            e.Graphics.DrawImage(Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\RotateCW.png"), new Point(0, 0));
-            e.Graphics.DrawImage(Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\RotateCCW.png"), new Point(ViewPort.Width-53, 0));
+            scene.Size = this.Size;
+            scene.ViewCenterX = 0;
+            scene.ViewCenterY = 0;
+            scene.ViewCenterZ = 0;
+            scene.Add(drawnTiles);
+            this.Controls.Add(scene);
         }
     }
 }
