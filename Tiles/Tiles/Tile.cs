@@ -253,7 +253,7 @@ namespace Mundasia.Objects
             #endregion
 
             #region Return a new TileImage
-            return new TileImage()
+            TileImage retVal = new TileImage()
             {
                 DayImage = DayCache[tileSet][fileName],
                 NightImage = NightCache[tileSet][fileName],
@@ -266,10 +266,17 @@ namespace Mundasia.Objects
                 ImageLocation = new Point(imagePosX, imagePosY),
                 SourceTile = this
             };
+            this.CachedImage = retVal;
+            return retVal;
             #endregion
         }
 
         #region Tile Definition
+        /// <summary>
+        /// Storage of a reference to the last-returned TileImage object.
+        /// </summary>
+        public TileImage CachedImage;
+
         /// <summary>
         /// Storage of the folder name where we expect to find the sources for our tiles.
         /// </summary>
