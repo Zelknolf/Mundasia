@@ -205,6 +205,8 @@ namespace Mundasia.Interface
                     currentMouseOver.Selected = !currentMouseOver.Selected;
                 }
             }
+
+            // TODO: Remove the temporary measure which allows adjustment of lighting.
             else
             {
                 timeOfDay++;
