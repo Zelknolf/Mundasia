@@ -7,6 +7,8 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 
+using Mundasia.Communication;
+
 namespace Mundasia
 {
     /// <summary>
@@ -25,11 +27,11 @@ namespace Mundasia
         /// Creates a new account with the stated username and password.
         /// </summary>
         /// <param name="userName">The username to be used.</param>
-        /// <param name="password">The password to be used.</param>
+        /// <param name="password">The hash of the password to be used.</param>
         public Account(string userName, string password)
         {
             UserName = userName;
-            Password = GetPasswordHash(password);
+            Password = password;
             string path = GetPathForId(userName);
             if (!Directory.Exists(path))
             {
@@ -89,34 +91,13 @@ namespace Mundasia
         }
 
         /// <summary>
-        /// Transforms the password into a hash, to make the saved string less-accessible than it would be otherwise.
-        /// Presumably the machine itself would also be secure, and we're not going to do anything dumb like put these
-        /// on a SQL table that enjoys code injections.
-        /// 
-        /// Portions of the code which intend to authenticate based on user input should still use public key/secure 
-        /// key combinations to secure the sending, otherwise this is still vulnerable to a repeater attack.
-        /// </summary>
-        /// <param name="password">the password to be hashed</param>
-        /// <returns>the hashed password</returns>
-        private static string GetPasswordHash(string password)
-        {
-            HashAlgorithm alg = SHA256.Create();
-            byte[] hashByte = alg.ComputeHash(Encoding.UTF8.GetBytes(password));
-            StringBuilder ret = new StringBuilder();
-            foreach (byte b in hashByte)
-                ret.Append(b.ToString("X2"));
-
-            return ret.ToString();
-        }
-
-        /// <summary>
         /// Used to tell if given credentials are valid to use to log in.
         /// </summary>
-        /// <param name="password">the password provded by the user</param>
+        /// <param name="password">the password as sent by the user (expecting to be a hash of the sessionId and password</param>
         /// <returns>true if the credentials are valid</returns>
-        public bool Authenticate(string password)
+        public bool Authenticate(string password, string sessionId)
         {
-            return _password == GetPasswordHash(password);
+            return Encryption.GetSha256Hash(_password + sessionId) == password;
         }
 
         /// <summary>
