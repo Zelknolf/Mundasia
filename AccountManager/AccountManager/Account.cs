@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Timers;
 
 using Mundasia.Communication;
 
@@ -44,6 +45,8 @@ namespace Mundasia
                 _password = Password;
                 Password = null;
             }
+            _lastAccessed = DateTime.UtcNow;
+            _cachedAccounts.Add(userName, this);
         }
 
         /// <summary>
@@ -53,6 +56,8 @@ namespace Mundasia
         /// <returns>The account, or null on error.</returns>
         public static Account LoadAccount(string userName)
         {
+            if (_cachedAccounts.Keys.Contains(userName)) return _cachedAccounts[userName];
+
             string path = GetPathForId(userName);
             if (!Directory.Exists(path))
             {
@@ -66,6 +71,8 @@ namespace Mundasia
                     Account ret = ser.Deserialize(stream) as Account;
                     ret._password = ret.Password;
                     ret.Password = null;
+                    ret._lastAccessed = DateTime.UtcNow;
+                    _cachedAccounts.Add(userName, ret);
                     return ret;
                 }
             }
@@ -97,6 +104,7 @@ namespace Mundasia
         /// <returns>true if the credentials are valid</returns>
         public bool Authenticate(string password, string sessionId)
         {
+            _lastAccessed = DateTime.UtcNow;
             return Encryption.GetSha256Hash(_password + sessionId) == password;
         }
 
@@ -113,10 +121,73 @@ namespace Mundasia
         public string Password;
 
         /// <summary>
+        /// Defines the amount of time, in minutes, that an account can sit idle before the
+        /// cleanup loop will determine it to be lost and unload it.
+        /// </summary>
+        [NonSerialized]
+        public const int AccountTimeout = 2;
+
+        /// <summary>
         /// The field we actually hold the password in during regular running. Kept in the private field
         /// as a little buffer against components which play fast and loose with account objects.
         /// </summary>
         [NonSerialized]
         private string _password;
+
+        /// <summary>
+        /// This field is used to keep track of the last time this account accessed
+        /// </summary>
+        [NonSerialized]
+        private DateTime _lastAccessed;
+
+        /// <summary>
+        /// A static cache of accounts that we've used recently-- might as well hold onto a reference
+        /// to the accounts folk have recently used.
+        /// </summary>
+        [NonSerialized]
+        private static Dictionary<string, Account> _cachedAccounts = new Dictionary<string, Account>();
+
+        /// <summary>
+        /// Timer that slowly checks on active accounts, and cleans up ones that have been stale too long.
+        /// </summary>
+        private static Timer _sessionEnder = new Timer();
+
+        private static void StartSessionEnder()
+        {
+            // Don't restart the session ender if it's already running.
+            if (_sessionEnder.Enabled) { return; }
+
+            _sessionEnder.AutoReset = true;
+            _sessionEnder.Interval = 60 * 1000; // once a minute
+
+            _sessionEnder.Elapsed += new ElapsedEventHandler(_sessionEnder_Elapsed);
+
+            _sessionEnder.Start();
+        }
+
+        /// <summary>
+        /// Method which is called when _sessionEnder elapses.
+        /// </summary>
+        private static void _sessionEnder_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            List<string> toRemove = new List<string>();
+            foreach (KeyValuePair<string, Account> account in _cachedAccounts)
+            {
+                if (account.Value._lastAccessed == null)
+                {
+                    // Must've snuck by somehow. We'll start the count now.
+                    account.Value._lastAccessed = DateTime.UtcNow;
+                    continue;
+                }
+                if (DateTime.UtcNow - account.Value._lastAccessed > TimeSpan.FromMinutes(AccountTimeout))
+                {
+                    toRemove.Add(account.Key);
+                }
+            }
+            foreach (string rem in toRemove)
+            {
+                _cachedAccounts.Remove(rem);
+            }
+        }
     }
 }
