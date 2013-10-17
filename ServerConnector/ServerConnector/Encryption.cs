@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace Mundasia.Communication
 {
-    public class Encryption
+    public partial class Encryption
     {
         /// <summary>
         /// Transforms the password into a hash, to make the saved string less-accessible than it would be otherwise.
@@ -24,7 +24,7 @@ namespace Mundasia.Communication
         public static string GetSha256Hash(string password)
         {
             HashAlgorithm alg = SHA256.Create();
-            byte[] hashByte = alg.ComputeHash(Encoding.UTF8.GetBytes(password));
+            byte[] hashByte = alg.ComputeHash(Encoding.ASCII.GetBytes(password));
             StringBuilder ret = new StringBuilder();
             foreach (byte b in hashByte)
                 ret.Append(b.ToString("X2"));
@@ -32,7 +32,6 @@ namespace Mundasia.Communication
             return ret.ToString();
         }
         
-        private static UnicodeEncoding code = new UnicodeEncoding();
         private static Dictionary<string, RSAParameters> vault = new Dictionary<string, RSAParameters>();
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace Mundasia.Communication
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSAParameters val = RSA.ExportParameters(false);
-                vault.Add(code.GetString(val.Modulus), RSA.ExportParameters(true));
+                vault.Add(Encoding.ASCII.GetString(val.Modulus), RSA.ExportParameters(true));
                 return val;
             }
         }
@@ -58,7 +57,7 @@ namespace Mundasia.Communication
         /// <returns>The private key</returns>
         private static RSAParameters GetSecureKey(RSAParameters pubKey)
         {
-            string dictKey = code.GetString(pubKey.Modulus);
+            string dictKey = Encoding.ASCII.GetString(pubKey.Modulus);
             if (vault.ContainsKey(dictKey))
             {
                 RSAParameters val = vault[dictKey];
@@ -79,7 +78,7 @@ namespace Mundasia.Communication
         {
             try
             {
-                return code.GetString(RSADecrypt(message, GetSecureKey(PublicKey), false));
+                return Encoding.ASCII.GetString(RSADecrypt(message, GetSecureKey(PublicKey), false));
             }
             catch
             {

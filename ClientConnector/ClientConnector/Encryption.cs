@@ -9,10 +9,8 @@ using System.ComponentModel;
 
 namespace Mundasia.Communication
 {
-    public class Encryption
+    public partial class Encryption
     {
-        private static UnicodeEncoding code = new UnicodeEncoding();
-
         /// <summary>
         /// Transforms the password into a hash, to make the saved string less-accessible than it would be otherwise.
         /// Presumably the machine itself would also be secure, and we're not going to do anything dumb like put these
@@ -44,7 +42,7 @@ namespace Mundasia.Communication
         {
             try
             {
-                return RSAEncrypt(code.GetBytes(message), PublicKey, false);
+                return RSAEncrypt(Encoding.ASCII.GetBytes(message), PublicKey, false);
             }
             catch
             {
