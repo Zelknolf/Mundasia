@@ -18,7 +18,7 @@ namespace Mundasia.Server.Communication
 
         [OperationContract]
         [WebGet(BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Xml, ResponseFormat = WebMessageFormat.Xml)]
-        RSAParameters GetPublicKey();
+        string GetPublicKey();
 
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate="CreateAccount?message={message}", ResponseFormat = WebMessageFormat.Xml)]

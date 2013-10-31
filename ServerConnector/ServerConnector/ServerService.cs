@@ -19,27 +19,20 @@ namespace Mundasia.Server.Communication
             return DateTime.UtcNow.ToShortTimeString();
         }
 
-        public RSAParameters GetPublicKey()
+        public string GetPublicKey()
         {
-            return Encryption.GetPubKey();
+            AccountCreation ac = new AccountCreation();
+            ac.pubKey = Encryption.GetPubKey();
+            ac.message = new byte[0];
+            return ac.ToString();
         }
 
         public bool CreateAccount(string message)
         {
-            int startTrim = message.IndexOf("xmlns");
-            int endTrim = message.IndexOf(">");
-            message = message.Remove(startTrim, endTrim - startTrim);
-            MemoryStream stream = new MemoryStream();
-            StreamWriter write = new StreamWriter(stream);
-            write.Write(message);
-            write.Flush();
-            stream.Position = 0;
-            XmlSerializer xml = new XmlSerializer(typeof(AccountCreation));
-            AccountCreation deSerMessage = (AccountCreation)xml.Deserialize(stream);
+            AccountCreation ac = new AccountCreation(message);
             try
             {
-                string decMessage = Encryption.Decrypt(deSerMessage.message, deSerMessage.pubKey);
-                decMessage = decMessage.Replace("\0", "");
+                string decMessage = Encryption.Decrypt(ac.message, ac.pubKey);
                 char[] split = new char[] { '\n' };
                 string[] credentials = decMessage.Split(split, 2);
                 if (new Account(credentials[0], credentials[1]) != null)

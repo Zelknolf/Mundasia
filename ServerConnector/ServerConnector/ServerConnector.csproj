@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AccountManager">
-      <HintPath>..\..\AccountManager\AccountManager\bin\Release\AccountManager.dll</HintPath>
+      <HintPath>..\..\AccountManager\AccountManager\bin\Debug\AccountManager.dll</HintPath>
     </Reference>
     <Reference Include="CommunicationObjects">
-      <HintPath>..\..\CommunicationObjects\CommunicationObjects\bin\Release\CommunicationObjects.dll</HintPath>
+      <HintPath>..\..\CommunicationObjects\CommunicationObjects\bin\Debug\CommunicationObjects.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
