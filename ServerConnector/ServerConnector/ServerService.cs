@@ -35,6 +35,14 @@ namespace Mundasia.Server.Communication
                 string decMessage = Encryption.Decrypt(ac.message, ac.pubKey);
                 char[] split = new char[] { '\n' };
                 string[] credentials = decMessage.Split(split, 2);
+                
+                // If the account already exists, don't make a new one.
+                if(Account.LoadAccount(credentials[0]) != null)
+                {
+                    return false;
+                }
+
+                // otherwise make a new one.
                 if (new Account(credentials[0], credentials[1]) != null)
                 {
                     return true;
