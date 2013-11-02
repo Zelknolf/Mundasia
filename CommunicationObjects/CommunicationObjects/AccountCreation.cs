@@ -35,30 +35,14 @@ namespace Mundasia.Communication
             }
             if(piecedString[0].Length > 0)
             {
-                message = StringToBytes(piecedString[0]);
+                message = MundEncoding.StringToBytes(piecedString[0]);
             }
             else
             {
                 message = new byte[0];
             }
-            pubKey.Modulus = StringToBytes(piecedString[1]);
-            pubKey.Exponent = StringToBytes(piecedString[2]);
-        }
-
-        /// <summary>
-        /// Convert a string to bytes, assuming that the string presents the bytes in hexadecimal
-        /// format.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        private static byte[] StringToBytes(string input)
-        {
-            byte[] bytes = new byte[input.Length / 2];
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                bytes[i] = Convert.ToByte(input.Substring(i * 2, 2), 16);
-            }
-            return bytes;
+            pubKey.Modulus = MundEncoding.StringToBytes(piecedString[1]);
+            pubKey.Exponent = MundEncoding.StringToBytes(piecedString[2]);
         }
 
         public override string ToString()

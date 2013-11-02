@@ -8,8 +8,6 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Timers;
 
-using Mundasia.Communication;
-
 namespace Mundasia
 {
     /// <summary>
@@ -47,6 +45,27 @@ namespace Mundasia
             }
             _lastAccessed = DateTime.UtcNow;
             _cachedAccounts.Add(userName, this);
+        }
+
+        /// <summary>
+        /// Transforms the password into a hash, to make the saved string less-accessible than it would be otherwise.
+        /// Presumably the machine itself would also be secure, and we're not going to do anything dumb like put these
+        /// on a SQL table that enjoys code injections.
+        /// 
+        /// Portions of the code which intend to authenticate based on user input should still use public key/secure 
+        /// key combinations to secure the sending, otherwise this is still vulnerable to a repeater attack.
+        /// </summary>
+        /// <param name="password">the password to be hashed</param>
+        /// <returns>the hashed password</returns>
+        private static string GetSha256Hash(string password)
+        {
+            HashAlgorithm alg = SHA256.Create();
+            byte[] hashByte = alg.ComputeHash(Encoding.ASCII.GetBytes(password));
+            StringBuilder ret = new StringBuilder();
+            foreach (byte b in hashByte)
+                ret.Append(b.ToString("X2"));
+
+            return ret.ToString();
         }
 
         /// <summary>
@@ -102,10 +121,13 @@ namespace Mundasia
         /// </summary>
         /// <param name="password">the password as sent by the user (expecting to be a hash of the sessionId and password</param>
         /// <returns>true if the credentials are valid</returns>
-        public bool Authenticate(string password, string sessionId)
+        public bool Authenticate(string remotePass)
         {
             _lastAccessed = DateTime.UtcNow;
-            return Encryption.GetSha256Hash(_password + sessionId) == password;
+            string localPass = GetSha256Hash(_password + UserName + DateTime.UtcNow.ToShortDateString());
+            if (remotePass == localPass)
+                return true;
+            return false;
         }
 
         /// <summary>

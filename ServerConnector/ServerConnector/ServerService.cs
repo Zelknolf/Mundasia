@@ -43,5 +43,14 @@ namespace Mundasia.Server.Communication
             catch {}
             return false;
         }
+
+        public int Login(string message)
+        {
+            Login lg = new Login(message);
+            Account targetAcct = Account.LoadAccount(lg.userName);
+            if (targetAcct.Authenticate(lg.password))
+                return 1;
+            return -1;
+        }
     }
 }

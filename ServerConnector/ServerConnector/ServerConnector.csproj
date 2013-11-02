@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AccountManager">
-      <HintPath>..\..\AccountManager\AccountManager\bin\Debug\AccountManager.dll</HintPath>
-    </Reference>
     <Reference Include="CommunicationObjects">
       <HintPath>..\..\CommunicationObjects\CommunicationObjects\bin\Debug\CommunicationObjects.dll</HintPath>
     </Reference>
@@ -53,6 +50,12 @@
     <Compile Include="IServerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AccountManager\AccountManager\AccountManager.csproj">
+      <Project>{dd45569a-008d-410f-8a26-e478e425038f}</Project>
+      <Name>AccountManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -13,7 +13,7 @@ namespace Mundasia.Communication
     public class ServiceConsumer
     {
         public const string StringNamespace = "http://schemas.microsoft.com/2003/10/Serialization/";
-        
+
         // TODO: Move this to app.config
         public static string baseServerTarget = "http://localhost:6200/MundasiaServerService/";
 
@@ -54,6 +54,10 @@ namespace Mundasia.Communication
             {
                 return "Error.";
             }
+
+            // Not meant as encryption, but at least makes sure that the text we
+            // save on the server isn't an actual password.
+            password = Encryption.GetSha256Hash(password);
             ac.message = Encryption.Encrypt(String.Format("{0}\n{1}", userName, password), ac.pubKey);
 
             try
@@ -75,6 +79,34 @@ namespace Mundasia.Communication
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        public static int ClientLogin(string userName, string password)
+        {
+            password = Encryption.GetSha256Hash(password);
+            Login lg = new Login();
+            lg.userName = userName;
+            lg.password = Encryption.GetSha256Hash(password + userName + DateTime.UtcNow.ToShortDateString());
+
+            try
+            {
+                string wrURI = baseServerTarget + "login";
+                string msg = lg.ToString();
+                WebRequest wreq = WebRequest.Create(wrURI + "?message=" + msg);
+                wreq.Method = "POST";
+                wreq.ContentLength = 0;
+                WebResponse wresp = wreq.GetResponse();
+                using (TextReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(int), StringNamespace);
+                    int resp = (int)xml.Deserialize(sr);
+                    return resp;
+                }
+            }
+            catch
+            {
+                return -1;
             }
         }
     }

@@ -24,7 +24,7 @@ namespace Mundasia.Communication
         public static string GetSha256Hash(string password)
         {
             HashAlgorithm alg = SHA256.Create();
-            byte[] hashByte = alg.ComputeHash(Encoding.UTF8.GetBytes(password));
+            byte[] hashByte = alg.ComputeHash(Encoding.ASCII.GetBytes(password));
             StringBuilder ret = new StringBuilder();
             foreach (byte b in hashByte)
                 ret.Append(b.ToString("X2"));

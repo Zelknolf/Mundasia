@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommunicationObjects">
-      <HintPath>..\..\CommunicationObjects\CommunicationObjects\bin\Release\CommunicationObjects.dll</HintPath>
+      <HintPath>..\..\CommunicationObjects\CommunicationObjects\bin\Debug\CommunicationObjects.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
