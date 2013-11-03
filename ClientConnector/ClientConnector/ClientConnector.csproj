@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommunicationObjects">
-      <HintPath>..\..\CommunicationObjects\CommunicationObjects\bin\Debug\CommunicationObjects.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +43,12 @@
     <Compile Include="Encryption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConsumer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommunicationObjects\CommunicationObjects\CommunicationObjects.csproj">
+      <Project>{a7febf3f-77ca-4d58-ab45-74a8b0db183e}</Project>
+      <Name>CommunicationObjects</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
