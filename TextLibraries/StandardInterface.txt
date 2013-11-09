@@ -1,0 +1,10 @@
+0|Mundasia
+1|New Account
+2|User Name
+3|Password
+4|Re-Enter Password
+5|Email
+6|Create
+7|Cancel
+8|Log In
+9|Exit
