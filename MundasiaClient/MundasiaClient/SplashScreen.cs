@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MundasiaClient
+namespace Mundasia.Client
 {
+    [System.ComponentModel.DesignerCategory("")]
     public partial class SplashScreen : Form
     {
         public ProgressBar progress = new ProgressBar();
@@ -32,7 +33,7 @@ namespace MundasiaClient
             progress.Size = new Size(400, 10);
             progress.Location = new Point(50, 395);
             progress.Step = 1;
-            progress.Maximum = 3;
+            progress.Maximum = 4;
             progress.Style = ProgressBarStyle.Continuous;
             progress.ForeColor = Color.DarkViolet;
             progress.PerformStep();

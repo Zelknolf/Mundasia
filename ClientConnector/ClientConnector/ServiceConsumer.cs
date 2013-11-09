@@ -26,7 +26,9 @@ namespace Mundasia.Communication
                 WebResponse wresp = wreq.GetResponse();
                 using (StreamReader sr = new StreamReader(wresp.GetResponseStream()))
                 {
-                    return sr.ReadToEnd();
+                    XmlSerializer date = new XmlSerializer(typeof(string), StringNamespace);
+                    string timeString = (string)date.Deserialize(sr);
+                    return timeString;
                 }
             }
             catch
@@ -35,7 +37,7 @@ namespace Mundasia.Communication
             }
         }
 
-        public static string CreateAccount(string userName, string password)
+        public static bool CreateAccount(string userName, string password)
         {
             AccountCreation ac;
             try
@@ -52,7 +54,7 @@ namespace Mundasia.Communication
             }
             catch
             {
-                return "Error.";
+                return false;
             }
 
             // Not meant as encryption, but at least makes sure that the text we
@@ -72,13 +74,13 @@ namespace Mundasia.Communication
                 {
                     XmlSerializer xml = new XmlSerializer(typeof(bool), StringNamespace);
                     bool resp = (bool)xml.Deserialize(sr);
-                    return resp.ToString();
+                    return resp;
                 }
 
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return false;
             }
         }
 

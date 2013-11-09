@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Mundasia.Communication;
 
-namespace MundasiaClient
+namespace Mundasia.Client
 {
     public class Startup
     {
@@ -23,15 +23,19 @@ namespace MundasiaClient
         {
             splash = new SplashScreen();
             splash.Show();
+            StringLibrary.Load();
+            splash.progress.PerformStep();
             if(!Connect())
             {
                 error = "Unable to acquire information from the server.";
+                splash.Close();
                 return false;
             }
             splash.progress.PerformStep();
             if(!LocalLoad())
             {
                 error = "Unable to load local resources.";
+                splash.Close();
                 return false;
             }
             splash.progress.PerformStep();
@@ -47,8 +51,10 @@ namespace MundasiaClient
         /// <returns>true on success; false on failure</returns>
         public static bool Connect()
         {
-            if(ServiceConsumer.Ping() != string.Empty)
+            string ping = ServiceConsumer.Ping();
+            if(ping != String.Empty)
             {
+                Mundasia.Interface.PrimaryForm.ServerClock = ping;
                 return true;
             }
             return false;

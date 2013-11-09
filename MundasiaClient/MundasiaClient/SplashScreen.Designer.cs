@@ -1,4 +1,4 @@
-﻿namespace MundasiaClient
+﻿namespace Mundasia.Client
 {
     partial class SplashScreen
     {

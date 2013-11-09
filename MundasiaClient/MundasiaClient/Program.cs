@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MundasiaClient
+using Mundasia.Interface;
+
+namespace Mundasia.Client
 {
     static class Program
     {
@@ -15,11 +17,13 @@ namespace MundasiaClient
         static void Main()
         {
             Application.SetCompatibleTextRenderingDefault(false);
-            if(!Startup.Start())
+            if (!Startup.Start())
             {
                 MessageBox.Show(String.Format("Mundasia was unable to start, with the following error message:\n\n{0}\n\nPlease check your configuration and try again.", Startup.error));
             }
-            Application.Run(new SplashScreen());
+            PrimaryForm.cachedForm = new PrimaryForm();
+            LoginScreen.Set(PrimaryForm.cachedForm);
+            Application.Run(PrimaryForm.cachedForm);
         }
     }
 }
