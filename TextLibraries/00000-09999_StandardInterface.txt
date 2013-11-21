@@ -8,3 +8,6 @@
 7|Cancel
 8|Log In
 9|Exit
+10|Female
+11|Male
+12|Name
