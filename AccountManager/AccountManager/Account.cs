@@ -163,17 +163,60 @@ namespace Mundasia
         private DateTime _lastAccessed;
 
         /// <summary>
-        /// A static cache of accounts that we've used recently-- might as well hold onto a reference
-        /// to the accounts folk have recently used.
+        /// This field is used to identify the session by number.
+        /// </summary>
+        [NonSerialized]
+        public int SessionId;
+
+        /// <summary>
+        /// A static cache of accounts that we've used recently, indexed by account name for 
+        /// quicker response in case of needing reauthentication.
         /// </summary>
         [NonSerialized]
         private static Dictionary<string, Account> _cachedAccounts = new Dictionary<string, Account>();
+
+        /// <summary>
+        /// A static cache of accounts which are currently logged in, indexed by session id for
+        /// quicker response during the use of regular commands.
+        /// </summary>
+        [NonSerialized]
+        public static Dictionary<int, Account> ActiveSessions = new Dictionary<int, Account>();
+
+        /// <summary>
+        /// Holds the last session Id assigned.
+        /// </summary>
+        [NonSerialized]
+        private static int _lastId = 1;
 
         /// <summary>
         /// Timer that slowly checks on active accounts, and cleans up ones that have been stale too long.
         /// </summary>
         private static Timer _sessionEnder = new Timer();
 
+        public static int GetSessionId(string userId)
+        {
+            Account loadedAccount = LoadAccount(userId);
+            if (loadedAccount != null)
+            {
+                if (ActiveSessions.ContainsKey(loadedAccount.SessionId) &&
+                    ActiveSessions[loadedAccount.SessionId] == loadedAccount)
+                {
+                    // Player has relogged; clear old session data.
+                    ActiveSessions.Remove(loadedAccount.SessionId);
+                }
+                loadedAccount.SessionId = _lastId;
+                _lastId++;
+                ActiveSessions.Add(loadedAccount.SessionId, loadedAccount);
+                return loadedAccount.SessionId;
+            }
+            return -1;
+        }
+
+        
+        /// <summary>
+        /// Establishes the events needed for the regular check of the event checker, so it can
+        /// remove the caching of accounts which haven't been used recently.
+        /// </summary>
         private static void StartSessionEnder()
         {
             // Don't restart the session ender if it's already running.
@@ -204,6 +247,7 @@ namespace Mundasia
                 if (DateTime.UtcNow - account.Value._lastAccessed > TimeSpan.FromMinutes(AccountTimeout))
                 {
                     toRemove.Add(account.Key);
+                    ActiveSessions.Remove(account.Value.SessionId);
                 }
             }
             foreach (string rem in toRemove)

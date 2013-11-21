@@ -57,7 +57,9 @@ namespace Mundasia.Server.Communication
             Login lg = new Login(message);
             Account targetAcct = Account.LoadAccount(lg.userName);
             if (targetAcct.Authenticate(lg.password))
-                return 1;
+            {
+                return Account.GetSessionId(lg.userName);
+            }
             return -1;
         }
     }
