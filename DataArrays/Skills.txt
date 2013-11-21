@@ -1,0 +1,66 @@
+0|Combat|Bare Fighting|10000
+1|Combat|Hide Armor|10001
+2|Combat|Maille Armor|10002
+3|Combat|Armor Harness|10003
+4|Combat|Boxing|10004
+5|Combat|Dagger|10005
+6|Combat|Sword|10006
+7|Combat|Axe|10007
+8|Combat|Mace|10008
+9|Combat|Spear|10009
+10|Combat|Staff|10010
+11|Combat|Bow|10011
+12|Combat|Throwing|10012
+13|Combat|Shield|10013
+14|Combat|Firearms|10014
+15|Artisan|Smithing|10015
+16|Artisan|Leatherworking|10016
+17|Artisan|Tailoring|10017
+18|Artisan|Butchery|10018
+19|Artisan|Masonry|10019
+20|Artisan|Carpentry|10020
+21|Artisan|Painting|10021
+22|Artisan|Writing|10022
+23|Artisan|Locksmithing|10023
+24|Artisan|Music|10024
+25|Artisan|Agriculture|10025
+26|Artisan|Cooking|10026
+27|Scholarship|Appraisal|10027
+28|Scholarship|Focus|10028
+29|Scholarship|Ciphers|10029
+30|Scholarship|Medicine|10030
+31|Scholarship|Magic|10031
+32|Scholarship|Architecture|10032
+33|Scholarship|Geography|10033
+34|Scholarship|History|10034
+35|Scholarship|Navigation|10035
+36|Scholarship|Religion|10036
+37|Scholarship|Botany|10037
+38|Survival|Balance|10038
+39|Survival|Climb|10039
+40|Survival|Jump|10040
+41|Survival|Prowl|10041
+42|Survival|Swim|10042
+43|Survival|Forage|10043
+44|Survival|Shelter|10044
+45|Survival|Track|10045
+46|Survival|Perceive|10046
+47|Survival|Improvise|10047
+48|Social|Argue|10048
+49|Social|Deceive|10049
+50|Social|Demoralize|10050
+51|Social|Disguise|10051
+52|Social|Frighten|10052
+53|Social|Instigate|10053
+54|Social|Rally|10054
+55|Social|Read|10055
+56|Social|Rumor|10056
+57|Social|Language|10057
+58|Supernatural|Personal Energy|10058
+59|Supernatural|Kinetic Energy|10059
+60|Supernatural|Thermal Energy|10060
+61|Supernatural|Alchemical Energy|10061
+62|Supernatural|Electrical Energy|10062
+63|Supernatural|Material Energy|10063
+64|Supernatural|Luminous Energy|10064
+65|Supernatural|Time Energy|10065
