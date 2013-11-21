@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Mundasia.Communication;
+using Mundasia.Objects;
 
 namespace Mundasia.Client
 {
@@ -25,6 +26,29 @@ namespace Mundasia.Client
             splash.Show();
             StringLibrary.Load();
             splash.progress.PerformStep();
+            Skill.Load();
+            splash.progress.PerformStep();
+            Race.Load();
+            splash.progress.PerformStep();
+            Virtue.Load();
+            splash.progress.PerformStep();
+            Vice.Load();
+            splash.progress.PerformStep();
+            Authority.Load();
+            splash.progress.PerformStep();
+            Care.Load();
+            splash.progress.PerformStep();
+            Fairness.Load();
+            splash.progress.PerformStep();
+            Loyalty.Load();
+            splash.progress.PerformStep();
+            Tradition.Load();
+            splash.progress.PerformStep();
+            Profession.Load();
+            splash.progress.PerformStep();
+            Ability.Load();
+            splash.progress.PerformStep();
+
             if(!Connect())
             {
                 error = "Unable to acquire information from the server.";
