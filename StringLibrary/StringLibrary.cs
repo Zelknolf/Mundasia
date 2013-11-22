@@ -30,7 +30,7 @@ namespace Mundasia.Client
                         if (uint.TryParse(split[0], out index) &&
                             !_lib.ContainsKey(index))
                         {
-                            _lib.Add(index, split[1].Replace("\\n", "\n"));
+                            _lib.Add(index, split[1].Replace("\\n", Environment.NewLine));
                         }
                     }
                 }
