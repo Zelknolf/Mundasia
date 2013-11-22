@@ -48,6 +48,8 @@ namespace Mundasia.Interface
         private static Label _characterTalent = new Label();
         private static Label _characterHobby = new Label();
 
+        private static Label _next = new Label();
+
         private static Label _nameEntryLabel = new Label();
         private static TextBox _nameEntry = new TextBox();
 
@@ -280,6 +282,8 @@ namespace Mundasia.Interface
             if(_abilityHobby == -1) _characterHobby.Text = "No hobby";
             else _characterHobby.Text = "Hobby: " + Skill.GetSkill((uint)_abilityHobby).Name;
 
+            _next.Text = StringLibrary.GetString(13);
+
             _traitsHead.Text = "Traits";
             _moralsHead.Text = "Morals";
             _abilityHead.Text = "Abilities";
@@ -319,6 +323,8 @@ namespace Mundasia.Interface
             _characterTalent.Location = new Point(padding + indent, _characterProfession.Location.Y + _characterProfession.Height);
             StyleLabel(_characterHobby);
             _characterHobby.Location = new Point(padding + indent, _characterTalent.Location.Y + _characterTalent.Height);
+            StyleLabel(_next);
+            _next.Location = new Point(_characterSheet.Width - _next.Width - padding, _characterSheet.Height - _next.Height - padding);
             #endregion
 
             _characterName.MouseEnter += _clickableMouseOver;
@@ -335,6 +341,7 @@ namespace Mundasia.Interface
             _characterHobby.MouseEnter += _clickableMouseOver;
             _female.MouseEnter += _clickableMouseOver;
             _male.MouseEnter += _clickableMouseOver;
+            _next.MouseEnter += _clickableMouseOver;
 
             _characterName.MouseLeave += _clickableMouseLeave;
             _characterSexRace.MouseLeave += _clickableMouseLeave;
@@ -350,9 +357,11 @@ namespace Mundasia.Interface
             _characterHobby.MouseLeave += _clickableMouseLeave;
             _female.MouseLeave += _clickableMouseLeave;
             _male.MouseLeave += _clickableMouseLeave;
+            _next.MouseLeave += _clickableMouseLeave;
 
             _female.Click += _female_Click;
             _male.Click += _male_Click;
+            _next.Click += _next_Click;
 
             _raceList.ItemSelectionChanged += _raceList_ItemSelectionChanged;
             _virtueList.ItemSelectionChanged += _virtueList_ItemSelectionChanged;
@@ -381,6 +390,30 @@ namespace Mundasia.Interface
             _characterSheet.Controls.Add(_characterProfession);
             _characterSheet.Controls.Add(_characterTalent);
             _characterSheet.Controls.Add(_characterHobby);
+            _characterSheet.Controls.Add(_next);
+        }
+
+        static void _next_Click(object sender, EventArgs e)
+        {
+            if(String.IsNullOrEmpty(_name) ||
+                _sex == -1 ||
+                _race == -1 ||
+                _traitVirtue == -1 ||
+                _traitVice == -1 ||
+                _moralsAuthority == -1 ||
+                _moralsCare == -1 ||
+                _moralsFairness == -1 ||
+                _moralsLoyalty == -1 ||
+                _moralsTradition == -1 ||
+                _abilityProfession == -1 ||
+                _abilityTalent == -1 ||
+                _abilityHobby == -1)
+            {
+                SetUnusedToPanel();
+                return;
+            }
+
+            MessageBox.Show("Character appears complete, but sending of characters to the server is not yet enabled.");
         }
 
         static void _hobbyList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
