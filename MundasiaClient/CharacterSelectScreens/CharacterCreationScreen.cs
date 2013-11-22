@@ -51,6 +51,26 @@ namespace Mundasia.Interface
         private static Label _nameEntryLabel = new Label();
         private static TextBox _nameEntry = new TextBox();
 
+        private static Label _female = new Label();
+        private static Label _male = new Label();
+
+        private static ListView _raceList = new ListView();
+
+        private static ListView _virtueList = new ListView();
+        private static ListView _viceList = new ListView();
+
+        private static ListView _authorityList = new ListView();
+        private static ListView _careList = new ListView();
+        private static ListView _fairnessList = new ListView();
+        private static ListView _loyaltyList = new ListView();
+        private static ListView _traditionList = new ListView();
+
+        private static ListView _professionList = new ListView();
+        private static ListView _talentList = new ListView();
+        private static ListView _hobbyList = new ListView();
+
+        private static RichTextBox _descriptionText = new RichTextBox();
+
         private static string _name;
         private static int _sex;
         private static int _race;
@@ -117,6 +137,7 @@ namespace Mundasia.Interface
             _form.Controls.Add(_characterSheet);
             _form.Controls.Add(_currentEntry);
             _form.Controls.Add(_description);
+            _description.Controls.Add(_descriptionText);
 
             _nameEntry.TextChanged += _nameEntry_TextChanged;
             _characterName.Click += _characterName_Click;
@@ -128,14 +149,37 @@ namespace Mundasia.Interface
             _characterMoralsFairness.Click += _characterMoralsFairness_Click;
             _characterMoralsLoyalty.Click += _characterMoralsLoyalty_Click;
             _characterMoralsTradition.Click += _characterMoralsTradition_Click;
+            _characterHobby.Click += _characterHobby_Click;
+            _characterTalent.Click += _characterTalent_Click;
+            _characterProfession.Click += _characterProfession_Click;
 
-            _abilityHead = new Label();
-            _characterProfession = new Label();
-            _characterTalent = new Label();
-            _characterHobby = new Label();
+            _descriptionText.Location = new Point(padding, padding);
+            _descriptionText.ReadOnly = true;
+            _descriptionText.BorderStyle = BorderStyle.None;
+            _descriptionText.Multiline = true;
+            _descriptionText.Height = Math.Max(height - (4 * padding) - selectionHeight, 0);
+            _descriptionText.Width = width - (padding * 2);
+            _descriptionText.WordWrap = true;
+            
+            StyleLabel(_descriptionText);
 
             UpdateCharacterSheet();
             SetUnusedToPanel();
+        }
+
+        static void _characterProfession_Click(object sender, EventArgs e)
+        {
+            SetProfessionToPanel();
+        }
+
+        static void _characterTalent_Click(object sender, EventArgs e)
+        {
+            SetTalentToPanel();
+        }
+
+        static void _characterHobby_Click(object sender, EventArgs e)
+        {
+            SetHobbyToPanel();
         }
 
         static void _characterMoralsTradition_Click(object sender, EventArgs e)
@@ -204,12 +248,7 @@ namespace Mundasia.Interface
             if (_name == "") _characterName.Text = "No Name";
             else _characterName.Text = _name;
 
-            if (_sex == 0) _characterSexRace.Text = StringLibrary.GetString(10);
-            else if (_sex == 1) _characterSexRace.Text = StringLibrary.GetString(11);
-            else _characterSexRace.Text = "No Sex";
-
-            if(_race == -1)  _characterSexRace.Text += " No Race";
-            else _characterSexRace.Text += " " + Race.GetRace((uint)_race).Name;
+            UpdateRaceSexText();
 
             if(_traitVirtue == -1) _characterVirtue.Text = "No Virtue";
             else _characterVirtue.Text = Virtue.GetVirtue((uint)_traitVirtue).Name;
@@ -294,6 +333,8 @@ namespace Mundasia.Interface
             _characterProfession.MouseEnter += _clickableMouseOver;
             _characterTalent.MouseEnter += _clickableMouseOver;
             _characterHobby.MouseEnter += _clickableMouseOver;
+            _female.MouseEnter += _clickableMouseOver;
+            _male.MouseEnter += _clickableMouseOver;
 
             _characterName.MouseLeave += _clickableMouseLeave;
             _characterSexRace.MouseLeave += _clickableMouseLeave;
@@ -307,6 +348,23 @@ namespace Mundasia.Interface
             _characterProfession.MouseLeave += _clickableMouseLeave;
             _characterTalent.MouseLeave += _clickableMouseLeave;
             _characterHobby.MouseLeave += _clickableMouseLeave;
+            _female.MouseLeave += _clickableMouseLeave;
+            _male.MouseLeave += _clickableMouseLeave;
+
+            _female.Click += _female_Click;
+            _male.Click += _male_Click;
+
+            _raceList.ItemSelectionChanged += _raceList_ItemSelectionChanged;
+            _virtueList.ItemSelectionChanged += _virtueList_ItemSelectionChanged;
+            _viceList.ItemSelectionChanged += _viceList_ItemSelectionChanged;
+            _authorityList.ItemSelectionChanged += _authorityList_ItemSelectionChanged;
+            _careList.ItemSelectionChanged += _careList_ItemSelectionChanged;
+            _fairnessList.ItemSelectionChanged += _fairnessList_ItemSelectionChanged;
+            _loyaltyList.ItemSelectionChanged += _loyaltyList_ItemSelectionChanged;
+            _traditionList.ItemSelectionChanged += _traditionList_ItemSelectionChanged;
+            _talentList.ItemSelectionChanged += _talentList_ItemSelectionChanged;
+            _professionList.ItemSelectionChanged += _professionList_ItemSelectionChanged;
+            _hobbyList.ItemSelectionChanged += _hobbyList_ItemSelectionChanged;
 
             _characterSheet.Controls.Add(_characterName);
             _characterSheet.Controls.Add(_characterSexRace);
@@ -324,6 +382,249 @@ namespace Mundasia.Interface
             _characterSheet.Controls.Add(_characterTalent);
             _characterSheet.Controls.Add(_characterHobby);
         }
+
+        static void _hobbyList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nHobby;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nHobby))
+                {
+                    _abilityHobby = nHobby;
+                    Skill skill = Skill.GetSkill((uint)_abilityHobby);
+                    _characterHobby.Text = skill.Name;
+                    _characterHobby.Size = _characterHobby.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(skill.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _professionList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nProfession;
+                if(int.TryParse(e.Item.SubItems[0].Text, out nProfession))
+                {
+                    _abilityProfession = nProfession;
+                    Profession profession = Profession.GetProfession((uint)_abilityProfession);
+                    _characterProfession.Text = profession.Name;
+                    _characterProfession.Size = _characterProfession.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(profession.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _talentList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nAbil;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nAbil))
+                {
+                    _abilityTalent = nAbil;
+                    Ability ability = Ability.GetAbility((uint)_abilityTalent);
+                    _characterTalent.Text = ability.Name;
+                    _characterTalent.Size = _characterTalent.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(ability.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _traditionList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nTrad;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nTrad))
+                {
+                    _moralsTradition = nTrad;
+                    Tradition trad = Tradition.GetTradition((uint)_moralsTradition);
+                    _characterMoralsTradition.Text = trad.Name;
+                    _characterMoralsTradition.Size = _characterMoralsTradition.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(trad.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _loyaltyList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nLoyal;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nLoyal))
+                {
+                    _moralsLoyalty = nLoyal;
+                    Loyalty loyal = Loyalty.GetLoyalty((uint)_moralsLoyalty);
+                    _characterMoralsLoyalty.Text = loyal.Name;
+                    _characterMoralsLoyalty.Size = _characterMoralsLoyalty.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(loyal.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _fairnessList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nFair;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nFair))
+                {
+                    _moralsFairness = nFair;
+                    Fairness fair = Fairness.GetFairness((uint)_moralsFairness);
+                    _characterMoralsFairness.Text = fair.Name;
+                    _characterMoralsFairness.Size = _characterMoralsFairness.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(fair.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _careList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nCare;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nCare))
+                {
+                    _moralsCare = nCare;
+                    Care care = Care.GetCare((uint)_moralsCare);
+                    _characterMoralsCare.Text = care.Name;
+                    _characterMoralsCare.Size = _characterMoralsCare.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(care.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _authorityList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nAuth;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nAuth))
+                {
+                    _moralsAuthority = nAuth;
+                    Authority auth = Authority.GetAuthority((uint)_moralsAuthority);
+                    _characterMoralsAuthority.Text = auth.Name;
+                    _characterMoralsAuthority.Size = _characterMoralsAuthority.PreferredSize;
+                    _descriptionText.Text = StringLibrary.GetString(auth.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _viceList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nVice;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nVice))
+                {
+                    _traitVice = nVice;
+                    Vice vice = Vice.GetVice((uint)_traitVice);
+                    _characterVice.Text = vice.Name;
+                    _characterVice.Size = _characterVice.PreferredSize;
+                    if (_traitVirtue == _traitVice)
+                    {
+                        _traitVirtue = -1;
+                        _characterVirtue.Text = "No Virtue";
+                        _characterVirtue.Size = _characterVirtue.PreferredSize;
+                    }
+                    _descriptionText.Text = StringLibrary.GetString(vice.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _virtueList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                int nVirtue;
+                if (int.TryParse(e.Item.SubItems[0].Text, out nVirtue))
+                {
+                    _traitVirtue = nVirtue;
+                    Virtue virt = Virtue.GetVirtue((uint)_traitVirtue);
+                    _characterVirtue.Text = virt.Name;
+                    _characterVirtue.Size = _characterVirtue.PreferredSize;
+                    if(_traitVirtue == _traitVice)
+                    {
+                        _traitVice = -1;
+                        _characterVice.Text = "No Vice";
+                        _characterVice.Size = _characterVice.PreferredSize;
+                    }
+                    _descriptionText.Text = StringLibrary.GetString(virt.Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void _raceList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(e.IsSelected)
+            {
+                int nRace;
+                if(int.TryParse(e.Item.SubItems[0].Text, out nRace))
+                {
+                    _race = nRace;
+                    UpdateRaceSexText();
+                    _descriptionText.Text = StringLibrary.GetString(Race.GetRace((uint)_race).Description);
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
+            }
+        }
+
+        static void UpdateRaceSexText()
+        {
+            if (_sex == 0) _characterSexRace.Text = StringLibrary.GetString(10);
+            else if (_sex == 1) _characterSexRace.Text = StringLibrary.GetString(11);
+            else _characterSexRace.Text = "No Sex";
+
+            if (_race == -1) _characterSexRace.Text += " No Race";
+            else _characterSexRace.Text += " " + Race.GetRace((uint)_race).Name;
+
+            _characterSexRace.Size = _characterSexRace.PreferredSize;
+        }
+
+        static void _male_Click(object sender, EventArgs e)
+        {
+            _sex = 1;
+            _male.BorderStyle = BorderStyle.FixedSingle;
+            _male.BackColor = Color.DarkGray;
+            _female.BorderStyle = BorderStyle.None;
+            _female.BackColor = Color.Black;
+            _male.Size = _male.PreferredSize;
+            UpdateRaceSexText();
+        }
+
+        static void _female_Click(object sender, EventArgs e)
+        {
+            _sex = 0;
+            _male.BorderStyle = BorderStyle.None;
+            _male.BackColor = Color.Black;
+            _female.BorderStyle = BorderStyle.FixedSingle;
+            _female.BackColor = Color.DarkGray;
+            _female.Size = _female.PreferredSize;
+            UpdateRaceSexText();
+        }
+
         
         private static void SetUnusedToPanel()
         {
@@ -378,57 +679,225 @@ namespace Mundasia.Interface
 
         private static void SetRaceSexToPanel()
         {
+            ClearOld();
+            StyleLabel(_female);
+            _female.Text = StringLibrary.GetString(10);
+            _female.Size = _female.PreferredSize;
+            _female.Location = new Point(padding, padding);
+            if (_sex == 0)
+            {
+                _female.BorderStyle = BorderStyle.FixedSingle;
+                _female.BackColor = Color.DarkGray;
+            }
+            else
+            {
+                _female.BorderStyle = BorderStyle.None;
+                _female.BackColor = Color.Black;
+            }
 
+            StyleLabel(_male);
+            _male.Text = StringLibrary.GetString(11);
+            _male.Size = _male.PreferredSize;
+            _male.Location = new Point((padding * 2) + _female.Location.X + _female.Width, padding);
+            if (_sex == 1)
+            {
+                _male.BorderStyle = BorderStyle.FixedSingle;
+                _male.BackColor = Color.DarkGray;
+            }
+            else
+            {
+                _male.BorderStyle = BorderStyle.None;
+                _male.BackColor = Color.Black;
+            }
+
+            _raceList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 3) - _female.Height);
+            StyleListView(_raceList);
+
+
+            foreach(Race race in Race.GetRaces())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { race.Id.ToString(), race.Name });
+                StyleListViewItem(toAdd);
+                _raceList.Items.Add(toAdd);
+            }
+            _raceList.Location = new Point(padding, _female.Height + _female.Location.Y + padding);
+
+            _currentEntry.Controls.Add(_male);
+            _currentEntry.Controls.Add(_female);
+            _currentEntry.Controls.Add(_raceList);
         }
 
         private static void SetVirtueToPanel()
         {
+            ClearOld();
+            _virtueList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _virtueList.Location = new Point(padding, padding);
+            StyleListView(_virtueList);
 
+            foreach(Virtue virtue in Virtue.GetVirtues())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { virtue.Id.ToString(), virtue.Name });
+                StyleListViewItem(toAdd);
+                _virtueList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_virtueList);
         }
 
         private static void SetViceToPanel()
         {
+            ClearOld();
+            _viceList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _viceList.Location = new Point(padding, padding);
+            StyleListView(_viceList);
 
+            foreach(Vice vice in Vice.GetVices())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { vice.Id.ToString(), vice.Name });
+                StyleListViewItem(toAdd);
+                _viceList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_viceList);
         }
 
         private static void SetAuthorityToPanel()
         {
+            ClearOld();
+            _authorityList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _authorityList.Location = new Point(padding, padding);
+            StyleListView(_authorityList);
 
+            foreach (Authority auth in Authority.GetAuthorities())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { auth.Id.ToString(), auth.Name });
+                StyleListViewItem(toAdd);
+                _authorityList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_authorityList);
         }
 
         private static void SetCareToPanel()
         {
+            ClearOld();
+            _careList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _careList.Location = new Point(padding, padding);
+            StyleListView(_careList);
 
+            foreach (Care care in Care.GetCares())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { care.Id.ToString(), care.Name });
+                StyleListViewItem(toAdd);
+                _careList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_careList);
         }
 
         private static void SetFairnessToPanel()
         {
+            ClearOld();
+            _fairnessList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _fairnessList.Location = new Point(padding, padding);
+            StyleListView(_fairnessList);
 
+            foreach (Fairness fair in Fairness.GetFairnesses())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { fair.Id.ToString(), fair.Name });
+                StyleListViewItem(toAdd);
+                _fairnessList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_fairnessList);
         }
         
         private static void SetLoyaltyToPanel()
         {
+            ClearOld();
+            _loyaltyList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _loyaltyList.Location = new Point(padding, padding);
+            StyleListView(_loyaltyList);
 
+            foreach (Loyalty loyal in Loyalty.GetLoyalties())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { loyal.Id.ToString(), loyal.Name });
+                StyleListViewItem(toAdd);
+                _loyaltyList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_loyaltyList);
         }
 
         private static void SetTraditionToPanel()
         {
+            ClearOld();
+            _traditionList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _traditionList.Location = new Point(padding, padding);
+            StyleListView(_traditionList);
 
+            foreach (Tradition trad in Tradition.GetTraditions())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { trad.Id.ToString(), trad.Name });
+                StyleListViewItem(toAdd);
+                _traditionList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_traditionList);
         }
 
         private static void SetProfessionToPanel()
         {
+            ClearOld();
 
+            _professionList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _professionList.Location = new Point(padding, padding);
+            StyleListView(_professionList);
+
+            foreach(Profession prof in Profession.GetProfessions())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { prof.Id.ToString(), prof.Name });
+                StyleListViewItem(toAdd);
+                _professionList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_professionList);
         }
 
         private static void SetTalentToPanel()
         {
+            ClearOld();
 
+            _talentList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _talentList.Location = new Point(padding, padding);
+            StyleListView(_talentList);
+
+            foreach(Ability ab in Ability.GetAbilities())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { ab.Id.ToString(), ab.Name });
+                StyleListViewItem(toAdd);
+                _talentList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_talentList);
         }
 
         private static void SetHobbyToPanel()
-        {
+        {            
+            ClearOld();
 
+            _hobbyList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _hobbyList.Location = new Point(padding, padding);
+            StyleListView(_hobbyList);
+
+            foreach(Skill skill in Skill.GetSkills())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { skill.Id.ToString(), skill.Name });
+                StyleListViewItem(toAdd);
+                _hobbyList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_hobbyList);
         }
 
         static void _clickableMouseOver(object sender, EventArgs e)
@@ -465,6 +934,10 @@ namespace Mundasia.Interface
             _description.Location = new Point(width + (3 * padding), selectionHeight + (3 * padding));
 
             _nameEntry.Width = _currentEntry.Width - (padding * 2);
+            _raceList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 3) - _female.Height);
+
+            _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+            _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
         }
 
         private static Font labelFont = new Font(FontFamily.GenericSansSerif, 12.0f);
@@ -476,6 +949,28 @@ namespace Mundasia.Interface
             toStyle.ForeColor = Color.White;
             toStyle.BackColor = Color.Black;
             toStyle.Size = toStyle.PreferredSize;
+        }
+
+        private static void StyleListView(ListView listView)
+        {
+            listView.Clear();
+            listView.Columns.Add("");
+            listView.Columns.Add("");
+            listView.View = View.Details;
+            listView.FullRowSelect = true;
+            listView.BackColor = Color.Black;
+            listView.ForeColor = Color.White;
+            listView.HeaderStyle = ColumnHeaderStyle.None;
+            listView.Font = labelFont;
+            listView.Columns[0].Width = 0;
+            listView.Columns[1].Width = listView.ClientRectangle.Width - SystemInformation.VerticalScrollBarWidth;
+        }
+
+        private static void StyleListViewItem(ListViewItem item)
+        {
+            item.BackColor = Color.Black;
+            item.ForeColor = Color.White;
+            item.Font = labelFont;
         }
     }
 }
