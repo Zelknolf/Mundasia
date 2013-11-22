@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Loyalty> GetLoyalties()
+        {
+            return _library.Values;
+        }
     }
 }

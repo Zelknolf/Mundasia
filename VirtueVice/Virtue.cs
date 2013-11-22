@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Virtue> GetVirtues()
+        {
+            return _library.Values;
+        }
     }
 }

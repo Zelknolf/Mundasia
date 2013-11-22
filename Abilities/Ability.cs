@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Ability> GetAbilities()
+        {
+            return _library.Values;
+        }
     }
 }

@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Tradition> GetTraditions()
+        {
+            return _library.Values;
+        }
     }
 }

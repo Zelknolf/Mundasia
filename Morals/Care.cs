@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Care> GetCares()
+        {
+            return _library.Values;
+        }
     }
 }

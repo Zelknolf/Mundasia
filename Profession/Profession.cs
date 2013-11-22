@@ -75,5 +75,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Profession> GetProfessions()
+        {
+            return _library.Values;
+        }
     }
 }

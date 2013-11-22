@@ -132,6 +132,11 @@ namespace Mundasia.Objects
             return null;
         }
 
+        public static IEnumerable<Race> GetRaces()
+        {
+            return _library.Values;
+        }
+
         /// <summary>
         /// Storage of loaded races, after Load has been called.
         /// </summary>

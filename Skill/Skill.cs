@@ -125,5 +125,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Skill> GetSkills()
+        {
+            return _library.Values;
+        }
     }
 }

@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Vice> GetVices()
+        {
+            return _library.Values;
+        }
     }
 }

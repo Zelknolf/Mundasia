@@ -54,5 +54,10 @@ namespace Mundasia.Objects
             }
             return null;
         }
+
+        public static IEnumerable<Fairness> GetFairnesses()
+        {
+            return _library.Values;
+        }
     }
 }
