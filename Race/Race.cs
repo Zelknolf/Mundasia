@@ -113,7 +113,7 @@ namespace Mundasia.Objects
         {
             string file = System.IO.Directory.GetCurrentDirectory() + "\\DataArrays\\Races.txt";
             FileStream strLib = File.Open(file, FileMode.Open);
-            using (StreamReader read = new StreamReader(strLib))
+            using (StreamReader read = new StreamReader(strLib, Encoding.UTF7))
             {
                 while (read.Peek() >= 0)
                 {
