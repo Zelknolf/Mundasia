@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Timers;
+using System.Runtime.Serialization;
+
+using Mundasia.Objects;
 
 namespace Mundasia
 {
@@ -43,6 +46,8 @@ namespace Mundasia
                 _password = Password;
                 Password = null;
             }
+            Characters = new List<string>();
+            LoadedCharacters = new List<Character>();
             _lastAccessed = DateTime.UtcNow;
             _cachedAccounts.Add(userName, this);
         }
@@ -91,6 +96,8 @@ namespace Mundasia
                     ret._password = ret.Password;
                     ret.Password = null;
                     ret._lastAccessed = DateTime.UtcNow;
+                    ret.LoadedCharacters = new List<Character>();
+                    ret.Characters = new List<string>();
                     _cachedAccounts.Add(userName, ret);
                     return ret;
                 }
@@ -106,7 +113,7 @@ namespace Mundasia
         /// </summary>
         /// <param name="userName">The user name for which to get the path</param>
         /// <returns>The fully-qualified path.</returns>
-        private static string GetPathForId(string userName)
+        public static string GetPathForId(string userName)
         {
             string extraPath = "";
             for(int c = 0; c< userName.Length; c++)
@@ -131,6 +138,105 @@ namespace Mundasia
         }
 
         /// <summary>
+        /// Create a character for this account with the chr character object.
+        /// 
+        /// Assumes that the character object has passed validation.
+        /// </summary>
+        /// <param name="chr">The character to add to this account</param>
+        /// <returns>true on success, or false on failure</returns>
+        public bool NewCharacter(Character chr)
+        {
+            chr.AccountName = this.UserName;
+            Characters.Add(chr.CharacterName);
+            LoadedCharacters.Add(chr);
+
+            return SaveCharacter(chr);
+        }
+
+        /// <summary>
+        /// Loads a character by the character's name
+        /// </summary>
+        /// <param name="characterName">The character to load</param>
+        /// <returns>The character object of the loaded object, or null on failure</returns>
+        public Character LoadCharacter(string characterName)
+        {
+            _lastAccessed = DateTime.UtcNow;
+            foreach (Character ch in LoadedCharacters)
+            {
+                if (ch.CharacterName == characterName)
+                {
+                    return ch;
+                }
+            }
+
+            string path = GetPathForId(UserName);
+            if (!Directory.Exists(path))
+            {
+                return null;
+            }
+            try
+            {
+                using (FileStream stream = new FileStream(path + characterName + ".chr", FileMode.Open))
+                {
+                    DataContractSerializer ser = new DataContractSerializer(typeof(Character));
+                    Character ret = ser.ReadObject(stream) as Character;
+                    LoadedCharacters.Add(ret);
+                    return ret;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Save a character object which is already in memory.
+        /// </summary>
+        /// <param name="characterName">The name of the character to save</param>
+        /// <returns>True on success, false on failure</returns>
+        public bool SaveCharacter(string characterName)
+        {
+            Character ch = LoadCharacter(characterName);
+            if(ch != null)
+            {
+                return SaveCharacter(ch);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Saves a character object
+        /// </summary>
+        /// <param name="chr">The character to save</param>
+        /// <returns>true on success, false on failure</returns>
+        public bool SaveCharacter(Character chr)
+        {
+            try
+            {
+                string path = GetPathForId(UserName);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                using (FileStream stream = new FileStream(path + chr.CharacterName + ".chr", FileMode.Create))
+                {
+                    DataContractSerializer ser = new DataContractSerializer(typeof(Character));
+                    ser.WriteObject(stream, chr);
+                    _password = Password;
+                    Password = null;
+                }
+                Characters = new List<string>();
+                _lastAccessed = DateTime.UtcNow;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// The user name
         /// </summary>
         [XmlAttribute]
@@ -143,56 +249,76 @@ namespace Mundasia
         public string Password;
 
         /// <summary>
+        /// A list of characters belonging to this account
+        /// </summary>
+        [XmlArray]
+        public List<String> Characters;
+
+        /// <summary>
+        /// A list of loaded characters belonging to this account, plus
+        /// all of the details of those characters.
+        /// </summary>
+        [NonSerialized, XmlIgnore]
+        public List<Character> LoadedCharacters;
+
+        /// <summary>
         /// Defines the amount of time, in minutes, that an account can sit idle before the
         /// cleanup loop will determine it to be lost and unload it.
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         public const int AccountTimeout = 2;
 
         /// <summary>
         /// The field we actually hold the password in during regular running. Kept in the private field
         /// as a little buffer against components which play fast and loose with account objects.
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         private string _password;
 
         /// <summary>
         /// This field is used to keep track of the last time this account accessed
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         private DateTime _lastAccessed;
 
         /// <summary>
         /// This field is used to identify the session by number.
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         public int SessionId;
 
         /// <summary>
         /// A static cache of accounts that we've used recently, indexed by account name for 
         /// quicker response in case of needing reauthentication.
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         private static Dictionary<string, Account> _cachedAccounts = new Dictionary<string, Account>();
 
         /// <summary>
         /// A static cache of accounts which are currently logged in, indexed by session id for
         /// quicker response during the use of regular commands.
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         public static Dictionary<int, Account> ActiveSessions = new Dictionary<int, Account>();
 
         /// <summary>
         /// Holds the last session Id assigned.
         /// </summary>
-        [NonSerialized]
+        [NonSerialized, XmlIgnore]
         private static int _lastId = 1;
 
         /// <summary>
         /// Timer that slowly checks on active accounts, and cleans up ones that have been stale too long.
         /// </summary>
+        [NonSerialized, XmlIgnore]
         private static Timer _sessionEnder = new Timer();
 
+        /// <summary>
+        /// Clears out the indexing of session Ids currently assigned to an account
+        /// and provides a new (unique) session Id.
+        /// </summary>
+        /// <param name="userId">The Id of the account to provide an Id to.</param>
+        /// <returns>The Id, or -1 on error</returns>
         public static int GetSessionId(string userId)
         {
             Account loadedAccount = LoadAccount(userId);
