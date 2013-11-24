@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCreation.cs" />
+    <Compile Include="CharacterCreation.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="MundEncoding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -42,6 +42,32 @@
     <Compile Include="Character.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Abilities\Abilities.csproj">
+      <Project>{a247c466-dedf-418f-ab97-50a19120cec7}</Project>
+      <Name>Abilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Morals\Morals.csproj">
+      <Project>{1f2756b0-dfec-4e47-a5aa-8afd29422bbe}</Project>
+      <Name>Morals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Profession\Profession.csproj">
+      <Project>{c3940b1f-280b-45ef-9ade-399d1feff849}</Project>
+      <Name>Profession</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Race\Race.csproj">
+      <Project>{7ea1bd43-9778-4e02-acdf-c3772ba4e5df}</Project>
+      <Name>Race</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Skill\Skill.csproj">
+      <Project>{e4d21f03-fa7e-41ef-982a-f7604cead3f2}</Project>
+      <Name>Skill</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtueVice\VirtueVice.csproj">
+      <Project>{39cc4a6b-7d59-4f7a-a947-d8be33059673}</Project>
+      <Name>VirtueVice</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
