@@ -4,6 +4,11 @@ using System.Linq;
 using System.Windows.Forms;
 
 using Mundasia.Server.Communication;
+using Mundasia.Objects;
+
+using Mundasia.Server;
+
+
 
 namespace Mundasia.Server
 {
@@ -16,10 +21,24 @@ namespace Mundasia.Server
         static void Main()
         {
             Service.Open();
-            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Status());
             Service.Close();
+        }
+
+        static void LoadLocalResources()
+        {
+            Ability.Load();
+            Authority.Load();
+            Care.Load();
+            Fairness.Load();
+            Loyalty.Load();
+            Tradition.Load();
+            Profession.Load();
+            Race.Load();
+            Skill.Load();
+            Vice.Load();
+            Virtue.Load();
         }
     }
 }
