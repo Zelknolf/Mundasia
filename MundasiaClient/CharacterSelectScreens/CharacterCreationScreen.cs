@@ -155,6 +155,7 @@ namespace Mundasia.Interface
             _characterTalent.Click += _characterTalent_Click;
             _characterProfession.Click += _characterProfession_Click;
 
+            _descriptionText.Text = " "; // RichTextBox wants to be 0x0 unless it has contents
             _descriptionText.Location = new Point(padding, padding);
             _descriptionText.ReadOnly = true;
             _descriptionText.BorderStyle = BorderStyle.None;
