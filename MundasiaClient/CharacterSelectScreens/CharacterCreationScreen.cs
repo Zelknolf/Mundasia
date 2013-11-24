@@ -709,6 +709,9 @@ namespace Mundasia.Interface
             _currentEntry.Controls.Add(_nameEntryLabel);
             _currentEntry.Controls.Add(_nameEntry);
             _nameEntry.Focus();
+            _descriptionText.Text = StringLibrary.GetString(14);
+            _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+            _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
         }
 
         private static void SetRaceSexToPanel()
@@ -759,6 +762,8 @@ namespace Mundasia.Interface
             _currentEntry.Controls.Add(_male);
             _currentEntry.Controls.Add(_female);
             _currentEntry.Controls.Add(_raceList);
+
+            _descriptionText.Text = StringLibrary.GetString(15);
         }
 
         private static void SetVirtueToPanel()
@@ -776,6 +781,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_virtueList);
+
+            _descriptionText.Text = StringLibrary.GetString(16);
         }
 
         private static void SetViceToPanel()
@@ -793,6 +800,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_viceList);
+
+            _descriptionText.Text = StringLibrary.GetString(17);
         }
 
         private static void SetAuthorityToPanel()
@@ -810,6 +819,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_authorityList);
+
+            _descriptionText.Text = StringLibrary.GetString(18);
         }
 
         private static void SetCareToPanel()
@@ -827,6 +838,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_careList);
+
+            _descriptionText.Text = StringLibrary.GetString(19);
         }
 
         private static void SetFairnessToPanel()
@@ -844,6 +857,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_fairnessList);
+
+            _descriptionText.Text = StringLibrary.GetString(20);
         }
         
         private static void SetLoyaltyToPanel()
@@ -861,6 +876,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_loyaltyList);
+
+            _descriptionText.Text = StringLibrary.GetString(21);
         }
 
         private static void SetTraditionToPanel()
@@ -878,6 +895,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_traditionList);
+
+            _descriptionText.Text = StringLibrary.GetString(22);
         }
 
         private static void SetProfessionToPanel()
@@ -896,6 +915,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_professionList);
+
+            _descriptionText.Text = StringLibrary.GetString(23);
         }
 
         private static void SetTalentToPanel()
@@ -914,6 +935,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_talentList);
+
+            _descriptionText.Text = StringLibrary.GetString(24);
         }
 
         private static void SetHobbyToPanel()
@@ -932,6 +955,8 @@ namespace Mundasia.Interface
             }
 
             _currentEntry.Controls.Add(_hobbyList);
+
+            _descriptionText.Text = StringLibrary.GetString(25);
         }
 
         static void _clickableMouseOver(object sender, EventArgs e)
