@@ -10,7 +10,170 @@ using System.Xml.Serialization;
 namespace Mundasia.Objects
 {
     public class Character
-    {       
+    {
+        private static string delimiter = "|";
+        private static char[] delim = new char[] { '|' };
+        private static string dictDelimiter = "[";
+        private static char[] dictDelim = new char[] { '[' };
+        private static string keyDelimiter = "]";
+        private static char[] keyDelim = new char[] { ']' };
+
+        public Character() { }
+
+        public Character(string message)
+        {
+            string[] split = message.Split(delim);
+            if (split.Length < 36) return;
+            AccountName = split[0];
+            CharacterName = split[1];
+            uint.TryParse(split[2], out CharacterRace);
+            int.TryParse(split[3], out Sex);
+            uint.TryParse(split[4], out CharacterVirtue);
+            uint.TryParse(split[5], out CharacterVice);
+            uint.TryParse(split[6], out MoralsCare);
+            uint.TryParse(split[7], out MoralsFairness);
+            uint.TryParse(split[8], out MoralsLoyalty);
+            uint.TryParse(split[9], out MoralsAuthority);
+            uint.TryParse(split[10], out MoralsTradition);
+            uint.TryParse(split[11], out CharacterProfession);
+            uint.TryParse(split[12], out CharacterTalent);
+            uint.TryParse(split[13], out CharacterHobby);
+            string[] abilDict = split[14].Split(dictDelim);
+            Abilities = new Dictionary<uint, int>();
+            foreach(string keyVal in abilDict)
+            {
+                if (String.IsNullOrWhiteSpace(keyVal)) continue;
+                string[] kv = keyVal.Split(keyDelim);
+                uint key;
+                int value;
+                uint.TryParse(kv[0], out key);
+                int.TryParse(kv[1], out value);
+                Abilities.Add(key, value);
+            }
+            string[] skillDict = split[15].Split(dictDelim);
+            Skills = new Dictionary<uint, int>();
+            foreach (string keyVal in skillDict)
+            {
+                if (String.IsNullOrWhiteSpace(keyVal)) continue;
+                string[] kv = keyVal.Split(keyDelim);
+                uint key;
+                int value;
+                uint.TryParse(kv[0], out key);
+                int.TryParse(kv[1], out value);
+                Skills.Add(key, value);
+            }
+            uint.TryParse(split[16], out CurrentActionPoints);
+            uint.TryParse(split[17], out MaxActionPoints);
+            uint.TryParse(split[18], out DecayedActionPoints);
+            uint.TryParse(split[19], out DestroyedActionPoints);
+            uint.TryParse(split[20], out CurrentWillpowerPoints);
+            uint.TryParse(split[21], out MaxWillpowerPoints);
+            uint.TryParse(split[22], out DecayedWillpowerPoints);
+            uint.TryParse(split[23], out DestroyedWillpowerPoints);
+            uint.TryParse(split[24], out CurrentStun);
+            uint.TryParse(split[25], out MaxStun);
+            uint.TryParse(split[26], out DecayedStun);
+            uint.TryParse(split[27], out DestroyedStun);
+            uint.TryParse(split[28], out CurrentStructure);
+            uint.TryParse(split[29], out MaxStructure);
+            uint.TryParse(split[30], out DecayedStructure);
+            uint.TryParse(split[31], out DestroyedStructure);
+            uint.TryParse(split[32], out CurrentVital);
+            uint.TryParse(split[33], out MaxVital);
+            uint.TryParse(split[34], out DecayedVital);
+            uint.TryParse(split[35], out DestroyedVital);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append(AccountName);
+            str.Append(delimiter);
+            str.Append(CharacterName);
+            str.Append(delimiter);
+            str.Append(CharacterRace);
+            str.Append(delimiter);
+            str.Append(Sex);
+            str.Append(delimiter);
+            str.Append(CharacterVirtue);
+            str.Append(delimiter);
+            str.Append(CharacterVice);
+            str.Append(delimiter);
+            str.Append(MoralsCare);
+            str.Append(delimiter);
+            str.Append(MoralsFairness);
+            str.Append(delimiter);
+            str.Append(MoralsLoyalty);
+            str.Append(delimiter);
+            str.Append(MoralsAuthority);
+            str.Append(delimiter);
+            str.Append(MoralsTradition);
+            str.Append(delimiter);
+            str.Append(CharacterProfession);
+            str.Append(delimiter);
+            str.Append(CharacterTalent);
+            str.Append(delimiter);
+            str.Append(CharacterHobby);
+            str.Append(delimiter);
+            foreach(KeyValuePair<uint, int> pair in Abilities)
+            {
+                str.Append(pair.Key);
+                str.Append(keyDelimiter);
+                str.Append(pair.Value);
+                str.Append(dictDelimiter);
+            }
+            str.Append(delimiter);
+            foreach (KeyValuePair<uint, int> pair in Skills)
+            {
+                str.Append(pair.Key);
+                str.Append(keyDelimiter);
+                str.Append(pair.Value);
+                str.Append(dictDelimiter);
+            }
+            str.Append(delimiter);
+            str.Append(CurrentActionPoints);
+            str.Append(delimiter);
+            str.Append(MaxActionPoints);
+            str.Append(delimiter);
+            str.Append(DecayedActionPoints);
+            str.Append(delimiter);
+            str.Append(DestroyedActionPoints);
+            str.Append(delimiter);
+            str.Append(CurrentWillpowerPoints);
+            str.Append(delimiter);
+            str.Append(MaxWillpowerPoints);
+            str.Append(delimiter);
+            str.Append(DecayedWillpowerPoints);
+            str.Append(delimiter);
+            str.Append(DestroyedWillpowerPoints);
+            str.Append(delimiter);
+            str.Append(CurrentStun);
+            str.Append(delimiter);
+            str.Append(MaxStun);
+            str.Append(delimiter);
+            str.Append(DecayedStun);
+            str.Append(delimiter);
+            str.Append(DestroyedStun);
+            str.Append(delimiter);
+            str.Append(CurrentStructure);
+            str.Append(delimiter);
+            str.Append(MaxStructure);
+            str.Append(delimiter);
+            str.Append(DecayedStructure);
+            str.Append(delimiter);
+            str.Append(DestroyedStructure);
+            str.Append(delimiter);
+            str.Append(CurrentVital);
+            str.Append(delimiter);
+            str.Append(MaxVital);
+            str.Append(delimiter);
+            str.Append(DecayedVital);
+            str.Append(delimiter);
+            str.Append(DestroyedVital);
+
+            return str.ToString();
+        }
+        
         [XmlElement]
         public string AccountName;
 
