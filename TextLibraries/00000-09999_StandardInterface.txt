@@ -24,3 +24,12 @@
 23|A character's profession represents the thing that the character did to make a living, and thus also what sort of education the character had, before becoming a player character. Every profession provides training in three skills and adds one point to one ability score that is relevant to the character's vocation, and it also provides some profession-specific benefits in targeted situations.
 24|A character's talent represents some capacity in which the character is more capable than others naturally. This increases the associated ability score by one point, and improves the character's aptitude for learning when using it, just as if the character's race were more inclined toward the ability.
 25|A character's hobby is the skill associated with whatever thing the character does in his or her spare time. This is generally understood to be self-taught, and provides training in the skill at a slightly lower amount of proficiency than if it were provided by a profession. If a character's hobby is also provided by the character's profession, then that skill's rank is increased by 1.
+26|Traits
+27|Morals
+28|Abilities
+29|Ability Scores
+30|Skills
+31|Profession
+32|Talent
+33|Hobby
+34|Create Character
