@@ -75,6 +75,8 @@ namespace Mundasia.Communication
             sb.Append(delimiter);
             sb.Append(Tradition);
             sb.Append(delimiter);
+            sb.Append(Profession);
+            sb.Append(delimiter);
             sb.Append(Talent);
             sb.Append(delimiter);
             sb.Append(Hobby); 
