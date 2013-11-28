@@ -414,7 +414,29 @@ namespace Mundasia.Interface
                 return;
             }
 
-            MessageBox.Show("Character appears complete, but sending of characters to the server is not yet enabled.");
+            string creat = Mundasia.Communication.ServiceConsumer.CreateCharacter(_name, 
+                                                                _moralsAuthority, 
+                                                                _moralsCare, 
+                                                                _moralsFairness, 
+                                                                _abilityHobby, 
+                                                                _moralsLoyalty, 
+                                                                _abilityProfession, 
+                                                                _race, 
+                                                                _sex, 
+                                                                _abilityTalent, 
+                                                                _moralsTradition,
+                                                                _traitVice, 
+                                                                _traitVirtue);
+            if(!creat.Contains("Success"))
+            {
+                MessageBox.Show(creat);
+            }
+            else
+            {
+                Form host = _form;
+                Clear(host);
+                CharacterSelectScreen.Set(host);
+            }
         }
 
         static void _hobbyList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
