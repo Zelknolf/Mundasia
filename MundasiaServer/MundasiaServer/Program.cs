@@ -21,6 +21,7 @@ namespace Mundasia.Server
         static void Main()
         {
             Service.Open();
+            LoadLocalResources();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Status());
             Service.Close();
