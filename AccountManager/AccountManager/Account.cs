@@ -33,23 +33,36 @@ namespace Mundasia
         public Account(string userName, string password)
         {
             UserName = userName;
-            Password = password;
+            _password = password;
             string path = GetPathForId(userName);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            using (TextWriter stream = new StreamWriter(path + userName + ".aco"))
+            if (Characters == null)
             {
-                XmlSerializer ser = new XmlSerializer(typeof(Account));
-                ser.Serialize(stream, this);
+                Characters = new List<string>();
+            }
+            if (LoadedCharacters == null)
+            {
+                LoadedCharacters = new List<Character>();
+            }
+            _lastAccessed = DateTime.UtcNow;
+            SaveAccount();
+            _cachedAccounts.Add(userName, this);
+        }
+
+        public void SaveAccount()
+        {
+            string path = GetPathForId(UserName);
+            using (FileStream stream = new FileStream(path + UserName + ".aco", FileMode.Create))
+            {
+                Password = _password;
+                DataContractSerializer ser = new DataContractSerializer(typeof(Account));
+                ser.WriteObject(stream, this);
                 _password = Password;
                 Password = null;
             }
-            Characters = new List<string>();
-            LoadedCharacters = new List<Character>();
-            _lastAccessed = DateTime.UtcNow;
-            _cachedAccounts.Add(userName, this);
         }
 
         /// <summary>
@@ -89,15 +102,21 @@ namespace Mundasia
             }
             try
             {
-                using (TextReader stream = new StreamReader(path + userName + ".aco"))
+                using (FileStream stream = new FileStream(path + userName + ".aco", FileMode.Open))
                 {
-                    XmlSerializer ser = new XmlSerializer(typeof(Account));
-                    Account ret = ser.Deserialize(stream) as Account;
+                    DataContractSerializer ser = new DataContractSerializer(typeof(Account));
+                    Account ret = ser.ReadObject(stream) as Account;
                     ret._password = ret.Password;
                     ret.Password = null;
                     ret._lastAccessed = DateTime.UtcNow;
-                    ret.LoadedCharacters = new List<Character>();
-                    ret.Characters = new List<string>();
+                    if (ret.LoadedCharacters == null)
+                    {
+                        ret.LoadedCharacters = new List<Character>();
+                    }
+                    if (ret.Characters == null)
+                    {
+                        ret.Characters = new List<string>();
+                    }
                     _cachedAccounts.Add(userName, ret);
                     return ret;
                 }
@@ -223,11 +242,9 @@ namespace Mundasia
                 {
                     DataContractSerializer ser = new DataContractSerializer(typeof(Character));
                     ser.WriteObject(stream, chr);
-                    _password = Password;
-                    Password = null;
                 }
-                Characters = new List<string>();
                 _lastAccessed = DateTime.UtcNow;
+                SaveAccount();
                 return true;
             }
             catch
@@ -288,6 +305,12 @@ namespace Mundasia
         public int SessionId;
 
         /// <summary>
+        /// This field is used to store the client's IP address.
+        /// </summary>
+        [NonSerialized, XmlIgnore]
+        public string Address;
+
+        /// <summary>
         /// A static cache of accounts that we've used recently, indexed by account name for 
         /// quicker response in case of needing reauthentication.
         /// </summary>
@@ -336,6 +359,11 @@ namespace Mundasia
                 return loadedAccount.SessionId;
             }
             return -1;
+        }
+
+        public void KeepAlive()
+        {
+            this._lastAccessed = DateTime.UtcNow; ;
         }
 
         
