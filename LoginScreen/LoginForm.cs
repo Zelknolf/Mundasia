@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using Mundasia.Client;
 using Mundasia.Communication;
 
-namespace Mundasia.Client
+namespace Mundasia.Interface
 {
     [System.ComponentModel.DesignerCategory("")]
     public class LoginForm : Form
@@ -98,7 +98,8 @@ namespace Mundasia.Client
             int sessionID = ServiceConsumer.ClientLogin(userName.Text,password.Text);
             if(sessionID != -1)
             {
-                MessageBox.Show(String.Format("Session ID: {0}", sessionID));
+                LoginScreen.PassToCharacterSelect();
+                this.Close();
                 return;
             }
             else
