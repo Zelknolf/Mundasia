@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.Xml;
@@ -58,8 +59,13 @@ namespace Mundasia.Server.Communication
         {
             Login lg = new Login(message);
             Account targetAcct = Account.LoadAccount(lg.userName);
+            if(targetAcct == null)
+            {
+                return -1;
+            }
             if (targetAcct.Authenticate(lg.password))
             {
+                targetAcct.Address = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
                 return Account.GetSessionId(lg.userName);
             }
             return -1;
@@ -115,6 +121,66 @@ namespace Mundasia.Server.Communication
                 return "Unable to save character";
             }
             return "Success: " + chr.CharacterName;
+        }
+
+        public string ListCharacters(string message)
+        {
+            RequestCharacter upd = new RequestCharacter(message);
+            Account acct = Account.LoadAccount(upd.UserId);
+            if (acct == null)
+            {
+                return String.Empty;
+            }
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if (acct.SessionId != upd.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+            acct.KeepAlive();
+
+            StringBuilder str = new StringBuilder();
+            foreach(string cha in acct.Characters)
+            {
+                str.Append(cha);
+                str.Append("|");
+            }
+            return str.ToString();
+        }
+
+        public string CharacterDetails(string message)
+        {
+            RequestCharacter upd = new RequestCharacter(message);
+            Account acct = Account.LoadAccount(upd.UserId);
+            if(acct == null)
+            {
+                return String.Empty;
+            }
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if (acct.SessionId != upd.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+            acct.KeepAlive();
+
+            Character cha = acct.LoadCharacter(upd.RequestedCharacter);
+            if(cha != null)
+            {
+                return cha.ToString();
+            }
+            return String.Empty;
+        }
+
+        public string Update(string message)
+        {
+            SessionUpdate upd = new SessionUpdate(message);
+            Account acct = Account.LoadAccount(upd.UserId);
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if(acct.SessionId != upd.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+            acct.KeepAlive();
+            return String.Empty;
         }
     }
 }
