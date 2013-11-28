@@ -50,6 +50,10 @@
       <Project>{a247c466-dedf-418f-ab97-50a19120cec7}</Project>
       <Name>Abilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Character\Character.csproj">
+      <Project>{e46d3910-9e76-4242-b3ee-8af00acbf511}</Project>
+      <Name>Character</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ClientConnector\ClientConnector\ClientConnector.csproj">
       <Project>{130f1919-0466-47c2-a251-680a81dce1fc}</Project>
       <Name>ClientConnector</Name>
