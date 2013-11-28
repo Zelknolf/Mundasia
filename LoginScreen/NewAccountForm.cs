@@ -168,6 +168,8 @@ namespace Mundasia.Interface
             if(ServiceConsumer.CreateAccount(userName.Text, password.Text))
             {
                 MessageBox.Show("Success");
+                this.Close();
+                return;
             }
             else
             {
