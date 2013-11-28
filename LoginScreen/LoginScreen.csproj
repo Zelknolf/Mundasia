@@ -51,6 +51,10 @@
       <Project>{130f1919-0466-47c2-a251-680a81dce1fc}</Project>
       <Name>ClientConnector</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MundasiaClient\CharacterSelectScreens\CharacterSelectScreens.csproj">
+      <Project>{8898de12-02b0-4c62-86bd-9a39a8848629}</Project>
+      <Name>CharacterSelectScreens</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StringLibrary\StringLibrary.csproj">
       <Project>{dc20541d-a02b-4bfe-a22f-f14d2e717acf}</Project>
       <Name>StringLibrary</Name>

@@ -20,6 +20,13 @@ namespace Mundasia.Interface
 
         private Panel _buttons = new Panel();
 
+        public static void PassToCharacterSelect()
+        {
+            Form host = _hostingForm;
+            Clear(host);
+            CharacterSelectScreen.Set(host);
+        }
+
         /// <summary>
         /// Set the provided windows Form as a login view, adding the special controls for the region.
         /// </summary>
@@ -67,6 +74,17 @@ namespace Mundasia.Interface
             _hostingForm = primaryForm;
         }
 
+        /// <summary>
+        /// Remove all of the vestiges of a login view from the provided windows Form.
+        /// </summary>
+        public static void Clear(Form primaryForm)
+        {
+            primaryForm.Resize -= primaryForm_Resize;
+            primaryForm.Controls.Remove(_latestPanel);
+
+            _hostingForm = null;
+        }
+
         static void exit_Click(object sender, EventArgs e)
         {
             _hostingForm.Close();
@@ -83,17 +101,6 @@ namespace Mundasia.Interface
         {
             LoginForm form = new LoginForm();
             form.ShowDialog();
-        }
-
-        /// <summary>
-        /// Remove all of the vestiges of a login view from the provided windows Form.
-        /// </summary>
-        public static void Clear(Form primaryForm)
-        {
-            primaryForm.Resize -= primaryForm_Resize;
-            primaryForm.Controls.Remove(_latestPanel);
-
-            _hostingForm = null;
         }
 
         public LoginScreen()
