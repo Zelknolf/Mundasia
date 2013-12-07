@@ -122,6 +122,10 @@
       <Project>{8898de12-02b0-4c62-86bd-9a39a8848629}</Project>
       <Name>CharacterSelectScreens</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LoreViewer\LoreViewer.csproj">
+      <Project>{585ff2b0-19f2-4ce6-8958-6c076da29f7a}</Project>
+      <Name>LoreViewer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
