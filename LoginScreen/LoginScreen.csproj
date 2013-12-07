@@ -55,6 +55,10 @@
       <Project>{8898de12-02b0-4c62-86bd-9a39a8848629}</Project>
       <Name>CharacterSelectScreens</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MundasiaClient\LoreViewer\LoreViewer.csproj">
+      <Project>{585ff2b0-19f2-4ce6-8958-6c076da29f7a}</Project>
+      <Name>LoreViewer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StringLibrary\StringLibrary.csproj">
       <Project>{dc20541d-a02b-4bfe-a22f-f14d2e717acf}</Project>
       <Name>StringLibrary</Name>

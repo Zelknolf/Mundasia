@@ -58,9 +58,17 @@ namespace Mundasia.Interface
             CenterX(createAccount, _latestPanel._buttons);
             createAccount.Click += createAccount_Click;
 
+            Label lore = new Label();
+            lore.Text = StringLibrary.GetString(35);
+            lore.Location = new Point(0, 90);
+            FormatButton(lore);
+            lore.Size = lore.PreferredSize;
+            CenterX(lore, _latestPanel._buttons);
+            lore.Click += lore_Click;
+
             Label exit = new Label();
             exit.Text = StringLibrary.GetString(9);
-            exit.Location = new Point(0, 90);
+            exit.Location = new Point(0, 120);
             FormatButton(exit);
             exit.Size = exit.PreferredSize;
             CenterX(exit, _latestPanel._buttons);
@@ -68,6 +76,7 @@ namespace Mundasia.Interface
 
             _latestPanel._buttons.Controls.Add(login);
             _latestPanel._buttons.Controls.Add(createAccount);
+            _latestPanel._buttons.Controls.Add(lore);
             _latestPanel._buttons.Controls.Add(exit);
             
             _latestPanel.Controls.Add(_latestPanel._buttons);
@@ -83,6 +92,11 @@ namespace Mundasia.Interface
             primaryForm.Controls.Remove(_latestPanel);
 
             _hostingForm = null;
+        }
+
+        static void lore_Click(object sender, EventArgs e)
+        {
+            new LoreViewer().Show();
         }
 
         static void exit_Click(object sender, EventArgs e)
