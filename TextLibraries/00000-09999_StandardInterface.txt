@@ -33,3 +33,4 @@
 32|Talent
 33|Hobby
 34|Create Character
+35|Lore
