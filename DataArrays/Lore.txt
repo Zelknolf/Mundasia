@@ -1,0 +1,13 @@
+0|Bazzurdin|BazzurdinSymbol.png|14000
+1|Caralil|CaralilSymbol.png|14001
+2|Dopumeh|DopumehSymbol.png|14002
+3|Garshwynn|GarshwynnSymbol.png|14003
+4|Ishania|IshaniaSymbol.png|14004
+5|Karn|KarnSymbol.png|14005
+6|Lyca|LycaSymbol.png|14006
+7|Pazunish|PazunishSymbol.png|14007
+8|Raltonin|RaltoninSymbol.png|14008
+9|Sylahisi|SylahisiSymbol.png|14009
+10|Thuun|ThuunSymbol.png|14010
+11|Tywekia|TywekiaSymbol.png|14011
+12|Uashyl|UashylSymbol.png|14012
