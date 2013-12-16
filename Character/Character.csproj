@@ -47,10 +47,6 @@
       <Project>{a247c466-dedf-418f-ab97-50a19120cec7}</Project>
       <Name>Abilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClientConnector\ClientConnector\ClientConnector.csproj">
-      <Project>{130f1919-0466-47c2-a251-680a81dce1fc}</Project>
-      <Name>ClientConnector</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Morals\Morals.csproj">
       <Project>{1f2756b0-dfec-4e47-a5aa-8afd29422bbe}</Project>
       <Name>Morals</Name>
