@@ -17,7 +17,7 @@ namespace Mundasia.Server.Communication
 
         public static void Open()
         {
-            uri = "http://192.168.1.3:6200/MundasiaServerService/";
+            uri = "http://192.168.1.2:6300/MundasiaServerService/";
             Uri baseAddress = new Uri(uri);
             host = new WebServiceHost(typeof(ServerService), baseAddress);
             WebHttpBinding binding = new WebHttpBinding();
