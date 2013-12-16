@@ -19,8 +19,9 @@ namespace Mundasia.Client
                 Id = index;
                 Name = split[1];
                 Image = split[2];
+                Category = split[3];
 
-                if (!uint.TryParse(split[3], out Description))
+                if (!uint.TryParse(split[4], out Description))
                 {
                     Description = uint.MaxValue;
                 }
@@ -29,6 +30,7 @@ namespace Mundasia.Client
 
         public string Name;
         public string Image;
+        public string Category;
         public uint Id;
         public uint Description;
         
