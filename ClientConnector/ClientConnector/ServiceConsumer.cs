@@ -16,7 +16,7 @@ namespace Mundasia.Communication
         public const string StringNamespace = "http://schemas.microsoft.com/2003/10/Serialization/";
 
         // TODO: Move this to app.config
-        public static string baseServerTarget = "http://localhost:6200/MundasiaServerService/";
+        public static string baseServerTarget = "http://75.134.27.112:6300/MundasiaServerService/";
 
         public static string Ping()
         {
