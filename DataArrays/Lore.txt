@@ -12,3 +12,4 @@
 11|Tywekia|TywekiaSymbol.png|Religion|14011
 12|Uashyl|UashylSymbol.png|Religion|14012
 13|Boot Wearer|ElfFoot.png|Elven Culture|13500
+14|Godtouched|Godtouched.png|Religion|14013
