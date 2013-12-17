@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Mundasia.Client
 {
-    public class Lore
+    public class Lore : IComparable
     {
         public Lore(string fileLine)
         {
@@ -28,13 +28,26 @@ namespace Mundasia.Client
             }
         }
 
+        public int CompareTo(object other)
+        {
+            Lore otherLore = other as Lore;
+            if(otherLore == null)
+            {
+                return other.ToString().CompareTo(this.ToString());
+            }
+            return this.Name.CompareTo(otherLore.Name);
+        }
+
         public string Name;
         public string Image;
         public string Category;
         public uint Id;
         public uint Description;
-        
+
+        public static List<string> Categories = new List<string>();
+        public static Dictionary<string, List<Lore>> CategoryLists = new Dictionary<string, List<Lore>>();
         private static Dictionary<uint, Lore> _library = new Dictionary<uint, Lore>();
+        private static List<Lore> _sortedLores = new List<Lore>();
 
         public static void Load()
         {
@@ -45,9 +58,21 @@ namespace Mundasia.Client
                 while (read.Peek() >= 0)
                 {
                     Lore toAdd = new Lore(read.ReadLine());
+                    if (!Categories.Contains(toAdd.Category))
+                    {
+                        Categories.Add(toAdd.Category);
+                    }
+                    if(!CategoryLists.ContainsKey(toAdd.Category))
+                    {
+                        CategoryLists.Add(toAdd.Category, new List<Lore>());
+                    }
+                    CategoryLists[toAdd.Category].Add(toAdd);
                     _library.Add(toAdd.Id, toAdd);
+                    _sortedLores.Add(toAdd);
                 }
             }
+            Categories.Sort();
+            _sortedLores.Sort();
         }
 
         public static Lore GetLore(uint index)
@@ -61,7 +86,7 @@ namespace Mundasia.Client
 
         public static IEnumerable<Lore> GetLores()
         {
-            return _library.Values;
+            return _sortedLores;
         }
     }
 }

@@ -31,11 +31,11 @@ namespace Mundasia.Interface
             _parent = parent;
             this.Resize += LoreText_Resize;
             this.Width = _parent.ClientRectangle.Width - offset - padding;
-            this.Height = _parent.ClientRectangle.Height - (padding * 2);
+            this.Height = _parent.ClientRectangle.Height - (padding * 3) - parent.CurrentComboBox.Height;
             this.BackColor = Color.Black;
             this.ForeColor = Color.White;
             this.BorderStyle = BorderStyle.FixedSingle;
-            this.Location = new Point(offset, padding);
+            this.Location = new Point(offset, (padding * 2) + parent.CurrentComboBox.Height);
             _parent.Controls.Add(this);
 
             ImagePanel.Size = new Size(imageDimensions, imageDimensions);

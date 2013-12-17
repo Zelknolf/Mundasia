@@ -22,8 +22,8 @@ namespace Mundasia.Interface
         {
             _parent = parent;
             this.Width = LoreTOC.width;
-            this.Height = parent.ClientRectangle.Height - (padding * 2);
-            this.Location = new Point(padding, padding);
+            this.Height = parent.ClientRectangle.Height - (padding * 3) - parent.CurrentComboBox.Height;
+            this.Location = new Point(padding, (padding * 2) + parent.CurrentComboBox.Height);
 
             this.BorderStyle = BorderStyle.Fixed3D;
             this.BackColor = Color.Black;
@@ -76,7 +76,19 @@ namespace Mundasia.Interface
 
         public void PopulateList()
         {
+            TOC.Items.Clear();
             foreach (Lore l in Lore.GetLores())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { l.Id.ToString(), l.Name });
+                StyleListViewItem(toAdd);
+                TOC.Items.Add(toAdd);
+            }
+        }
+
+        public void PopulateList(List<Lore> nList)
+        {
+            TOC.Items.Clear();
+            foreach(Lore l in nList)
             {
                 ListViewItem toAdd = new ListViewItem(new string[] { l.Id.ToString(), l.Name });
                 StyleListViewItem(toAdd);
