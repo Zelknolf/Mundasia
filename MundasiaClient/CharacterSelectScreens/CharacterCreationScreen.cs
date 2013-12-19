@@ -468,7 +468,9 @@ namespace Mundasia.Interface
                     Profession profession = Profession.GetProfession((uint)_abilityProfession);
                     _characterProfession.Text = profession.Name;
                     _characterProfession.Size = _characterProfession.PreferredSize;
-                    _descriptionText.Text = StringLibrary.GetString(profession.Description);
+                    _descriptionText.Text = StringLibrary.GetString(profession.Description) + Environment.NewLine + 
+                        Environment.NewLine + StringLibrary.GetString(28) + ": " + Ability.GetAbility(profession.PrimaryAbility).Name +
+                        Environment.NewLine + StringLibrary.GetString(30) + ": " + Skill.GetSkill(profession.SkillOne).Name + ", " + Skill.GetSkill(profession.SkillTwo).Name + ", " + Skill.GetSkill(profession.SkillThree).Name;
                     _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
                     _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
                 }
