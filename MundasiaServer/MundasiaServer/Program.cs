@@ -40,6 +40,7 @@ namespace Mundasia.Server
             Skill.Load();
             Vice.Load();
             Virtue.Load();
+            Aspiration.Load();
         }
     }
 }

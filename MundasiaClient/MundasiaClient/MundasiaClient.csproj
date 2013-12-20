@@ -82,6 +82,10 @@
       <Project>{a247c466-dedf-418f-ab97-50a19120cec7}</Project>
       <Name>Abilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Aspiration\Aspiration.csproj">
+      <Project>{df11733f-5612-4d4f-8eb8-feaa124a6e7b}</Project>
+      <Name>Aspiration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ClientConnector\ClientConnector\ClientConnector.csproj">
       <Project>{130f1919-0466-47c2-a251-680a81dce1fc}</Project>
       <Name>ClientConnector</Name>

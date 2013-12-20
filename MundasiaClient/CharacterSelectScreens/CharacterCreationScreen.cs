@@ -47,6 +47,7 @@ namespace Mundasia.Interface
         private static Label _characterProfession = new Label();
         private static Label _characterTalent = new Label();
         private static Label _characterHobby = new Label();
+        private static Label _characterAspiration = new Label();
 
         private static Label _next = new Label();
 
@@ -70,6 +71,7 @@ namespace Mundasia.Interface
         private static ListView _professionList = new ListView();
         private static ListView _talentList = new ListView();
         private static ListView _hobbyList = new ListView();
+        private static ListView _aspirationList = new ListView();
 
         private static RichTextBox _descriptionText = new RichTextBox();
 
@@ -86,6 +88,7 @@ namespace Mundasia.Interface
         private static int _abilityProfession;
         private static int _abilityTalent;
         private static int _abilityHobby;
+        private static int _abilityAspiration;
 
         public static void Set(Form primaryForm)
         {
@@ -102,6 +105,7 @@ namespace Mundasia.Interface
             _abilityProfession = -1;
             _abilityTalent = -1;
             _abilityHobby = -1;
+            _abilityAspiration = -1;
             
             _form = primaryForm;
             _form.Resize += _form_Resize;
@@ -154,6 +158,7 @@ namespace Mundasia.Interface
             _characterHobby.Click += _characterHobby_Click;
             _characterTalent.Click += _characterTalent_Click;
             _characterProfession.Click += _characterProfession_Click;
+            _characterAspiration.Click += _characterAspiration_Click;
 
             _descriptionText.Text = " "; // RichTextBox wants to be 0x0 unless it has contents
             _descriptionText.Location = new Point(padding, padding);
@@ -183,6 +188,11 @@ namespace Mundasia.Interface
         static void _characterHobby_Click(object sender, EventArgs e)
         {
             SetHobbyToPanel();
+        }
+
+        static void _characterAspiration_Click(object sender, EventArgs e)
+        {
+            SetAspirationToPanel();
         }
 
         static void _characterMoralsTradition_Click(object sender, EventArgs e)
@@ -283,6 +293,9 @@ namespace Mundasia.Interface
             if(_abilityHobby == -1) _characterHobby.Text = "No hobby";
             else _characterHobby.Text = "Hobby: " + Skill.GetSkill((uint)_abilityHobby).Name;
 
+            if (_abilityAspiration == -1) _characterAspiration.Text = "No aspiration";
+            else _characterAspiration.Text = "Aspiration: " + Aspiration.GetAspiration((uint)_abilityAspiration).Name;
+
             _next.Text = StringLibrary.GetString(13);
 
             _traitsHead.Text = "Traits";
@@ -324,6 +337,8 @@ namespace Mundasia.Interface
             _characterTalent.Location = new Point(padding + indent, _characterProfession.Location.Y + _characterProfession.Height);
             StyleLabel(_characterHobby);
             _characterHobby.Location = new Point(padding + indent, _characterTalent.Location.Y + _characterTalent.Height);
+            StyleLabel(_characterAspiration);
+            _characterAspiration.Location = new Point(padding + indent, _characterHobby.Location.Y + _characterHobby.Height);
             StyleLabel(_next);
             _next.Location = new Point(_characterSheet.Width - _next.Width - padding, _characterSheet.Height - _next.Height - padding);
             #endregion
@@ -340,6 +355,7 @@ namespace Mundasia.Interface
             _characterProfession.MouseEnter += _clickableMouseOver;
             _characterTalent.MouseEnter += _clickableMouseOver;
             _characterHobby.MouseEnter += _clickableMouseOver;
+            _characterAspiration.MouseEnter += _clickableMouseOver;
             _female.MouseEnter += _clickableMouseOver;
             _male.MouseEnter += _clickableMouseOver;
             _next.MouseEnter += _clickableMouseOver;
@@ -356,6 +372,7 @@ namespace Mundasia.Interface
             _characterProfession.MouseLeave += _clickableMouseLeave;
             _characterTalent.MouseLeave += _clickableMouseLeave;
             _characterHobby.MouseLeave += _clickableMouseLeave;
+            _characterAspiration.MouseLeave += _clickableMouseLeave;
             _female.MouseLeave += _clickableMouseLeave;
             _male.MouseLeave += _clickableMouseLeave;
             _next.MouseLeave += _clickableMouseLeave;
@@ -375,6 +392,7 @@ namespace Mundasia.Interface
             _talentList.ItemSelectionChanged += _talentList_ItemSelectionChanged;
             _professionList.ItemSelectionChanged += _professionList_ItemSelectionChanged;
             _hobbyList.ItemSelectionChanged += _hobbyList_ItemSelectionChanged;
+            _aspirationList.ItemSelectionChanged += _aspirationList_ItemSelectionChanged;
 
             _characterSheet.Controls.Add(_characterName);
             _characterSheet.Controls.Add(_characterSexRace);
@@ -391,6 +409,7 @@ namespace Mundasia.Interface
             _characterSheet.Controls.Add(_characterProfession);
             _characterSheet.Controls.Add(_characterTalent);
             _characterSheet.Controls.Add(_characterHobby);
+            _characterSheet.Controls.Add(_characterAspiration);
             _characterSheet.Controls.Add(_next);
         }
 
@@ -408,7 +427,8 @@ namespace Mundasia.Interface
                 _moralsTradition == -1 ||
                 _abilityProfession == -1 ||
                 _abilityTalent == -1 ||
-                _abilityHobby == -1)
+                _abilityHobby == -1 ||
+                _abilityAspiration == -1)
             {
                 SetUnusedToPanel();
                 return;
@@ -426,7 +446,8 @@ namespace Mundasia.Interface
                                                                 _abilityTalent, 
                                                                 _moralsTradition,
                                                                 _traitVice, 
-                                                                _traitVirtue);
+                                                                _traitVirtue,
+                                                                _abilityAspiration);
             if(!creat.Contains("Success"))
             {
                 MessageBox.Show(creat);
@@ -436,6 +457,34 @@ namespace Mundasia.Interface
                 Form host = _form;
                 Clear(host);
                 CharacterSelectScreen.Set(host);
+            }
+        }
+
+        static void _aspirationList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(e.IsSelected)
+            {
+                int nAspiration;
+                if(int.TryParse(e.Item.SubItems[0].Text, out nAspiration))
+                {
+                    _abilityAspiration = nAspiration;
+                    Aspiration asp = Aspiration.GetAspiration((uint)_abilityAspiration);
+                    _characterAspiration.Text = asp.Name;
+                    _characterAspiration.Size = _characterAspiration.PreferredSize;
+                    string desc = StringLibrary.GetString(asp.Description) + Environment.NewLine + Environment.NewLine + StringLibrary.GetString(28) + ": ";
+                    foreach(uint ab in asp.Abilities)
+                    {
+                        desc += Ability.GetAbility(ab).Name + ", ";
+                    }
+                    desc += Environment.NewLine + StringLibrary.GetString(30) + ": ";
+                    foreach(uint sk in asp.Skills)
+                    {
+                        desc += Skill.GetSkill(sk).Name + ", ";
+                    }
+                    _descriptionText.Text = desc;
+                    _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
+                    _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                }
             }
         }
 
@@ -698,6 +747,7 @@ namespace Mundasia.Interface
             else if (_abilityProfession == -1) SetProfessionToPanel();
             else if (_abilityTalent == -1) SetTalentToPanel();
             else if (_abilityHobby == -1) SetHobbyToPanel();
+            else if (_abilityAspiration == -1) SetAspirationToPanel();
         }
 
         private static void ClearOld()
@@ -981,6 +1031,26 @@ namespace Mundasia.Interface
             _currentEntry.Controls.Add(_hobbyList);
 
             _descriptionText.Text = StringLibrary.GetString(25);
+        }
+
+        private static void SetAspirationToPanel()
+        {
+            ClearOld();
+
+            _aspirationList.Size = new Size(_currentEntry.Width - (padding * 2), _currentEntry.Height - (padding * 2));
+            _aspirationList.Location = new Point(padding, padding);
+            StyleListView(_aspirationList);
+
+            foreach(Aspiration asp in Aspiration.GetAspirations())
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { asp.Id.ToString(), asp.Name });
+                StyleListViewItem(toAdd);
+                _aspirationList.Items.Add(toAdd);
+            }
+
+            _currentEntry.Controls.Add(_aspirationList);
+
+            _descriptionText.Text = StringLibrary.GetString(36);
         }
 
         static void _clickableMouseOver(object sender, EventArgs e)

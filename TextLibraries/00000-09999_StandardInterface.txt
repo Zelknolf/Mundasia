@@ -34,3 +34,4 @@
 33|Hobby
 34|Create Character
 35|Lore
+36|A character's aspiration is the hopes and goals of the character, which they presumably invest in developing when they have the luxury to do so. A character's aspiration provides skills and abilities like hobbies and professions, but at less skill, and these abilities don't resist decay the way that actively-practiced abilities do.

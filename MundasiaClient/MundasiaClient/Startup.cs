@@ -94,6 +94,7 @@ namespace Mundasia.Client
             splash.progress.PerformStep();
             Lore.Load();
             splash.progress.PerformStep();
+            Aspiration.Load();
             return true;
         }
     }

@@ -87,6 +87,10 @@
       <Project>{dd45569a-008d-410f-8a26-e478e425038f}</Project>
       <Name>AccountManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Aspiration\Aspiration.csproj">
+      <Project>{df11733f-5612-4d4f-8eb8-feaa124a6e7b}</Project>
+      <Name>Aspiration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Character\Character.csproj">
       <Project>{e46d3910-9e76-4242-b3ee-8af00acbf511}</Project>
       <Name>Character</Name>

@@ -120,6 +120,28 @@ namespace Mundasia.Server.Communication
             {
                 return "Unable to save character";
             }
+            try
+            {
+                Aspiration asp = Aspiration.GetAspiration((uint)nChar.Aspiration);
+                foreach (uint ab in asp.Abilities)
+                {
+                    chr.Abilities[ab] += 1;
+                }
+                int skills = 3;
+                foreach (uint sk in asp.Skills)
+                {
+                    if (!chr.Skills.ContainsKey(sk))
+                    {
+                        chr.Skills.Add(sk, 2);
+                        skills--;
+                    }
+                    if (skills == 0) break;
+                }
+            }
+            catch
+            {
+                return "Failed to parse aspiration.";
+            }
             return "Success: " + chr.CharacterName;
         }
 

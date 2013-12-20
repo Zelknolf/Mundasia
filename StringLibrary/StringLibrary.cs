@@ -20,7 +20,7 @@ namespace Mundasia.Client
             foreach(string file in Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + "\\TextLibraries\\"))
             {
                 FileStream strLib = File.Open(file, FileMode.Open);
-                using(StreamReader read = new StreamReader(strLib, Encoding.UTF7))
+                using(StreamReader read = new StreamReader(strLib, Encoding.UTF8))
                 {
                     while (read.Peek() >= 0)
                     {

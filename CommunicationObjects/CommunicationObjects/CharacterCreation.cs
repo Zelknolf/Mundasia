@@ -25,6 +25,7 @@ namespace Mundasia.Communication
         public int Profession;
         public int Talent;
         public int Hobby;
+        public int Aspiration;
 
         public string UserId;
         public int SessionId;
@@ -50,6 +51,7 @@ namespace Mundasia.Communication
 
             UserId = input[13];
             int.TryParse(input[14], out SessionId);
+            int.TryParse(input[15], out Aspiration);
         }
 
         public override string ToString()
@@ -84,6 +86,8 @@ namespace Mundasia.Communication
             sb.Append(UserId);
             sb.Append(delimiter);
             sb.Append(SessionId);
+            sb.Append(delimiter);
+            sb.Append(Aspiration);
             return sb.ToString();
         }
     }

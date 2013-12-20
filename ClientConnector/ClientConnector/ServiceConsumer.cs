@@ -148,7 +148,7 @@ namespace Mundasia.Communication
             catch {  }
         }
 
-        public static string CreateCharacter(string name, int authority, int care, int fairness, int hobby, int loyalty, int profession, int race, int sex, int talent, int tradition, int vice, int virtue)
+        public static string CreateCharacter(string name, int authority, int care, int fairness, int hobby, int loyalty, int profession, int race, int sex, int talent, int tradition, int vice, int virtue, int aspiration)
         {
             CharacterCreation chr = new CharacterCreation()
             {
@@ -167,6 +167,7 @@ namespace Mundasia.Communication
                 UserId = UserId,
                 Vice = vice,
                 Virtue = virtue,
+                Aspiration = aspiration,
             };
             try
             {
