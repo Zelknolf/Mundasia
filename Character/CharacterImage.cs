@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using System.Drawing;
 
 namespace Mundasia.Objects
 {
-    public class TileImage : IPlaySceneDrawable
+    public class CharacterImage : IPlaySceneDrawable
     {
         public int DrawIndex;
         public Point ImageLocation;
-        public Tile SourceTile;
+        public DisplayCharacter SourceCharacter;
         public Image DayImage;
         public Image TwilightImage;
         public Image NightImage;
         public Image MouseOverImage;
         public Image SelectedImage;
-
-        public bool MousedOver = true;
-        public bool Selected = true;
+        public bool Selected;
+        public bool MousedOver;
 
         /// <summary>
         /// Used to sort a collection of TileImages such that the first objects

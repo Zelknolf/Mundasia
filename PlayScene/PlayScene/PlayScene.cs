@@ -38,6 +38,16 @@ namespace Mundasia.Interface
             this.Refresh();
         }
 
+        public void Add(DisplayCharacter ch)
+        {
+            drawableCharacters.Add(ch);
+            CharacterImage image = ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+            drawableImages.Add(image);
+            drawableImages.Sort();
+            this.Refresh();
+        }
+    
+
         /// <summary>
         /// Adds tiles to those which are to be drawn in the scene.
         /// 
@@ -90,18 +100,20 @@ namespace Mundasia.Interface
         /// <summary>
         /// A sortable collection of images which contains all that should be visible in the current scene.
         /// </summary>
-        private List<TileImage> drawableImages = new List<TileImage>();
+        private List<IPlaySceneDrawable> drawableImages = new List<IPlaySceneDrawable>();
 
         /// <summary>
         /// A collection of tiles which should be visible in the current scene.
         /// </summary>
         private List<Tile> drawableTiles = new List<Tile>();
 
+        private List<DisplayCharacter> drawableCharacters = new List<DisplayCharacter>();
+
         /// <summary>
         /// stores which object is currently displaying as moused over to the user,
         /// and thus what the user would expect to receive a click.
         /// </summary>
-        private TileImage currentMouseOver = null;
+        private IPlaySceneDrawable currentMouseOver = null;
 
         /// <summary>
         /// TODO: Turn this into a real system for time of day.

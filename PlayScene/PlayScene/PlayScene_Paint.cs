@@ -30,27 +30,27 @@ namespace Mundasia.Interface
                     e.Graphics.Clear(Color.LightBlue);
                     break;
             }
-            foreach (TileImage image in drawableImages)
+            foreach (IPlaySceneDrawable image in drawableImages)
             {
                 switch (timeOfDay)
                 {
                     case 1:
-                        e.Graphics.DrawImage(image.TwilightImage, image.ImageLocation);
+                        e.Graphics.DrawImage(image.GetTwilightImage(), image.GetImageLocation());
                         break;
                     case 2:
-                        e.Graphics.DrawImage(image.NightImage, image.ImageLocation);
+                        e.Graphics.DrawImage(image.GetNightImage(), image.GetImageLocation());
                         break;
                     default:
-                        e.Graphics.DrawImage(image.DayImage, image.ImageLocation);
+                        e.Graphics.DrawImage(image.GetDayImage(), image.GetImageLocation());
                         break;
                 }
-                if (image.MousedOver)
+                if (image.GetMousedOver())
                 {
-                    e.Graphics.DrawImage(image.MouseOverImage, image.ImageLocation);
+                    e.Graphics.DrawImage(image.GetMouseOverImage(), image.GetImageLocation());
                 }
-                if (image.Selected)
+                if (image.GetSelected())
                 {
-                    e.Graphics.DrawImage(image.SelectedImage, image.ImageLocation);
+                    e.Graphics.DrawImage(image.GetSelectedImage(), image.GetImageLocation());
                 }
             }
             e.Graphics.DrawImage(Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\RotateCW.png"), new Point(0, 0));

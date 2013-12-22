@@ -43,6 +43,10 @@ namespace Mundasia.Interface
                     {
                         drawableImages.Add(tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
                     }
+                    foreach (DisplayCharacter ch in drawableCharacters)
+                    {
+                        drawableImages.Add(ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
+                    }
                     drawableImages.Sort();
                     this.Refresh();
                 }
@@ -70,12 +74,16 @@ namespace Mundasia.Interface
                     {
                         drawableImages.Add(tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
                     }
+                    foreach(DisplayCharacter ch in drawableCharacters)
+                    {
+                        drawableImages.Add(ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
+                    }
                     drawableImages.Sort();
                     this.Refresh();
                 }
                 else if (currentMouseOver != null)
                 {
-                    currentMouseOver.Selected = !currentMouseOver.Selected;
+                    currentMouseOver.SetSelected(!currentMouseOver.GetSelected());
                 }
             }
 

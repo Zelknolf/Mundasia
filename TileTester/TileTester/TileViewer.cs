@@ -66,6 +66,7 @@ namespace TileTester
             drawnTiles.Add(new Tile("White", Direction.South, 1, 0, -1, 1));
             drawnTiles.Add(new Tile("White", Direction.SouthEast, 1, 1, -1, 1));
 
+
             // Add a flat floor.
             for (int x = -7; x < 8; x++)
             {
@@ -80,6 +81,10 @@ namespace TileTester
             scene.ViewCenterY = 0;
             scene.ViewCenterZ = 0;
             scene.Add(drawnTiles);
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = 0, z = 1, Facing = Direction.North });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = 5, z = 2, Facing = Direction.North });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = 5, z = 1, Facing = Direction.North });
+
             this.Controls.Add(scene);
 
             this.Resize += new EventHandler(TileViewer_Resize);

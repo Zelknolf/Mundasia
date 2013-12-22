@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EAF38F40-731E-4627-BFE0-CCD6B80E0DC5}</ProjectGuid>
+    <ProjectGuid>{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayScene</RootNamespace>
-    <AssemblyName>PlayScene</AssemblyName>
+    <RootNamespace>PlaySceneDrawable</RootNamespace>
+    <AssemblyName>PlaySceneDrawable</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -37,7 +36,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,36 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlayScene_Resize.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PlayScene_Paint.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PlayScene_MouseClick.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PlayScene_MouseMove.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PlayScene.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Direction.cs" />
+    <Compile Include="IPlaySceneDrawable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Character\Character.csproj">
-      <Project>{e46d3910-9e76-4242-b3ee-8af00acbf511}</Project>
-      <Name>Character</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
-      <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
-      <Name>PlaySceneDrawable</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Tiles\Tiles\Tiles.csproj">
-      <Project>{ac717a5c-c8f4-4b25-b511-3861de2a6c73}</Project>
-      <Name>Tiles</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

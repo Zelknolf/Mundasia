@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="CharacterImage.cs" />
+    <Compile Include="DisplayCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +54,10 @@
     <ProjectReference Include="..\Morals\Morals.csproj">
       <Project>{1f2756b0-dfec-4e47-a5aa-8afd29422bbe}</Project>
       <Name>Morals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlaySceneDrawable\PlaySceneDrawable.csproj">
+      <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
+      <Name>PlaySceneDrawable</Name>
     </ProjectReference>
     <ProjectReference Include="..\Profession\Profession.csproj">
       <Project>{c3940b1f-280b-45ef-9ade-399d1feff849}</Project>

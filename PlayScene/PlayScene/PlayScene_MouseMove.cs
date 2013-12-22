@@ -17,16 +17,16 @@ namespace Mundasia.Interface
         /// </summary>
         private void PlayScene_MouseMove(object sender, MouseEventArgs e)
         {
-            TileImage target = TileImage.GetTarget(e.Location, drawableImages);
+            IPlaySceneDrawable target = PlaySceneDrawable.GetTarget(e.Location, drawableImages);
             if (currentMouseOver != null)
             {
-                this.Invalidate(new Rectangle(currentMouseOver.ImageLocation, currentMouseOver.DayImage.Size));
-                currentMouseOver.MousedOver = false;
+                this.Invalidate(new Rectangle(currentMouseOver.GetImageLocation(), currentMouseOver.GetTemplateImage().Size));
+                currentMouseOver.SetMousedOver(false);
             }
             if (target != null)
             {
-                this.Invalidate(new Rectangle(target.ImageLocation, target.DayImage.Size));
-                target.MousedOver = true;
+                this.Invalidate(new Rectangle(target.GetImageLocation(), target.GetTemplateImage().Size));
+                target.SetMousedOver(true);
             }
             currentMouseOver = target;
             this.Update();
