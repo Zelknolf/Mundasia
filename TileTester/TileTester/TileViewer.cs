@@ -81,9 +81,9 @@ namespace TileTester
             scene.ViewCenterY = 0;
             scene.ViewCenterZ = 0;
             scene.Add(drawnTiles);
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = 0, z = 1, Facing = Direction.North });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = 5, z = 2, Facing = Direction.North });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = 5, z = 1, Facing = Direction.North });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = 0, z = 1, Facing = Direction.North, Race=0, Sex=0 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = 5, z = 2, Facing = Direction.North, Race=0, Sex=1 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = 5, z = 1, Facing = Direction.North, Race=0, Sex=0 });
 
             this.Controls.Add(scene);
 

@@ -28,6 +28,9 @@ namespace Mundasia.Objects
         public int z;
         public Direction Facing;
 
+        public int Race;
+        public int Sex;
+
         public CharacterImage CachedImage;
 
         public override string ToString()
@@ -173,7 +176,7 @@ namespace Mundasia.Objects
             // image does not exist already.
             // -------------------------------------------
             #region Get an Image
-            Image Day = System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\0\\" + fileName);
+            Image Day = System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\"+ Race +"\\" + Sex + "\\" + fileName);
             Bitmap NightBmp = new Bitmap(Day);
             Bitmap TwilightBmp = new Bitmap(Day);
             Bitmap MouseOverBmp = new Bitmap(Day);
