@@ -10,6 +10,21 @@ namespace Mundasia.Objects
 {
     public class DisplayCharacter
     {
+        public static Color LineHair = Color.FromArgb(255, 102, 93, 61);
+        public static Color LineHair2 = Color.FromArgb(255, 102, 94, 61);
+        public static Color DarkHair = Color.FromArgb(255, 127, 116, 76);
+        public static Color MediumHair = Color.FromArgb(255, 191, 177, 114);
+        public static Color MediumHair2 = Color.FromArgb(255, 191, 175, 114);
+        public static Color LightHair = Color.FromArgb(255, 255, 234, 153);
+        public static Color LightHair2 = Color.FromArgb(255, 255, 238, 153);
+
+        public static Color LineSkin = Color.FromArgb(255, 102, 84, 65);
+        public static Color DarkSkin = Color.FromArgb(255, 127, 108, 82);
+        public static Color MediumSkin = Color.FromArgb(255, 191, 162, 124);
+        public static Color MediumSkin2 = Color.FromArgb(255, 191, 163, 124);
+        public static Color LightSkin = Color.FromArgb(255, 255, 217, 165);
+        public static Color LightSkin2 = Color.FromArgb(255, 255, 216, 165);
+
         public DisplayCharacter(string fileLine)
         {
 
@@ -28,14 +43,56 @@ namespace Mundasia.Objects
         public int z;
         public Direction Facing;
 
-        public int Race;
+        public uint Race;
+        public int SkinColor;
+        public int HairColor;
         public int Sex;
+        public int Hair;
 
         public CharacterImage CachedImage;
 
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public Color ConvertPixel(Color startingPixel)
+        {
+            Color ret = startingPixel;
+            if (ret.A == 0) { }
+            else if (startingPixel == LineHair || startingPixel == LineHair2)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].LineColor;
+            }
+            else if (startingPixel == DarkHair)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].DarkColor;
+            }
+            else if (startingPixel == MediumHair || startingPixel == MediumHair2)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].MedColor;
+            }
+            else if (startingPixel == LightHair || startingPixel == LightHair2)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].LightColor;
+            }
+            else if(startingPixel == LineSkin)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].LineColor;
+            }
+            else if(startingPixel == DarkSkin)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].DarkColor;
+            }
+            else if(startingPixel == MediumSkin || startingPixel == MediumSkin2)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].MedColor;
+            }
+            else if(startingPixel == LightSkin || startingPixel == LightSkin2)
+            {
+                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].LightColor;
+            }
+            return ret;
         }
 
         /// <summary>
@@ -126,48 +183,47 @@ namespace Mundasia.Objects
             // draw the tile.
             // -------------------------------------------
             #region Get a File Name
-            string fileName = "stand";
+            string facingSuffix = "";
             switch (topDirection)
             {
                 case Direction.NorthWest:
                     switch (Facing)
                     {
                         // Direction.Directionless is unhandled, as it has no suffix after block_#
-                        case Direction.North: fileName += "_tr"; break;
-                        case Direction.East: fileName += "_br"; break;
-                        case Direction.South: fileName += "_bl"; break;
-                        case Direction.West: fileName += "_tl"; break;
+                        case Direction.North: facingSuffix = "_tr"; break;
+                        case Direction.East: facingSuffix = "_br"; break;
+                        case Direction.South: facingSuffix = "_bl"; break;
+                        case Direction.West: facingSuffix = "_tl"; break;
                     }
                     break;
                 case Direction.SouthEast:
                     switch (Facing)
                     {
-                        case Direction.North: fileName += "_bl"; break;
-                        case Direction.East: fileName += "_tl"; break;
-                        case Direction.South: fileName += "_tr"; break;
-                        case Direction.West: fileName += "_br"; break;
+                        case Direction.North: facingSuffix = "_bl"; break;
+                        case Direction.East: facingSuffix = "_tl"; break;
+                        case Direction.South: facingSuffix = "_tr"; break;
+                        case Direction.West: facingSuffix = "_br"; break;
                     }
                     break;
                 case Direction.SouthWest:
                     switch (Facing)
                     {
-                        case Direction.North: fileName += "_br"; break;
-                        case Direction.East: fileName += "_bl"; break;
-                        case Direction.South: fileName += "_tl"; break;
-                        case Direction.West: fileName += "_tr"; break;
+                        case Direction.North: facingSuffix = "_br"; break;
+                        case Direction.East: facingSuffix = "_bl"; break;
+                        case Direction.South: facingSuffix = "_tl"; break;
+                        case Direction.West: facingSuffix = "_tr"; break;
                     }
                     break;
                 case Direction.NorthEast:
                     switch (Facing)
                     {
-                        case Direction.North: fileName += "_tl"; break;
-                        case Direction.East: fileName += "_tr"; break;
-                        case Direction.South: fileName += "_br"; break;
-                        case Direction.West: fileName += "_bl"; break;
+                        case Direction.North: facingSuffix = "_tl"; break;
+                        case Direction.East: facingSuffix = "_tr"; break;
+                        case Direction.South: facingSuffix = "_br"; break;
+                        case Direction.West: facingSuffix = "_bl"; break;
                     }
                     break;
             }
-            fileName += ".png";
             #endregion
 
             // -------------------------------------------
@@ -176,7 +232,48 @@ namespace Mundasia.Objects
             // image does not exist already.
             // -------------------------------------------
             #region Get an Image
-            Image Day = System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\"+ Race +"\\" + Sex + "\\" + fileName);
+            Bitmap Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\"+ Race +"\\" + Sex + "\\stand" + facingSuffix + ".png"));
+            if(Hair > 0)
+            {
+                Bitmap HairBottom = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + Race + "\\" + Sex + "\\Hair\\stand_" + Hair + facingSuffix + "_b.png"));
+                for (int c = 0; c < Day.Width; c++)
+                {
+                    for (int cc = 0; cc < Day.Height; cc++)
+                    {
+                        Color px = Day.GetPixel(c, cc);
+                        if (px.A == 0)
+                        {
+                            Color hair = HairBottom.GetPixel(c, cc);
+                            Day.SetPixel(c, cc, hair);
+                        }
+                    }
+                }
+
+                Bitmap HairTop = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + Race + "\\" + Sex + "\\Hair\\stand_" + Hair + facingSuffix + "_t.png"));
+                for (int c = 0; c < HairTop.Width; c++)
+                {
+                    for (int cc = 0; cc < HairTop.Height; cc++)
+                    {
+                        Color px = HairTop.GetPixel(c, cc);
+                        if (px.A != 0)
+                        {
+                            Day.SetPixel(c, cc, px);
+                        }
+                    }
+                }
+
+                for (int c = 0; c < Day.Width; c++)
+                {
+                    for (int cc = 0; cc < HairTop.Height; cc++)
+                    {
+                        Color px = Day.GetPixel(c, cc);
+                        if (px.A != 0)
+                        {
+                            Day.SetPixel(c, cc, ConvertPixel(px));
+                        }
+                    }
+                }
+            }
             Bitmap NightBmp = new Bitmap(Day);
             Bitmap TwilightBmp = new Bitmap(Day);
             Bitmap MouseOverBmp = new Bitmap(Day);
