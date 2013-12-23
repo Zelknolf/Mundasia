@@ -91,6 +91,10 @@
       <Project>{eaf38f40-731e-4627-bfe0-ccd6b80e0dc5}</Project>
       <Name>PlayScene</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Race\Race.csproj">
+      <Project>{7ea1bd43-9778-4e02-acdf-c3772ba4e5df}</Project>
+      <Name>Race</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tiles\Tiles\Tiles.csproj">
       <Project>{ac717a5c-c8f4-4b25-b511-3861de2a6c73}</Project>
       <Name>Tiles</Name>

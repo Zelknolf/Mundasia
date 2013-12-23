@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using Mundasia.Objects;
+
 namespace TileTester
 {
     static class Program
@@ -20,6 +22,7 @@ namespace TileTester
         [STAThread]
         static void Main()
         {
+            Race.Load();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TileViewer());
