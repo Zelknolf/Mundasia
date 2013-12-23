@@ -121,6 +121,44 @@ namespace Mundasia.Objects
                     _library.Add(toAdd.Id, toAdd);
                 }
             }
+
+            file = System.IO.Directory.GetCurrentDirectory() + "\\DataArrays\\Race_SkinTone.txt";
+            strLib = File.Open(file, FileMode.Open);
+            using (StreamReader read = new StreamReader(strLib, Encoding.UTF7))
+            {
+                while (read.Peek() >= 0)
+                {
+                    string[] raceLine = read.ReadLine().Split(new char[] { '|' });
+                    uint race = 0;
+                    uint.TryParse(raceLine[0], out race);
+                    List<SkinColor> colors = new List<SkinColor>();
+                    foreach(string colorLine in raceLine)
+                    {
+                        if (!colorLine.Contains(',')) continue;
+                        colors.Add(new SkinColor(colorLine));
+                    }
+                    _library[race].SkinColors = colors;   
+                }
+            }
+
+            file = System.IO.Directory.GetCurrentDirectory() + "\\DataArrays\\Race_HairColor.txt";
+            strLib = File.Open(file, FileMode.Open);
+            using (StreamReader read = new StreamReader(strLib, Encoding.UTF7))
+            {
+                while (read.Peek() >= 0)
+                {
+                    string[] raceLine = read.ReadLine().Split(new char[] { '|' });
+                    uint race = 0;
+                    uint.TryParse(raceLine[0], out race);
+                    List<SkinColor> colors = new List<SkinColor>();
+                    foreach (string colorLine in raceLine)
+                    {
+                        if (!colorLine.Contains(',')) continue;
+                        colors.Add(new SkinColor(colorLine));
+                    }
+                    _library[race].HairColors = colors;
+                }
+            }
         }
 
         public static Race GetRace(uint index)
@@ -216,5 +254,15 @@ namespace Mundasia.Objects
         /// The race's base discipline score
         /// </summary>
         public int Discipline;
+
+        /// <summary>
+        /// The race's available skin colors.
+        /// </summary>
+        public List<SkinColor> SkinColors;
+
+        /// <summary>
+        /// The race's available hair colors.
+        /// </summary>
+        public List<SkinColor> HairColors;
     }
 }
