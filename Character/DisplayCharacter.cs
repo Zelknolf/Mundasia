@@ -25,6 +25,21 @@ namespace Mundasia.Objects
         public static Color LightSkin = Color.FromArgb(255, 255, 217, 165);
         public static Color LightSkin2 = Color.FromArgb(255, 255, 216, 165);
 
+        public DisplayCharacter()
+        {
+            CharacterId = 0;
+            Height = 0;
+            x = 0;
+            y = 0;
+            z = 0;
+            Facing = Direction.North;
+            Race = 0;
+            SkinColor = 0;
+            HairColor = 0;
+            Sex = 0;
+            Hair = 0;
+        }
+
         public DisplayCharacter(string fileLine)
         {
 
@@ -261,19 +276,20 @@ namespace Mundasia.Objects
                         }
                     }
                 }
+            }
 
-                for (int c = 0; c < Day.Width; c++)
+            for (int c = 0; c < Day.Width; c++)
+            {
+                for (int cc = 0; cc < Day.Height; cc++)
                 {
-                    for (int cc = 0; cc < HairTop.Height; cc++)
+                    Color px = Day.GetPixel(c, cc);
+                    if (px.A != 0)
                     {
-                        Color px = Day.GetPixel(c, cc);
-                        if (px.A != 0)
-                        {
-                            Day.SetPixel(c, cc, ConvertPixel(px));
-                        }
+                        Day.SetPixel(c, cc, ConvertPixel(px));
                     }
                 }
             }
+
             Bitmap NightBmp = new Bitmap(Day);
             Bitmap TwilightBmp = new Bitmap(Day);
             Bitmap MouseOverBmp = new Bitmap(Day);

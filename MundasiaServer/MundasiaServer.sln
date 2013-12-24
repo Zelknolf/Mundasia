@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill", "..\Skill\Skill.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspiration", "..\Aspiration\Aspiration.csproj", "{DF11733F-5612-4D4F-8EB8-FEAA124A6E7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySceneDrawable", "..\PlaySceneDrawable\PlaySceneDrawable.csproj", "{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,16 @@ Global
 		{DF11733F-5612-4D4F-8EB8-FEAA124A6E7B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DF11733F-5612-4D4F-8EB8-FEAA124A6E7B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DF11733F-5612-4D4F-8EB8-FEAA124A6E7B}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -82,6 +82,9 @@ namespace Mundasia.Objects
             uint.TryParse(split[33], out MaxVital);
             uint.TryParse(split[34], out DecayedVital);
             uint.TryParse(split[35], out DestroyedVital);
+            uint.TryParse(split[36], out HairStyle);
+            uint.TryParse(split[37], out HairColor);
+            uint.TryParse(split[38], out SkinColor);
         }
 
         public override string ToString()
@@ -170,7 +173,12 @@ namespace Mundasia.Objects
             str.Append(DecayedVital);
             str.Append(delimiter);
             str.Append(DestroyedVital);
-
+            str.Append(delimiter);
+            str.Append(HairStyle);
+            str.Append(delimiter);
+            str.Append(HairColor);
+            str.Append(delimiter);
+            str.Append(SkinColor);
             return str.ToString();
         }
         
@@ -281,6 +289,15 @@ namespace Mundasia.Objects
 
         [XmlElement]
         public uint DestroyedVital;
+
+        [XmlElement]
+        public uint HairStyle;
+
+        [XmlElement]
+        public uint HairColor;
+
+        [XmlElement]
+        public uint SkinColor;
 
         public bool ValidateCharacter()
         {

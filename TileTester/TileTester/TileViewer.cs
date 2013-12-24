@@ -81,14 +81,14 @@ namespace TileTester
             scene.ViewCenterY = 0;
             scene.ViewCenterZ = 0;
             scene.Add(drawnTiles);
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 3, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 2, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 1, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 0 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 0, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 4 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 4 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 1 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 1 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 3, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 2 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 2, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 2 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 1, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 3 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 0, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 3 });
 
             // Uncomment to check for clipping
             //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -5, z = 0, Facing = Direction.South, Race = 0, Sex = 0 });
@@ -101,22 +101,22 @@ namespace TileTester
             //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 0, y = -5, z = 0, Facing = Direction.South, Race = 3, Sex = 1 });
 
             // Uncomment to check for standing in formation.
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 3, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 2, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 3, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 2, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 3, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 2, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = -5, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 3, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 2, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 1, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 0, y = -4, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 0 });
 
             this.Controls.Add(scene);
 

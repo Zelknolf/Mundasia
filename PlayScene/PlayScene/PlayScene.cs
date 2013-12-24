@@ -38,15 +38,18 @@ namespace Mundasia.Interface
             this.Refresh();
         }
 
-        public void Add(DisplayCharacter ch)
+        public void Add(List<DisplayCharacter> chs)
         {
-            drawableCharacters.Add(ch);
-            CharacterImage image = ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
-            drawableImages.Add(image);
+            foreach(DisplayCharacter ch in chs)
+            {
+                drawableCharacters.Add(ch);
+                CharacterImage image = ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+                image.SourceCharacter = ch;
+                drawableImages.Add(image);
+            }
             drawableImages.Sort();
             this.Refresh();
-        }
-    
+        }  
 
         /// <summary>
         /// Adds tiles to those which are to be drawn in the scene.
@@ -64,6 +67,15 @@ namespace Mundasia.Interface
             this.Refresh();
         }
 
+        public void Add(DisplayCharacter ch)
+        {
+            drawableCharacters.Add(ch);
+            CharacterImage image = ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+            drawableImages.Add(image);
+            drawableImages.Sort();
+            this.Refresh();
+        }
+
         /// <summary>
         /// Removes tiles from those which are to be drawn in the scene.
         /// </summary>
@@ -72,8 +84,30 @@ namespace Mundasia.Interface
         {
             foreach(Tile tile in tiles)
             {
-                drawableTiles.Remove(tile);
-                drawableImages.Remove(tile.CachedImage);
+                if (drawableTiles.Contains(tile))
+                {
+                    drawableTiles.Remove(tile);
+                }
+                if (drawableImages.Contains(tile.CachedImage))
+                {
+                    drawableImages.Remove(tile.CachedImage);
+                }
+            }
+            this.Refresh();
+        }
+
+        public void Remove(List<DisplayCharacter> chs)
+        {
+            foreach (DisplayCharacter ch in chs)
+            {
+                if (drawableCharacters.Contains(ch))
+                {
+                    drawableCharacters.Remove(ch);
+                }
+                if(drawableImages.Contains(ch.CachedImage))
+                {
+                    drawableImages.Remove(ch.CachedImage);
+                }
             }
             this.Refresh();
         }
@@ -86,8 +120,27 @@ namespace Mundasia.Interface
         /// <param name="tile">A tile to remove</param>
         public void Remove(Tile tile)
         {
-            drawableTiles.Remove(tile);
-            drawableImages.Remove(tile.CachedImage);
+            if (drawableTiles.Contains(tile))
+            {
+                drawableTiles.Remove(tile);
+            }
+            if (drawableImages.Contains(tile.CachedImage))
+            {
+                drawableImages.Remove(tile.CachedImage);
+            }
+            this.Refresh();
+        }
+
+        public void Remove(DisplayCharacter ch)
+        {
+            if (drawableCharacters.Contains(ch))
+            {
+                drawableCharacters.Remove(ch);
+            }
+            if (drawableImages.Contains(ch.CachedImage))
+            {
+                drawableImages.Remove(ch.CachedImage);
+            }
             this.Refresh();
         }
 

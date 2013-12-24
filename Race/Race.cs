@@ -78,6 +78,8 @@ namespace Mundasia.Objects
                 {
                     Description = uint.MaxValue;
                 }
+
+                int.TryParse(split[15], out Height);
             }
             else
             {
@@ -118,6 +120,37 @@ namespace Mundasia.Objects
                 while (read.Peek() >= 0)
                 {
                     Race toAdd = new Race(read.ReadLine());
+                    toAdd.PlayableHairStyles = new Dictionary<int, int>();
+                    foreach(string hair in Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\"+ toAdd.Id + "\\0\\Hair"))
+                    {
+                        string s = hair.Substring(hair.Length - 11, 2);
+                        s = s.Trim('_');
+                        int num;
+                        int.TryParse(s, out num);
+                        if(!toAdd.PlayableHairStyles.ContainsKey(0))
+                        {
+                            toAdd.PlayableHairStyles.Add(0, num);
+                        }
+                        else if(toAdd.PlayableHairStyles[0] + 1 == num)
+                        {
+                            toAdd.PlayableHairStyles[0]++;
+                        }
+                    }
+                    foreach (string hair in Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + toAdd.Id + "\\1\\Hair"))
+                    {
+                        string s = hair.Substring(hair.Length - 11, 2);
+                        s = s.Trim('_');
+                        int num;
+                        int.TryParse(s, out num);
+                        if (!toAdd.PlayableHairStyles.ContainsKey(1))
+                        {
+                            toAdd.PlayableHairStyles.Add(1, num);
+                        }
+                        else if (toAdd.PlayableHairStyles[1] + 1 == num)
+                        {
+                            toAdd.PlayableHairStyles[1]++;
+                        }
+                    }
                     _library.Add(toAdd.Id, toAdd);
                 }
             }
@@ -264,5 +297,15 @@ namespace Mundasia.Objects
         /// The race's available hair colors.
         /// </summary>
         public List<SkinColor> HairColors;
+
+        /// <summary>
+        /// The race's height, in tiles.
+        /// </summary>
+        public int Height;
+
+        /// <summary>
+        /// The hair styles available to PCs. Index is gender.
+        /// </summary>
+        public Dictionary<int, int> PlayableHairStyles;
     }
 }

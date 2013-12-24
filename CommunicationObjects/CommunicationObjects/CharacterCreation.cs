@@ -27,6 +27,10 @@ namespace Mundasia.Communication
         public int Hobby;
         public int Aspiration;
 
+        public int HairStyle;
+        public int HairColor;
+        public int SkinColor;
+
         public string UserId;
         public int SessionId;
 
@@ -52,6 +56,9 @@ namespace Mundasia.Communication
             UserId = input[13];
             int.TryParse(input[14], out SessionId);
             int.TryParse(input[15], out Aspiration);
+            int.TryParse(input[16], out HairStyle);
+            int.TryParse(input[17], out HairColor);
+            int.TryParse(input[18], out SkinColor);
         }
 
         public override string ToString()
@@ -88,6 +95,12 @@ namespace Mundasia.Communication
             sb.Append(SessionId);
             sb.Append(delimiter);
             sb.Append(Aspiration);
+            sb.Append(delimiter);
+            sb.Append(HairStyle);
+            sb.Append(delimiter);
+            sb.Append(HairColor);
+            sb.Append(delimiter);
+            sb.Append(SkinColor);
             return sb.ToString();
         }
     }

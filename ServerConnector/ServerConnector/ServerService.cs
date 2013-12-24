@@ -102,6 +102,9 @@ namespace Mundasia.Server.Communication
                     MoralsLoyalty = (uint)nChar.Loyalty,
                     MoralsTradition = (uint)nChar.Tradition,
                     Sex = nChar.Sex,
+                    SkinColor = (uint)nChar.SkinColor,
+                    HairColor = (uint)nChar.HairColor,
+                    HairStyle = (uint)nChar.HairStyle,
                 };
             }
             catch

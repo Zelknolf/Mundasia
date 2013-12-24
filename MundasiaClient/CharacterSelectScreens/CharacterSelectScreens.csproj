@@ -66,6 +66,14 @@
       <Project>{1f2756b0-dfec-4e47-a5aa-8afd29422bbe}</Project>
       <Name>Morals</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
+      <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
+      <Name>PlaySceneDrawable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PlayScene\PlayScene\PlayScene.csproj">
+      <Project>{eaf38f40-731e-4627-bfe0-ccd6b80e0dc5}</Project>
+      <Name>PlayScene</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Profession\Profession.csproj">
       <Project>{c3940b1f-280b-45ef-9ade-399d1feff849}</Project>
       <Name>Profession</Name>
@@ -81,6 +89,10 @@
     <ProjectReference Include="..\..\StringLibrary\StringLibrary.csproj">
       <Project>{dc20541d-a02b-4bfe-a22f-f14d2e717acf}</Project>
       <Name>StringLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tiles\Tiles\Tiles.csproj">
+      <Project>{ac717a5c-c8f4-4b25-b511-3861de2a6c73}</Project>
+      <Name>Tiles</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VirtueVice\VirtueVice.csproj">
       <Project>{39cc4a6b-7d59-4f7a-a947-d8be33059673}</Project>

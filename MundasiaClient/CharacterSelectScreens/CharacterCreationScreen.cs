@@ -48,6 +48,7 @@ namespace Mundasia.Interface
         private static Label _characterTalent = new Label();
         private static Label _characterHobby = new Label();
         private static Label _characterAspiration = new Label();
+        private static Label _characterAppearance = new Label();
 
         private static Label _next = new Label();
 
@@ -56,6 +57,10 @@ namespace Mundasia.Interface
 
         private static Label _female = new Label();
         private static Label _male = new Label();
+
+        private static Label _hairStyle = new Label();
+        private static Label _hairColor = new Label();
+        private static Label _skinColor = new Label();
 
         private static ListView _raceList = new ListView();
 
@@ -75,6 +80,10 @@ namespace Mundasia.Interface
 
         private static RichTextBox _descriptionText = new RichTextBox();
 
+        private static PlayScene _appearanceScene = new PlayScene();
+
+        private static DisplayCharacter _displayCharacter = new DisplayCharacter();
+
         private static string _name;
         private static int _sex;
         private static int _race;
@@ -89,6 +98,7 @@ namespace Mundasia.Interface
         private static int _abilityTalent;
         private static int _abilityHobby;
         private static int _abilityAspiration;
+        private static bool _appearanceSeen = false;
 
         public static void Set(Form primaryForm)
         {
@@ -159,6 +169,10 @@ namespace Mundasia.Interface
             _characterTalent.Click += _characterTalent_Click;
             _characterProfession.Click += _characterProfession_Click;
             _characterAspiration.Click += _characterAspiration_Click;
+            _characterAppearance.Click += _characterAppearance_Click;
+            _hairStyle.Click += _hairStyle_Click;
+            _hairColor.Click += _hairColor_Click;
+            _skinColor.Click += _skinColor_Click;
 
             _descriptionText.Text = " "; // RichTextBox wants to be 0x0 unless it has contents
             _descriptionText.Location = new Point(padding, padding);
@@ -168,11 +182,18 @@ namespace Mundasia.Interface
             _descriptionText.Height = Math.Max(height - (4 * padding) - selectionHeight, 0);
             _descriptionText.Width = width - (padding * 2);
             _descriptionText.WordWrap = true;
+
+            _displayCharacter.Facing = Direction.South;
             
             StyleLabel(_descriptionText);
 
             UpdateCharacterSheet();
             SetUnusedToPanel();
+        }
+
+        static void _characterAppearance_Click(object sender, EventArgs e)
+        {
+            SetAppearanceToPanel();
         }
 
         static void _characterProfession_Click(object sender, EventArgs e)
@@ -296,11 +317,24 @@ namespace Mundasia.Interface
             if (_abilityAspiration == -1) _characterAspiration.Text = "No aspiration";
             else _characterAspiration.Text = "Aspiration: " + Aspiration.GetAspiration((uint)_abilityAspiration).Name;
 
+            if (!_appearanceSeen) _characterAppearance.Text = "Appearance not set";
+            else _characterAppearance.Text = "Appearance set";
+
             _next.Text = StringLibrary.GetString(13);
 
             _traitsHead.Text = "Traits";
             _moralsHead.Text = "Morals";
             _abilityHead.Text = "Abilities";
+
+            _hairColor.Text = "Hair color";
+            StyleLabel(_hairColor);
+            _hairColor.Size = _hairColor.PreferredSize;
+            _hairStyle.Text = "Hair style";
+            StyleLabel(_hairStyle);
+            _hairStyle.Size = _hairStyle.PreferredSize;
+            _skinColor.Text = "Skin color";
+            StyleLabel(_skinColor);
+            _skinColor.Size = _skinColor.PreferredSize;
             #endregion
 
             #region Formatting and Positioning
@@ -339,6 +373,8 @@ namespace Mundasia.Interface
             _characterHobby.Location = new Point(padding + indent, _characterTalent.Location.Y + _characterTalent.Height);
             StyleLabel(_characterAspiration);
             _characterAspiration.Location = new Point(padding + indent, _characterHobby.Location.Y + _characterHobby.Height);
+            StyleLabel(_characterAppearance);
+            _characterAppearance.Location = new Point(padding, _characterAspiration.Location.Y + _characterAspiration.Height + padding);
             StyleLabel(_next);
             _next.Location = new Point(_characterSheet.Width - _next.Width - padding, _characterSheet.Height - _next.Height - padding);
             #endregion
@@ -356,9 +392,13 @@ namespace Mundasia.Interface
             _characterTalent.MouseEnter += _clickableMouseOver;
             _characterHobby.MouseEnter += _clickableMouseOver;
             _characterAspiration.MouseEnter += _clickableMouseOver;
+            _characterAppearance.MouseEnter += _clickableMouseOver;
             _female.MouseEnter += _clickableMouseOver;
             _male.MouseEnter += _clickableMouseOver;
             _next.MouseEnter += _clickableMouseOver;
+            _hairColor.MouseEnter += _clickableMouseOver;
+            _hairStyle.MouseEnter += _clickableMouseOver;
+            _skinColor.MouseEnter += _clickableMouseOver;
 
             _characterName.MouseLeave += _clickableMouseLeave;
             _characterSexRace.MouseLeave += _clickableMouseLeave;
@@ -373,9 +413,13 @@ namespace Mundasia.Interface
             _characterTalent.MouseLeave += _clickableMouseLeave;
             _characterHobby.MouseLeave += _clickableMouseLeave;
             _characterAspiration.MouseLeave += _clickableMouseLeave;
+            _characterAppearance.MouseLeave += _clickableMouseLeave;
             _female.MouseLeave += _clickableMouseLeave;
             _male.MouseLeave += _clickableMouseLeave;
             _next.MouseLeave += _clickableMouseLeave;
+            _hairColor.MouseLeave += _clickableMouseLeave;
+            _hairStyle.MouseLeave += _clickableMouseLeave;
+            _skinColor.MouseLeave += _clickableMouseLeave;
 
             _female.Click += _female_Click;
             _male.Click += _male_Click;
@@ -410,6 +454,7 @@ namespace Mundasia.Interface
             _characterSheet.Controls.Add(_characterTalent);
             _characterSheet.Controls.Add(_characterHobby);
             _characterSheet.Controls.Add(_characterAspiration);
+            _characterSheet.Controls.Add(_characterAppearance);
             _characterSheet.Controls.Add(_next);
         }
 
@@ -428,7 +473,8 @@ namespace Mundasia.Interface
                 _abilityProfession == -1 ||
                 _abilityTalent == -1 ||
                 _abilityHobby == -1 ||
-                _abilityAspiration == -1)
+                _abilityAspiration == -1 ||
+                !_appearanceSeen)
             {
                 SetUnusedToPanel();
                 return;
@@ -447,7 +493,10 @@ namespace Mundasia.Interface
                                                                 _moralsTradition,
                                                                 _traitVice, 
                                                                 _traitVirtue,
-                                                                _abilityAspiration);
+                                                                _abilityAspiration,
+                                                                _displayCharacter.Hair,
+                                                                _displayCharacter.HairColor,
+                                                                _displayCharacter.SkinColor);
             if(!creat.Contains("Success"))
             {
                 MessageBox.Show(creat);
@@ -458,6 +507,42 @@ namespace Mundasia.Interface
                 Clear(host);
                 CharacterSelectScreen.Set(host);
             }
+        }
+
+        static void _skinColor_Click(object sender, EventArgs e)
+        {
+            _appearanceScene.Remove(_displayCharacter);
+            _displayCharacter.SkinColor++;
+            if (_displayCharacter.SkinColor >= Race.GetRace((uint)_race).SkinColors.Count)
+            {
+                _displayCharacter.SkinColor = 0;
+            }
+            _displayCharacter.CachedImage = null;
+            _appearanceScene.Add(_displayCharacter);
+        }
+
+        static void _hairStyle_Click(object sender, EventArgs e)
+        {
+            _appearanceScene.Remove(_displayCharacter);
+            _displayCharacter.Hair++;
+            if (_displayCharacter.Hair > Race.GetRace((uint)_race).PlayableHairStyles[_sex])
+            {
+                _displayCharacter.Hair = 0;
+            }
+            _displayCharacter.CachedImage = null;
+            _appearanceScene.Add(_displayCharacter);
+        }
+
+        static void _hairColor_Click(object sender, EventArgs e)
+        {
+            _appearanceScene.Remove(_displayCharacter);
+            _displayCharacter.HairColor++;
+            if (_displayCharacter.HairColor >= Race.GetRace((uint)_race).HairColors.Count)
+            {
+                _displayCharacter.HairColor = 0;
+            }
+            _displayCharacter.CachedImage = null;
+            _appearanceScene.Add(_displayCharacter);
         }
 
         static void _aspirationList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -694,6 +779,10 @@ namespace Mundasia.Interface
                     _descriptionText.Text = StringLibrary.GetString(Race.GetRace((uint)_race).Description);
                     _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
                     _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                    _displayCharacter.Hair = 0;
+                    _displayCharacter.HairColor = 0;
+                    _displayCharacter.SkinColor = 0;
+                    _displayCharacter.Height = Race.GetRace((uint)_race).Height;
                 }
             }
         }
@@ -718,6 +807,9 @@ namespace Mundasia.Interface
             _female.BorderStyle = BorderStyle.None;
             _female.BackColor = Color.Black;
             _male.Size = _male.PreferredSize;
+            _displayCharacter.Hair = 0;
+            _displayCharacter.HairColor = 0;
+            _displayCharacter.SkinColor = 0;
             UpdateRaceSexText();
         }
 
@@ -729,6 +821,9 @@ namespace Mundasia.Interface
             _female.BorderStyle = BorderStyle.FixedSingle;
             _female.BackColor = Color.DarkGray;
             _female.Size = _female.PreferredSize;
+            _displayCharacter.Hair = 0;
+            _displayCharacter.HairColor = 0;
+            _displayCharacter.SkinColor = 0;
             UpdateRaceSexText();
         }
 
@@ -748,6 +843,7 @@ namespace Mundasia.Interface
             else if (_abilityTalent == -1) SetTalentToPanel();
             else if (_abilityHobby == -1) SetHobbyToPanel();
             else if (_abilityAspiration == -1) SetAspirationToPanel();
+            else if (!_appearanceSeen) SetAppearanceToPanel();
         }
 
         private static void ClearOld()
@@ -971,6 +1067,43 @@ namespace Mundasia.Interface
             _currentEntry.Controls.Add(_traditionList);
 
             _descriptionText.Text = StringLibrary.GetString(22);
+        }
+
+        private static void SetAppearanceToPanel()
+        {
+            ClearOld();
+
+            if(_race < 0 || _sex < 0)
+            {
+                SetRaceSexToPanel();
+                return;
+            }
+            _appearanceSeen = true;
+            _characterAppearance.Text = "Appearance set";
+            _characterAppearance.Size = _characterAppearance.PreferredSize;
+
+            _appearanceScene.Size = new Size(_currentEntry.Width / 2 - (padding * 2), _currentEntry.Height - (padding * 2));
+            _appearanceScene.Location = new Point(padding, padding);
+
+            _skinColor.Location = new Point(_currentEntry.Width / 2 + (padding * 2), padding);
+            _hairStyle.Location = new Point(_currentEntry.Width / 2 + (padding * 2), _skinColor.Location.Y + _skinColor.Height);
+            _hairColor.Location = new Point(_currentEntry.Width / 2 + (padding * 2), _hairStyle.Location.Y + _hairStyle.Height);
+
+            _appearanceScene.ViewCenterX = 0;
+            _appearanceScene.ViewCenterY = 0;
+            _appearanceScene.ViewCenterZ = 2;
+
+            _appearanceScene.Remove(_displayCharacter);
+            _displayCharacter.CharacterId = 1;
+            _displayCharacter.Race = (uint)_race;
+            _displayCharacter.Height = Race.GetRace((uint)_race).Height;
+            _displayCharacter.Sex = _sex;
+            _appearanceScene.Add(_displayCharacter);
+
+            _currentEntry.Controls.Add(_appearanceScene);
+            _currentEntry.Controls.Add(_skinColor);
+            _currentEntry.Controls.Add(_hairStyle);
+            _currentEntry.Controls.Add(_hairColor);
         }
 
         private static void SetProfessionToPanel()
