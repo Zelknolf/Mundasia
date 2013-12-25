@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspiration", "..\Aspiration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySceneDrawable", "..\PlaySceneDrawable\PlaySceneDrawable.csproj", "{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiles", "..\Tiles\Tiles\Tiles.csproj", "{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +171,16 @@ Global
 		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B4742ABD-EA42-4EEE-BF7A-11613BD35C36}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

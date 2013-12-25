@@ -22,10 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skill", "..\Skill\Skill.csproj", "{E4D21F03-FA7E-41EF-982A-F7604CEAD3F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterSelectScreens", "CharacterSelectScreens\CharacterSelectScreens.csproj", "{8898DE12-02B0-4C62-86BD-9A39A8848629}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EAF38F40-731E-4627-BFE0-CCD6B80E0DC5} = {EAF38F40-731E-4627-BFE0-CCD6B80E0DC5}
-		{AC717A5C-C8F4-4B25-B511-3861DE2A6C73} = {AC717A5C-C8F4-4B25-B511-3861DE2A6C73}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race", "..\Race\Race.csproj", "{7EA1BD43-9778-4E02-ACDF-C3772BA4E5DF}"
 EndProject
