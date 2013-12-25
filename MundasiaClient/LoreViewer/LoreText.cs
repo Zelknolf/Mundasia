@@ -21,7 +21,7 @@ namespace Mundasia.Interface
 
         private Panel ImagePanel = new Panel();
         private RichTextBox Title = new RichTextBox();
-        private RichTextBox Text = new RichTextBox();
+        private RichTextBox DescriptionText = new RichTextBox();
 
         private Font titleFont = new Font(FontFamily.GenericSansSerif, 25.0f);
         private Font textFont = new Font(FontFamily.GenericSansSerif, 12.0f);
@@ -51,14 +51,14 @@ namespace Mundasia.Interface
             Title.SelectionAlignment = HorizontalAlignment.Center;
             this.Controls.Add(Title);
 
-            Text.Size = new Size(this.ClientRectangle.Width, this.ClientRectangle.Height - imageDimensions);
-            Text.Location = new Point(0, imageDimensions);
-            Text.BackColor = Color.Black;
-            Text.ForeColor = Color.White;
-            Text.Font = textFont;
-            Text.BorderStyle = BorderStyle.None;
-            Text.ReadOnly = true;
-            this.Controls.Add(Text);
+            DescriptionText.Size = new Size(this.ClientRectangle.Width, this.ClientRectangle.Height - imageDimensions);
+            DescriptionText.Location = new Point(0, imageDimensions);
+            DescriptionText.BackColor = Color.Black;
+            DescriptionText.ForeColor = Color.White;
+            DescriptionText.Font = textFont;
+            DescriptionText.BorderStyle = BorderStyle.None;
+            DescriptionText.ReadOnly = true;
+            this.Controls.Add(DescriptionText);
         }
 
         public void SetActiveLore(Lore lore)
@@ -68,13 +68,13 @@ namespace Mundasia.Interface
 
             Title.Text = Environment.NewLine + lore.Name;
 
-            Text.Text = StringLibrary.GetString(lore.Description);
+            DescriptionText.Text = StringLibrary.GetString(lore.Description);
         }
 
         void LoreText_Resize(object sender, EventArgs e)
         {
             Title.Size = new Size(this.ClientRectangle.Width - imageDimensions, imageDimensions);
-            Text.Size = new Size(this.ClientRectangle.Width, this.ClientRectangle.Height - imageDimensions);
+            DescriptionText.Size = new Size(this.ClientRectangle.Width, this.ClientRectangle.Height - imageDimensions);
         }
     }
 }
