@@ -23,6 +23,7 @@ namespace TileTester
         static void Main()
         {
             Race.Load();
+            TileSet.Load();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TileViewer());

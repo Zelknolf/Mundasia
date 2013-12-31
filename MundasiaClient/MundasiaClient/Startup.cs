@@ -95,6 +95,8 @@ namespace Mundasia.Client
             Lore.Load();
             splash.progress.PerformStep();
             Aspiration.Load();
+            splash.progress.PerformStep();
+            TileSet.Load();
             return true;
         }
     }

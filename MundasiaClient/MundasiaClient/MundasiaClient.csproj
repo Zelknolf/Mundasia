@@ -120,6 +120,10 @@
       <Project>{dc20541d-a02b-4bfe-a22f-f14d2e717acf}</Project>
       <Name>StringLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Tiles\Tiles\Tiles.csproj">
+      <Project>{ac717a5c-c8f4-4b25-b511-3861de2a6c73}</Project>
+      <Name>Tiles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VirtueVice\VirtueVice.csproj">
       <Project>{39cc4a6b-7d59-4f7a-a947-d8be33059673}</Project>
       <Name>VirtueVice</Name>

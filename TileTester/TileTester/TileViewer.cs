@@ -26,45 +26,45 @@ namespace TileTester
             scene = new PlayScene();
 
             // Build four little pyramids to show slopes and blocks of every height
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 4, 5, 5, 4));
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 3, 6, 5, 3));
-            drawnTiles.Add(new Tile("White", Direction.NorthEast, 4, 6, 6, 4));
-            drawnTiles.Add(new Tile("White", Direction.North, 4, 5, 6, 4));
-            drawnTiles.Add(new Tile("White", Direction.NorthWest, 4, 4, 6, 4));
-            drawnTiles.Add(new Tile("White", Direction.West, 4, 4, 5, 4));
-            drawnTiles.Add(new Tile("White", Direction.SouthWest, 4, 4, 4, 4));
-            drawnTiles.Add(new Tile("White", Direction.South, 4, 5, 4, 4));
-            drawnTiles.Add(new Tile("White", Direction.SouthEast, 4, 6, 4, 4));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 4, 5, 5, 4));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 3, 6, 5, 3));
+            drawnTiles.Add(new Tile(0, Direction.NorthEast, 4, 6, 6, 4));
+            drawnTiles.Add(new Tile(0, Direction.North, 4, 5, 6, 4));
+            drawnTiles.Add(new Tile(0, Direction.NorthWest, 4, 4, 6, 4));
+            drawnTiles.Add(new Tile(0, Direction.West, 4, 4, 5, 4));
+            drawnTiles.Add(new Tile(0, Direction.SouthWest, 4, 4, 4, 4));
+            drawnTiles.Add(new Tile(0, Direction.South, 4, 5, 4, 4));
+            drawnTiles.Add(new Tile(0, Direction.SouthEast, 4, 6, 4, 4));
 
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 3, 5, 0, 3));
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 2, 6, 0, 2));
-            drawnTiles.Add(new Tile("White", Direction.NorthEast, 3, 6, 1, 3));
-            drawnTiles.Add(new Tile("White", Direction.North, 3, 5, 1, 3));
-            drawnTiles.Add(new Tile("White", Direction.NorthWest, 3, 4, 1, 3));
-            drawnTiles.Add(new Tile("White", Direction.West, 3, 4, 0, 3));
-            drawnTiles.Add(new Tile("White", Direction.SouthWest, 3, 4, -1, 3));
-            drawnTiles.Add(new Tile("White", Direction.South, 3, 5, -1, 3));
-            drawnTiles.Add(new Tile("White", Direction.SouthEast, 3, 6, -1, 3));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 3, 5, 0, 3));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 2, 6, 0, 2));
+            drawnTiles.Add(new Tile(0, Direction.NorthEast, 3, 6, 1, 3));
+            drawnTiles.Add(new Tile(0, Direction.North, 3, 5, 1, 3));
+            drawnTiles.Add(new Tile(0, Direction.NorthWest, 3, 4, 1, 3));
+            drawnTiles.Add(new Tile(0, Direction.West, 3, 4, 0, 3));
+            drawnTiles.Add(new Tile(0, Direction.SouthWest, 3, 4, -1, 3));
+            drawnTiles.Add(new Tile(0, Direction.South, 3, 5, -1, 3));
+            drawnTiles.Add(new Tile(0, Direction.SouthEast, 3, 6, -1, 3));
 
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 2, 0, 5, 2));
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 1, 1, 5, 1));
-            drawnTiles.Add(new Tile("White", Direction.NorthEast, 2, 1, 6, 2));
-            drawnTiles.Add(new Tile("White", Direction.North, 2, 0, 6, 2));
-            drawnTiles.Add(new Tile("White", Direction.NorthWest, 2, -1, 6, 2));
-            drawnTiles.Add(new Tile("White", Direction.West, 2, -1, 5, 2));
-            drawnTiles.Add(new Tile("White", Direction.SouthWest, 2, -1, 4, 2));
-            drawnTiles.Add(new Tile("White", Direction.South, 2, 0, 4, 2));
-            drawnTiles.Add(new Tile("White", Direction.SouthEast, 2, 1, 4, 2));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 2, 0, 5, 2));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 1, 1, 5, 1));
+            drawnTiles.Add(new Tile(0, Direction.NorthEast, 2, 1, 6, 2));
+            drawnTiles.Add(new Tile(0, Direction.North, 2, 0, 6, 2));
+            drawnTiles.Add(new Tile(0, Direction.NorthWest, 2, -1, 6, 2));
+            drawnTiles.Add(new Tile(0, Direction.West, 2, -1, 5, 2));
+            drawnTiles.Add(new Tile(0, Direction.SouthWest, 2, -1, 4, 2));
+            drawnTiles.Add(new Tile(0, Direction.South, 2, 0, 4, 2));
+            drawnTiles.Add(new Tile(0, Direction.SouthEast, 2, 1, 4, 2));
 
-            drawnTiles.Add(new Tile("White", Direction.DirectionLess, 1, 0, 0, 1));
+            drawnTiles.Add(new Tile(0, Direction.DirectionLess, 1, 0, 0, 1));
             //drawnTiles.Add(new Tile("White", Direction.DirectionLess, 1, 1, 0, 0)); // this is just the floor. Bring back if you drop the floor.
-            drawnTiles.Add(new Tile("White", Direction.NorthEast, 1, 1, 1, 1));
-            drawnTiles.Add(new Tile("White", Direction.North, 1, 0, 1, 1));
-            drawnTiles.Add(new Tile("White", Direction.NorthWest, 1, -1, 1, 1));
-            drawnTiles.Add(new Tile("White", Direction.West, 1, -1, 0, 1));
-            drawnTiles.Add(new Tile("White", Direction.SouthWest, 1, -1, -1, 1));
-            drawnTiles.Add(new Tile("White", Direction.South, 1, 0, -1, 1));
-            drawnTiles.Add(new Tile("White", Direction.SouthEast, 1, 1, -1, 1));
+            drawnTiles.Add(new Tile(0, Direction.NorthEast, 1, 1, 1, 1));
+            drawnTiles.Add(new Tile(0, Direction.North, 1, 0, 1, 1));
+            drawnTiles.Add(new Tile(0, Direction.NorthWest, 1, -1, 1, 1));
+            drawnTiles.Add(new Tile(0, Direction.West, 1, -1, 0, 1));
+            drawnTiles.Add(new Tile(0, Direction.SouthWest, 1, -1, -1, 1));
+            drawnTiles.Add(new Tile(0, Direction.South, 1, 0, -1, 1));
+            drawnTiles.Add(new Tile(0, Direction.SouthEast, 1, 1, -1, 1));
 
 
             // Add a flat floor.
@@ -72,7 +72,7 @@ namespace TileTester
             {
                 for (int y = -7; y < 8; y++)
                 {
-                    drawnTiles.Add(new Tile("White", Direction.DirectionLess, 1, x, y, 0));
+                    drawnTiles.Add(new Tile(0, Direction.DirectionLess, 1, x, y, 0));
                 }
             }
 

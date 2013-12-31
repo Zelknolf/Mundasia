@@ -26,7 +26,7 @@ namespace Mundasia.Objects
         /// <param name="X">The X coordinate of the tile, where a larger X is east</param>
         /// <param name="Y">The Y coordinate of the tile, where a larger Y is north</param>
         /// <param name="Z">The Z coordinate of the top of the tallest part of the tile</param>
-        public Tile(string TileSet, Direction SlopeSide, int Height, int X, int Y, int Z)
+        public Tile(uint TileSet, Direction SlopeSide, int Height, int X, int Y, int Z)
         {
             tileSet = TileSet;
             slopeSide = SlopeSide;
@@ -200,7 +200,7 @@ namespace Mundasia.Objects
             }
             if (!DayCache[tileSet].ContainsKey(fileName))
             {
-                Image Day = System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Tiles\\" + tileSet + "\\" + fileName);
+                Image Day = System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Tiles\\" + TileSet.GetSet(tileSet).Name + "\\" + fileName);
                 Bitmap NightBmp = new Bitmap(Day);
                 Bitmap TwilightBmp = new Bitmap(Day);
                 Bitmap MouseOverBmp = new Bitmap(Day);
@@ -278,9 +278,9 @@ namespace Mundasia.Objects
         public TileImage CachedImage;
 
         /// <summary>
-        /// Storage of the folder name where we expect to find the sources for our tiles.
+        /// Storage of the Id of the TileSet that this tile belongs to.
         /// </summary>
-        private string tileSet;
+        private uint tileSet;
 
         /// <summary>
         /// Storage for which side of the tile is the low point of the slope.
@@ -312,27 +312,27 @@ namespace Mundasia.Objects
         /// <summary>
         /// A static resource to contain images which represent post-processing images for given tiles. Expected syntax would be DayCache["TileSet"]["FileName"]
         /// </summary>
-        private static Dictionary<string, Dictionary<string, Image>> DayCache = new Dictionary<string, Dictionary<string, Image>>();
+        private static Dictionary<uint, Dictionary<string, Image>> DayCache = new Dictionary<uint, Dictionary<string, Image>>();
 
         /// <summary>
         /// A static resource to contain images which represent post-processing images for given tiles. Expected syntax would be TwilightCache["TileSet"]["FileName"]
         /// </summary>
-        private static Dictionary<string, Dictionary<string, Image>> TwilightCache = new Dictionary<string, Dictionary<string, Image>>();
+        private static Dictionary<uint, Dictionary<string, Image>> TwilightCache = new Dictionary<uint, Dictionary<string, Image>>();
 
         /// <summary>
         /// A static resource to contain images which represent post-processing images for given tiles. Expected syntax would be NightCache["TileSet"]["FileName"]
         /// </summary>
-        private static Dictionary<string, Dictionary<string, Image>> NightCache = new Dictionary<string, Dictionary<string, Image>>();
+        private static Dictionary<uint, Dictionary<string, Image>> NightCache = new Dictionary<uint, Dictionary<string, Image>>();
 
         /// <summary>
         /// A static resource to contain images which indicate a mouse over effect for given tiles. Expected syntax would be MouseOverCache["TileSet"]["FileName"]
         /// </summary>
-        private static Dictionary<string, Dictionary<string, Image>> MouseOverCache = new Dictionary<string, Dictionary<string, Image>>();
+        private static Dictionary<uint, Dictionary<string, Image>> MouseOverCache = new Dictionary<uint, Dictionary<string, Image>>();
 
         /// <summary>
         /// A static resource to contain images which indicate a selection effect for given tiles. Expected syntax would be MouseOverCache["TileSet"]["FileName"]
         /// </summary>
-        private static Dictionary<string, Dictionary<string, Image>> SelectedCache = new Dictionary<string, Dictionary<string, Image>>();
+        private static Dictionary<uint, Dictionary<string, Image>> SelectedCache = new Dictionary<uint, Dictionary<string, Image>>();
         #endregion
     }
 }
