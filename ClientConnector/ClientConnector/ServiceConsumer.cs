@@ -90,7 +90,7 @@ namespace Mundasia.Communication
             password = Encryption.GetSha256Hash(password);
             Login lg = new Login();
             lg.userName = userName;
-            lg.password = Encryption.GetSha256Hash(password + userName + DateTime.UtcNow.ToShortDateString());
+            lg.password = Encryption.GetSha256Hash(password + userName + DateTime.UtcNow.Day + DateTime.UtcNow.Month + DateTime.UtcNow.Year);
 
             try
             {

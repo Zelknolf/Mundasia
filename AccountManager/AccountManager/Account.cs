@@ -150,7 +150,7 @@ namespace Mundasia
         public bool Authenticate(string remotePass)
         {
             _lastAccessed = DateTime.UtcNow;
-            string localPass = GetSha256Hash(_password + UserName + DateTime.UtcNow.ToShortDateString());
+            string localPass = GetSha256Hash(_password + UserName + DateTime.UtcNow.Day + DateTime.UtcNow.Month + DateTime.UtcNow.Year);
             if (remotePass == localPass)
                 return true;
             return false;
