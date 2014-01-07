@@ -61,20 +61,24 @@ namespace Mundasia.Interface
 
             userName.Height = userName.PreferredHeight;
             userName.Width = 200;
+            userName.ShortcutsEnabled = true;
             userName.Location = new Point(175, 10);
 
             password.Height = password.PreferredHeight;
             password.Width = 200;
             password.PasswordChar = '●';
+            password.ShortcutsEnabled = true;
             password.Location = new Point(175, 40);
 
             repeatPassword.Height = repeatPassword.PreferredHeight;
             repeatPassword.Width = 200;
             repeatPassword.PasswordChar = '●';
+            repeatPassword.ShortcutsEnabled = true;
             repeatPassword.Location = new Point(175, 70);
 
             emailAddy.Height = emailAddy.PreferredHeight;
             emailAddy.Width = 200;
+            emailAddy.ShortcutsEnabled = true;
             emailAddy.Location = new Point(175, 100);
 
             Button accept = new Button();

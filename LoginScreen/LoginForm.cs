@@ -46,11 +46,13 @@ namespace Mundasia.Interface
 
             userName.Height = userName.PreferredHeight;
             userName.Width = 200;
+            userName.ShortcutsEnabled = true;
             userName.Location = new Point(175, 10);
 
             password.Height = password.PreferredHeight;
             password.Width = 200;
             password.PasswordChar = '●';
+            password.ShortcutsEnabled = true;
             password.Location = new Point(175, 40);
 
             Button accept = new Button();
