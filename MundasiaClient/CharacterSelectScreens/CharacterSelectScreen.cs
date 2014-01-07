@@ -32,6 +32,8 @@ namespace Mundasia.Interface
 
         private static Label _createCharacter = new Label();
 
+        private static bool _eventsInitialized = false;
+
         public static void Set(Form primaryForm)
         {
             _form = primaryForm;
@@ -41,37 +43,44 @@ namespace Mundasia.Interface
             int height = _form.ClientRectangle.Height - (padding * 2);
             int halfHeight = (_form.ClientRectangle.Height / 2) - (padding * 2);
 
-            StyleLabel(_character);
+            if (_eventsInitialized == false)
+            {
+                StyleLabel(_character);
+                StyleLabel(_message);
+                StyleLabel(_description);
+                StyleLabel(_createCharacter);
+                StyleListView(_messageList);
+
+                _characterList.ItemSelectionChanged += _characterList_ItemSelectionChanged;
+                _createCharacter.MouseEnter += _createCharacter_MouseEnter;
+                _createCharacter.MouseLeave += _createCharacter_MouseLeave;
+                _createCharacter.Click += _createCharacter_Click;
+
+                _eventsInitialized = true;
+            }
+
             _character.Size = new Size(width, halfHeight);
             _character.Location = new Point(padding, padding);
             _character.BorderStyle = BorderStyle.FixedSingle;
 
-            StyleLabel(_message);
             _message.Size = new Size(width, halfHeight);
             _message.Location = new Point(padding, halfHeight + (padding * 3));
             _message.BorderStyle = BorderStyle.FixedSingle;
 
-            StyleLabel(_description);
             _description.Size = new Size(width, height);
             _description.Location = new Point(width + (padding * 3), padding);
             _description.BorderStyle = BorderStyle.FixedSingle;
 
-            StyleLabel(_createCharacter);
             _createCharacter.Text = StringLibrary.GetString(34);
             _createCharacter.Size = _createCharacter.PreferredSize;
             _createCharacter.Location = new Point(_character.ClientRectangle.Width - _createCharacter.Width, _character.ClientRectangle.Height - _createCharacter.Height);
-            _createCharacter.MouseEnter += _createCharacter_MouseEnter;
-            _createCharacter.MouseLeave += _createCharacter_MouseLeave;
-            _createCharacter.Click += _createCharacter_Click;
             _character.Controls.Add(_createCharacter);
 
             _characterList.Size = new Size(_character.ClientRectangle.Size.Width, _character.ClientRectangle.Size.Height - _createCharacter.Height);
-            _characterList.ItemSelectionChanged += _characterList_ItemSelectionChanged;
             StyleListView(_characterList);
             _character.Controls.Add(_characterList);
 
             _messageList.Size = _message.ClientRectangle.Size;
-            StyleListView(_messageList);
             _message.Controls.Add(_messageList);
 
             _form.Controls.Add(_character);
@@ -88,9 +97,10 @@ namespace Mundasia.Interface
        
         public static void Clear(Form primaryForm)
         {
-            primaryForm.Controls.Remove(_character);
-            primaryForm.Controls.Remove(_message);
-            primaryForm.Controls.Remove(_description);
+            _character.Controls.Clear();
+            _message.Controls.Clear();
+            _description.Controls.Clear();
+            _form.Controls.Clear();
         }
 
         public static void PopulateCharacterList()

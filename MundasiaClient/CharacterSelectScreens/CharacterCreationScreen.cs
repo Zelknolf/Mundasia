@@ -51,6 +51,7 @@ namespace Mundasia.Interface
         private static Label _characterAppearance = new Label();
 
         private static Label _next = new Label();
+        private static Label _cancel = new Label();
 
         private static Label _nameEntryLabel = new Label();
         private static TextBox _nameEntry = new TextBox();
@@ -99,6 +100,8 @@ namespace Mundasia.Interface
         private static int _abilityHobby;
         private static int _abilityAspiration;
         private static bool _appearanceSeen = false;
+
+        private static bool _eventsInitialized = false;
 
         public static void Set(Form primaryForm)
         {
@@ -155,24 +158,27 @@ namespace Mundasia.Interface
             _form.Controls.Add(_description);
             _description.Controls.Add(_descriptionText);
 
-            _nameEntry.TextChanged += _nameEntry_TextChanged;
-            _characterName.Click += _characterName_Click;
-            _characterSexRace.Click += _characterSexRace_Click;
-            _characterVirtue.Click += _characterVirtue_Click;
-            _characterVice.Click += _characterVice_Click;
-            _characterMoralsAuthority.Click += _characterMoralsAuthority_Click;
-            _characterMoralsCare.Click += _characterMoralsCare_Click;
-            _characterMoralsFairness.Click += _characterMoralsFairness_Click;
-            _characterMoralsLoyalty.Click += _characterMoralsLoyalty_Click;
-            _characterMoralsTradition.Click += _characterMoralsTradition_Click;
-            _characterHobby.Click += _characterHobby_Click;
-            _characterTalent.Click += _characterTalent_Click;
-            _characterProfession.Click += _characterProfession_Click;
-            _characterAspiration.Click += _characterAspiration_Click;
-            _characterAppearance.Click += _characterAppearance_Click;
-            _hairStyle.Click += _hairStyle_Click;
-            _hairColor.Click += _hairColor_Click;
-            _skinColor.Click += _skinColor_Click;
+            if (!_eventsInitialized)
+            {
+                _nameEntry.TextChanged += _nameEntry_TextChanged;
+                _characterName.Click += _characterName_Click;
+                _characterSexRace.Click += _characterSexRace_Click;
+                _characterVirtue.Click += _characterVirtue_Click;
+                _characterVice.Click += _characterVice_Click;
+                _characterMoralsAuthority.Click += _characterMoralsAuthority_Click;
+                _characterMoralsCare.Click += _characterMoralsCare_Click;
+                _characterMoralsFairness.Click += _characterMoralsFairness_Click;
+                _characterMoralsLoyalty.Click += _characterMoralsLoyalty_Click;
+                _characterMoralsTradition.Click += _characterMoralsTradition_Click;
+                _characterHobby.Click += _characterHobby_Click;
+                _characterTalent.Click += _characterTalent_Click;
+                _characterProfession.Click += _characterProfession_Click;
+                _characterAspiration.Click += _characterAspiration_Click;
+                _characterAppearance.Click += _characterAppearance_Click;
+                _hairStyle.Click += _hairStyle_Click;
+                _hairColor.Click += _hairColor_Click;
+                _skinColor.Click += _skinColor_Click;
+            }
 
             _descriptionText.Text = " "; // RichTextBox wants to be 0x0 unless it has contents
             _descriptionText.Location = new Point(padding, padding);
@@ -264,16 +270,24 @@ namespace Mundasia.Interface
         static void _nameEntry_TextChanged(object sender, EventArgs e)
         {
             _name = _nameEntry.Text;
-            _characterName.Text = _nameEntry.Text;
-            _characterName.Size = _characterName.PreferredSize;
+            if (!String.IsNullOrWhiteSpace(_nameEntry.Text))
+            {
+                _characterName.Text = _nameEntry.Text;
+                _characterName.Size = _characterName.PreferredSize;
+            }
+            else
+            {
+                _characterName.Text = "No name";
+                _characterName.Size = _characterName.PreferredSize;
+            }
         }
 
         public static void Clear(Form primaryForm)
         {
-            _form.Controls.Remove(_characterSheet);
-            _form.Controls.Remove(_currentEntry);
-            _form.Controls.Remove(_description);
-            _form = null;
+            _characterSheet.Controls.Clear();
+            _currentEntry.Controls.Clear();
+            _description.Controls.Clear();
+            _form.Controls.Clear();
         }
 
         private static void UpdateCharacterSheet()
@@ -321,6 +335,7 @@ namespace Mundasia.Interface
             else _characterAppearance.Text = "Appearance set";
 
             _next.Text = StringLibrary.GetString(13);
+            _cancel.Text = StringLibrary.GetString(7);
 
             _traitsHead.Text = "Traits";
             _moralsHead.Text = "Morals";
@@ -377,66 +392,74 @@ namespace Mundasia.Interface
             _characterAppearance.Location = new Point(padding, _characterAspiration.Location.Y + _characterAspiration.Height + padding);
             StyleLabel(_next);
             _next.Location = new Point(_characterSheet.Width - _next.Width - padding, _characterSheet.Height - _next.Height - padding);
+            StyleLabel(_cancel);
+            _cancel.Location = new Point(_next.Location.X - _cancel.Width - padding, _next.Location.Y);
             #endregion
 
-            _characterName.MouseEnter += _clickableMouseOver;
-            _characterSexRace.MouseEnter += _clickableMouseOver;
-            _characterVirtue.MouseEnter += _clickableMouseOver;
-            _characterVice.MouseEnter += _clickableMouseOver;
-            _characterMoralsAuthority.MouseEnter += _clickableMouseOver;
-            _characterMoralsCare.MouseEnter += _clickableMouseOver;
-            _characterMoralsFairness.MouseEnter += _clickableMouseOver;
-            _characterMoralsLoyalty.MouseEnter += _clickableMouseOver;
-            _characterMoralsTradition.MouseEnter += _clickableMouseOver;
-            _characterProfession.MouseEnter += _clickableMouseOver;
-            _characterTalent.MouseEnter += _clickableMouseOver;
-            _characterHobby.MouseEnter += _clickableMouseOver;
-            _characterAspiration.MouseEnter += _clickableMouseOver;
-            _characterAppearance.MouseEnter += _clickableMouseOver;
-            _female.MouseEnter += _clickableMouseOver;
-            _male.MouseEnter += _clickableMouseOver;
-            _next.MouseEnter += _clickableMouseOver;
-            _hairColor.MouseEnter += _clickableMouseOver;
-            _hairStyle.MouseEnter += _clickableMouseOver;
-            _skinColor.MouseEnter += _clickableMouseOver;
+            if (!_eventsInitialized)
+            {
+                _characterName.MouseEnter += _clickableMouseOver;
+                _characterSexRace.MouseEnter += _clickableMouseOver;
+                _characterVirtue.MouseEnter += _clickableMouseOver;
+                _characterVice.MouseEnter += _clickableMouseOver;
+                _characterMoralsAuthority.MouseEnter += _clickableMouseOver;
+                _characterMoralsCare.MouseEnter += _clickableMouseOver;
+                _characterMoralsFairness.MouseEnter += _clickableMouseOver;
+                _characterMoralsLoyalty.MouseEnter += _clickableMouseOver;
+                _characterMoralsTradition.MouseEnter += _clickableMouseOver;
+                _characterProfession.MouseEnter += _clickableMouseOver;
+                _characterTalent.MouseEnter += _clickableMouseOver;
+                _characterHobby.MouseEnter += _clickableMouseOver;
+                _characterAspiration.MouseEnter += _clickableMouseOver;
+                _characterAppearance.MouseEnter += _clickableMouseOver;
+                _female.MouseEnter += _clickableMouseOver;
+                _male.MouseEnter += _clickableMouseOver;
+                _next.MouseEnter += _clickableMouseOver;
+                _cancel.MouseEnter += _clickableMouseOver;
+                _hairColor.MouseEnter += _clickableMouseOver;
+                _hairStyle.MouseEnter += _clickableMouseOver;
+                _skinColor.MouseEnter += _clickableMouseOver;
 
-            _characterName.MouseLeave += _clickableMouseLeave;
-            _characterSexRace.MouseLeave += _clickableMouseLeave;
-            _characterVirtue.MouseLeave += _clickableMouseLeave;
-            _characterVice.MouseLeave += _clickableMouseLeave;
-            _characterMoralsAuthority.MouseLeave += _clickableMouseLeave;
-            _characterMoralsCare.MouseLeave += _clickableMouseLeave;
-            _characterMoralsFairness.MouseLeave += _clickableMouseLeave;
-            _characterMoralsLoyalty.MouseLeave += _clickableMouseLeave;
-            _characterMoralsTradition.MouseLeave += _clickableMouseLeave;
-            _characterProfession.MouseLeave += _clickableMouseLeave;
-            _characterTalent.MouseLeave += _clickableMouseLeave;
-            _characterHobby.MouseLeave += _clickableMouseLeave;
-            _characterAspiration.MouseLeave += _clickableMouseLeave;
-            _characterAppearance.MouseLeave += _clickableMouseLeave;
-            _female.MouseLeave += _clickableMouseLeave;
-            _male.MouseLeave += _clickableMouseLeave;
-            _next.MouseLeave += _clickableMouseLeave;
-            _hairColor.MouseLeave += _clickableMouseLeave;
-            _hairStyle.MouseLeave += _clickableMouseLeave;
-            _skinColor.MouseLeave += _clickableMouseLeave;
+                _characterName.MouseLeave += _clickableMouseLeave;
+                _characterSexRace.MouseLeave += _clickableMouseLeave;
+                _characterVirtue.MouseLeave += _clickableMouseLeave;
+                _characterVice.MouseLeave += _clickableMouseLeave;
+                _characterMoralsAuthority.MouseLeave += _clickableMouseLeave;
+                _characterMoralsCare.MouseLeave += _clickableMouseLeave;
+                _characterMoralsFairness.MouseLeave += _clickableMouseLeave;
+                _characterMoralsLoyalty.MouseLeave += _clickableMouseLeave;
+                _characterMoralsTradition.MouseLeave += _clickableMouseLeave;
+                _characterProfession.MouseLeave += _clickableMouseLeave;
+                _characterTalent.MouseLeave += _clickableMouseLeave;
+                _characterHobby.MouseLeave += _clickableMouseLeave;
+                _characterAspiration.MouseLeave += _clickableMouseLeave;
+                _characterAppearance.MouseLeave += _clickableMouseLeave;
+                _female.MouseLeave += _clickableMouseLeave;
+                _male.MouseLeave += _clickableMouseLeave;
+                _next.MouseLeave += _clickableMouseLeave;
+                _cancel.MouseLeave += _clickableMouseLeave;
+                _hairColor.MouseLeave += _clickableMouseLeave;
+                _hairStyle.MouseLeave += _clickableMouseLeave;
+                _skinColor.MouseLeave += _clickableMouseLeave;
 
-            _female.Click += _female_Click;
-            _male.Click += _male_Click;
-            _next.Click += _next_Click;
+                _female.Click += _female_Click;
+                _male.Click += _male_Click;
+                _next.Click += _next_Click;
+                _cancel.Click += _cancel_Click;
 
-            _raceList.ItemSelectionChanged += _raceList_ItemSelectionChanged;
-            _virtueList.ItemSelectionChanged += _virtueList_ItemSelectionChanged;
-            _viceList.ItemSelectionChanged += _viceList_ItemSelectionChanged;
-            _authorityList.ItemSelectionChanged += _authorityList_ItemSelectionChanged;
-            _careList.ItemSelectionChanged += _careList_ItemSelectionChanged;
-            _fairnessList.ItemSelectionChanged += _fairnessList_ItemSelectionChanged;
-            _loyaltyList.ItemSelectionChanged += _loyaltyList_ItemSelectionChanged;
-            _traditionList.ItemSelectionChanged += _traditionList_ItemSelectionChanged;
-            _talentList.ItemSelectionChanged += _talentList_ItemSelectionChanged;
-            _professionList.ItemSelectionChanged += _professionList_ItemSelectionChanged;
-            _hobbyList.ItemSelectionChanged += _hobbyList_ItemSelectionChanged;
-            _aspirationList.ItemSelectionChanged += _aspirationList_ItemSelectionChanged;
+                _raceList.ItemSelectionChanged += _raceList_ItemSelectionChanged;
+                _virtueList.ItemSelectionChanged += _virtueList_ItemSelectionChanged;
+                _viceList.ItemSelectionChanged += _viceList_ItemSelectionChanged;
+                _authorityList.ItemSelectionChanged += _authorityList_ItemSelectionChanged;
+                _careList.ItemSelectionChanged += _careList_ItemSelectionChanged;
+                _fairnessList.ItemSelectionChanged += _fairnessList_ItemSelectionChanged;
+                _loyaltyList.ItemSelectionChanged += _loyaltyList_ItemSelectionChanged;
+                _traditionList.ItemSelectionChanged += _traditionList_ItemSelectionChanged;
+                _talentList.ItemSelectionChanged += _talentList_ItemSelectionChanged;
+                _professionList.ItemSelectionChanged += _professionList_ItemSelectionChanged;
+                _hobbyList.ItemSelectionChanged += _hobbyList_ItemSelectionChanged;
+                _aspirationList.ItemSelectionChanged += _aspirationList_ItemSelectionChanged;
+            }
 
             _characterSheet.Controls.Add(_characterName);
             _characterSheet.Controls.Add(_characterSexRace);
@@ -456,6 +479,33 @@ namespace Mundasia.Interface
             _characterSheet.Controls.Add(_characterAspiration);
             _characterSheet.Controls.Add(_characterAppearance);
             _characterSheet.Controls.Add(_next);
+            _characterSheet.Controls.Add(_cancel);
+            _eventsInitialized = true;
+        }
+
+        static void _cancel_Click(object sender, EventArgs e)
+        {
+            _name = "";
+            _sex = -1;
+            _race = -1;
+            _traitVirtue = -1;
+            _traitVice = -1;
+            _moralsAuthority = -1;
+            _moralsCare = -1;
+            _moralsFairness = -1;
+            _moralsLoyalty = -1;
+            _moralsTradition = -1;
+            _abilityProfession = -1;
+            _abilityTalent = -1;
+            _abilityHobby = -1;
+            _abilityAspiration = -1;
+            _displayCharacter.Hair = 0;
+            _displayCharacter.HairColor = 0;
+            _displayCharacter.SkinColor = 0;
+            _appearanceSeen = false;
+            Form host = _form;
+            Clear(host);
+            CharacterSelectScreen.Set(host);
         }
 
         static void _next_Click(object sender, EventArgs e)
