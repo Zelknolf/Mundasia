@@ -145,6 +145,10 @@ namespace Mundasia.Server.Communication
             {
                 return "Failed to parse aspiration.";
             }
+            if (!targetAccount.SaveCharacter(chr))
+            {
+                return "Could not save character.";
+            }
             return "Success: " + chr.CharacterName;
         }
 
