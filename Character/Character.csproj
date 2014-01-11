@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="CharacterImage.cs" />
+    <Compile Include="CharacterPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DisplayCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
