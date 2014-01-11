@@ -238,6 +238,10 @@ namespace Mundasia
                 {
                     Directory.CreateDirectory(path);
                 }
+                if(!Characters.Contains(chr.CharacterName))
+                {
+                    Characters.Add(chr.CharacterName);
+                }
                 using (FileStream stream = new FileStream(path + chr.CharacterName + ".chr", FileMode.Create))
                 {
                     DataContractSerializer ser = new DataContractSerializer(typeof(Character));
