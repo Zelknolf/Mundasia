@@ -619,6 +619,7 @@ namespace Mundasia.Interface
                     _descriptionText.Text = desc;
                     _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
                     _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                    ShowCharacterPreview();
                 }
             }
         }
@@ -637,6 +638,7 @@ namespace Mundasia.Interface
                     _descriptionText.Text = StringLibrary.GetString(skill.Description);
                     _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
                     _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                    ShowCharacterPreview();
                 }
             }
         }
@@ -657,6 +659,7 @@ namespace Mundasia.Interface
                         Environment.NewLine + StringLibrary.GetString(30) + ": " + Skill.GetSkill(profession.SkillOne).Name + ", " + Skill.GetSkill(profession.SkillTwo).Name + ", " + Skill.GetSkill(profession.SkillThree).Name;
                     _descriptionText.Height = Math.Max(_description.Height - (padding * 2), 0);
                     _descriptionText.Width = Math.Max(0, _description.Width - (padding * 2));
+                    ShowCharacterPreview();
                 }
             }
         }
@@ -833,6 +836,7 @@ namespace Mundasia.Interface
                     _displayCharacter.HairColor = 0;
                     _displayCharacter.SkinColor = 0;
                     _displayCharacter.Height = Race.GetRace((uint)_race).Height;
+                    ShowCharacterPreview();
                 }
             }
         }
@@ -847,6 +851,7 @@ namespace Mundasia.Interface
             else _characterSexRace.Text += " " + Race.GetRace((uint)_race).Name;
 
             _characterSexRace.Size = _characterSexRace.PreferredSize;
+            ShowCharacterPreview();
         }
 
         static void _male_Click(object sender, EventArgs e)
@@ -861,6 +866,7 @@ namespace Mundasia.Interface
             _displayCharacter.HairColor = 0;
             _displayCharacter.SkinColor = 0;
             UpdateRaceSexText();
+            ShowCharacterPreview();
         }
 
         static void _female_Click(object sender, EventArgs e)
@@ -875,6 +881,7 @@ namespace Mundasia.Interface
             _displayCharacter.HairColor = 0;
             _displayCharacter.SkinColor = 0;
             UpdateRaceSexText();
+            ShowCharacterPreview();
         }
 
         
@@ -894,6 +901,7 @@ namespace Mundasia.Interface
             else if (_abilityHobby == -1) SetHobbyToPanel();
             else if (_abilityAspiration == -1) SetAspirationToPanel();
             else if (!_appearanceSeen) SetAppearanceToPanel();
+            ShowCharacterPreview();
         }
 
         private static void ClearOld()
@@ -1307,6 +1315,94 @@ namespace Mundasia.Interface
             item.BackColor = Color.Black;
             item.ForeColor = Color.White;
             item.Font = labelFont;
+        }
+
+        private static CharacterPanel chPanel = null;
+
+        private static void ShowCharacterPreview()
+        {
+            if(_race == -1 ||
+                _abilityProfession == -1 ||
+                _abilityHobby == -1 ||
+                _abilityTalent == -1 ||
+                _abilityAspiration == -1)
+            {
+                return;
+            }
+            Character ch = new Character();
+            ch.Abilities = new Dictionary<uint, int>();
+            ch.Skills = new Dictionary<uint, int>();
+            ch.CharacterName = _name;
+            ch.MoralsAuthority = (uint)_moralsAuthority;
+            ch.MoralsCare = (uint)_moralsCare;
+            ch.MoralsFairness = (uint)_moralsFairness;
+            ch.MoralsLoyalty = (uint)_moralsLoyalty;
+            ch.MoralsTradition = (uint)_moralsTradition;
+            ch.CharacterHobby = (uint)_abilityHobby;
+            ch.CharacterRace = (uint)_race;
+            ch.CharacterProfession = (uint)_abilityProfession;
+            ch.Sex = _sex;
+            ch.CharacterTalent = (uint)_abilityTalent;
+            ch.CharacterVice = (uint)_traitVice;
+            ch.CharacterVirtue = (uint)_traitVirtue;
+            ch.HairColor = (uint)_displayCharacter.HairColor;
+            ch.HairStyle = (uint)_displayCharacter.Hair;
+            ch.SkinColor = (uint)_displayCharacter.SkinColor;
+
+            Race r = Race.GetRace(ch.CharacterRace);
+            ch.Abilities.Add(0, r.Strength);
+            ch.Abilities.Add(1, r.Agility);
+            ch.Abilities.Add(2, r.Endurance);
+            ch.Abilities.Add(3, r.Perception);
+            ch.Abilities.Add(4, r.Quickness);
+            ch.Abilities.Add(5, r.Memory);
+            ch.Abilities.Add(6, r.Persuasion);
+            ch.Abilities.Add(7, r.Glibness);
+            ch.Abilities.Add(8, r.Appearance);
+            ch.Abilities.Add(9, r.Force);
+            ch.Abilities.Add(10, r.Control);
+            ch.Abilities.Add(11, r.Discipline);
+
+            Profession prof = Profession.GetProfession(ch.CharacterProfession);
+            ch.Abilities[prof.PrimaryAbility] = ch.Abilities[prof.PrimaryAbility] + 1;
+            ch.Skills.Add(prof.SkillOne, 3);
+            ch.Skills.Add(prof.SkillTwo, 3);
+            ch.Skills.Add(prof.SkillThree, 3);
+
+            ch.Abilities[ch.CharacterTalent]++;
+
+            if(ch.Skills.Keys.Contains(ch.CharacterHobby))
+            {
+                ch.Skills[ch.CharacterHobby]++;
+            }
+            else
+            {
+                ch.Skills.Add(ch.CharacterHobby, 2);
+            }
+
+            Aspiration asp = Aspiration.GetAspiration((uint)_abilityAspiration);
+            foreach (uint ab in asp.Abilities)
+            {
+                ch.Abilities[ab] += 1;
+            }
+            int skills = 3;
+            foreach (uint sk in asp.Skills)
+            {
+                if (!ch.Skills.ContainsKey(sk))
+                {
+                    ch.Skills.Add(sk, 2);
+                    skills--;
+                }
+                if (skills == 0) break;
+            }
+
+            if(chPanel != null)
+            {
+                chPanel.Close();
+                chPanel.Dispose();
+            }
+            chPanel = new CharacterPanel(ch, true);
+            chPanel.Show();
         }
     }
 }
