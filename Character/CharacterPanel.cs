@@ -551,8 +551,52 @@ namespace Mundasia.Objects
                 addSkill.Text = "<Add a Skill>";
                 addSkill.SelectedIndexChanged += addSkill_SelectedIndexChanged;
                 addSkill.Location = new Point(padding, currentPosY + (padding * 2));
+                currentPosY = addSkill.Location.Y + addSkill.Height;
                 this.Controls.Add(addSkill);
             }
+
+            Label Virt = new Label();
+            Virt.Text = "Virtue: " + Virtue.GetVirtue(ShownCharacter.CharacterVirtue).Name;
+            StyleLabel(Virt);
+            Virt.Location = new Point(padding, currentPosY + padding);
+            this.Controls.Add(Virt);
+
+            Label Vic = new Label();
+            Vic.Text = "Vice: " + Vice.GetVice(ShownCharacter.CharacterVice).Name;
+            StyleLabel(Vic);
+            Vic.Location = new Point(this.ClientRectangle.Width / 2 + padding, currentPosY + padding);
+            this.Controls.Add(Vic);
+
+            currentPosY = Vic.Location.Y + Vic.Height;
+
+            Label auth = new Label();
+            auth.Text = "Authority: " + Authority.GetAuthority(ShownCharacter.MoralsAuthority).Name;
+            StyleLabel(auth);
+            auth.Location = new Point(padding, currentPosY + padding);
+            this.Controls.Add(auth);
+
+            Label care = new Label();
+            care.Text = "Care: " + Care.GetCare(ShownCharacter.MoralsCare).Name;
+            StyleLabel(care);
+            care.Location = new Point(padding, auth.Location.Y + auth.Height + padding);
+            this.Controls.Add(care);
+
+            Label fairness = new Label();
+            fairness.Text = "Fairness: " + Fairness.GetFairness(ShownCharacter.MoralsFairness).Name;
+            StyleLabel(fairness);
+            fairness.Location = new Point(padding, care.Location.Y + care.Height + padding);
+            this.Controls.Add(fairness);
+
+            Label loyalty = new Label();
+            loyalty.Text = "Loyalty: " + Loyalty.GetLoyalty(ShownCharacter.MoralsLoyalty).Name;
+            StyleLabel(loyalty);
+            loyalty.Location = new Point(padding, fairness.Location.Y + fairness.Height + padding);
+            this.Controls.Add(loyalty);
+
+            Label trad = new Label();
+            trad.Text = "Tradition: " + Tradition.GetTradition(ShownCharacter.MoralsTradition).Name;
+            StyleLabel(trad);
+            trad.Location = new Point(padding, loyalty.Location.Y + loyalty.Height + padding);
 
             Controls.Add(LabelSexRace);
             Controls.Add(LabelAbilityHead);

@@ -19,6 +19,13 @@ namespace CharacterEditor
             Ability.Load();
             Profession.Load();
             Skill.Load();
+            Virtue.Load();
+            Vice.Load();
+            Authority.Load();
+            Care.Load();
+            Fairness.Load();
+            Loyalty.Load();
+            Tradition.Load();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new CharacterSelect());
