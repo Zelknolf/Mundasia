@@ -109,10 +109,7 @@ namespace Mundasia
                     ret._password = ret.Password;
                     ret.Password = null;
                     ret._lastAccessed = DateTime.UtcNow;
-                    if (ret.LoadedCharacters == null)
-                    {
-                        ret.LoadedCharacters = new List<Character>();
-                    }
+                    ret.LoadedCharacters = new List<Character>();
                     if (ret.Characters == null)
                     {
                         ret.Characters = new List<string>();
