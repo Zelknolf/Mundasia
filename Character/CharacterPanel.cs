@@ -597,6 +597,7 @@ namespace Mundasia.Objects
             trad.Text = "Tradition: " + Tradition.GetTradition(ShownCharacter.MoralsTradition).Name;
             StyleLabel(trad);
             trad.Location = new Point(padding, loyalty.Location.Y + loyalty.Height + padding);
+            this.Controls.Add(trad);            
 
             Controls.Add(LabelSexRace);
             Controls.Add(LabelAbilityHead);
