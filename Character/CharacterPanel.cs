@@ -556,13 +556,29 @@ namespace Mundasia.Objects
             }
 
             Label Virt = new Label();
-            Virt.Text = "Virtue: " + Virtue.GetVirtue(ShownCharacter.CharacterVirtue).Name;
+            Virtue chVirt = Virtue.GetVirtue(ShownCharacter.CharacterVirtue);
+            if (chVirt != null)
+            {
+                Virt.Text = "Virtue: " + chVirt.Name;
+            }
+            else
+            {
+                Virt.Text = "Virtue: not selected";
+            }
             StyleLabel(Virt);
             Virt.Location = new Point(padding, currentPosY + padding);
             this.Controls.Add(Virt);
 
             Label Vic = new Label();
-            Vic.Text = "Vice: " + Vice.GetVice(ShownCharacter.CharacterVice).Name;
+            Vice chVic = Vice.GetVice(ShownCharacter.CharacterVice);
+            if (chVic != null)
+            {
+                Vic.Text = "Vice: " + chVic.Name;
+            }
+            else
+            {
+                Vic.Text = "Vice: not selected";
+            }
             StyleLabel(Vic);
             Vic.Location = new Point(this.ClientRectangle.Width / 2 + padding, currentPosY + padding);
             this.Controls.Add(Vic);
@@ -570,31 +586,71 @@ namespace Mundasia.Objects
             currentPosY = Vic.Location.Y + Vic.Height;
 
             Label auth = new Label();
-            auth.Text = "Authority: " + Authority.GetAuthority(ShownCharacter.MoralsAuthority).Name;
+            Authority chAuth = Authority.GetAuthority(ShownCharacter.MoralsAuthority);
+            if (chAuth != null)
+            {
+                auth.Text = "Authority: " + chAuth.Name;
+            }
+            else
+            {
+                auth.Text = "Authority: not selected";
+            }
             StyleLabel(auth);
             auth.Location = new Point(padding, currentPosY + padding);
             this.Controls.Add(auth);
 
             Label care = new Label();
-            care.Text = "Care: " + Care.GetCare(ShownCharacter.MoralsCare).Name;
+            Care chCare = Care.GetCare(ShownCharacter.MoralsCare);
+            if (chCare != null)
+            {
+                care.Text = "Care: " + chCare.Name;
+            }
+            else
+            {
+                care.Text = "Care: not selected";
+            }
             StyleLabel(care);
             care.Location = new Point(padding, auth.Location.Y + auth.Height + padding);
             this.Controls.Add(care);
 
             Label fairness = new Label();
-            fairness.Text = "Fairness: " + Fairness.GetFairness(ShownCharacter.MoralsFairness).Name;
+            Fairness chFairness = Fairness.GetFairness(ShownCharacter.MoralsFairness);
+            if (chFairness != null)
+            {
+                fairness.Text = "Fairness: " + chFairness.Name;
+            }
+            else
+            {
+                fairness.Text = "Fairness: not selected";
+            }
             StyleLabel(fairness);
             fairness.Location = new Point(padding, care.Location.Y + care.Height + padding);
             this.Controls.Add(fairness);
 
             Label loyalty = new Label();
-            loyalty.Text = "Loyalty: " + Loyalty.GetLoyalty(ShownCharacter.MoralsLoyalty).Name;
+            Loyalty chLoyalty = Loyalty.GetLoyalty(ShownCharacter.MoralsLoyalty);
+            if (chLoyalty != null)
+            {
+                loyalty.Text = "Loyalty: " + chLoyalty.Name;
+            }
+            else
+            {
+                loyalty.Text = "Loyalty: not selected";
+            }
             StyleLabel(loyalty);
             loyalty.Location = new Point(padding, fairness.Location.Y + fairness.Height + padding);
             this.Controls.Add(loyalty);
 
             Label trad = new Label();
-            trad.Text = "Tradition: " + Tradition.GetTradition(ShownCharacter.MoralsTradition).Name;
+            Tradition chTrad = Tradition.GetTradition(ShownCharacter.MoralsTradition);
+            if (chTrad != null)
+            {
+                trad.Text = "Tradition: " + chTrad.Name;
+            }
+            else
+            {
+                trad.Text = "Tradition: not selected";
+            }
             StyleLabel(trad);
             trad.Location = new Point(padding, loyalty.Location.Y + loyalty.Height + padding);
             this.Controls.Add(trad);            
