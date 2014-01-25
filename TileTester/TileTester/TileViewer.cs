@@ -20,6 +20,7 @@ namespace TileTester
 
         Direction topDirection = Direction.NorthWest;
         PlayScene scene;
+        TileEditPane editPane;
 
         int timeOfDay = 0;
 
@@ -79,7 +80,16 @@ namespace TileTester
                 }
             }
 
-            scene.Size = this.Size;
+            editPane = new TileEditPane(null);
+            editPane.Size = new Size(200, this.ClientRectangle.Height);
+            editPane.Location = new Point(this.ClientRectangle.Width - 200, 0);
+            editPane.X.ValueChanged += X_ValueChanged;
+            editPane.Y.ValueChanged += Y_ValueChanged;
+            editPane.Z.ValueChanged += Z_ValueChanged;
+            this.Controls.Add(editPane);
+
+            scene.Size = new Size(this.ClientRectangle.Width - 200, this.ClientRectangle.Height);
+            scene.TileSelected += scene_TileSelected;
             scene.ViewCenterX = 0;
             scene.ViewCenterY = 0;
             scene.ViewCenterZ = 0;
@@ -124,6 +134,38 @@ namespace TileTester
             this.Controls.Add(scene);
 
             this.Resize += new EventHandler(TileViewer_Resize);
+        }
+
+        void Z_ValueChanged(object sender, EventArgs e)
+        {
+            if (editPane.shownTile == null) return;
+            scene.Remove(editPane.shownTile);
+            Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, (int)editPane.Z.Value);
+            scene.Add(replacement);
+            editPane.SetTile(replacement);
+        }
+
+        void Y_ValueChanged(object sender, EventArgs e)
+        {
+            if (editPane.shownTile == null) return;
+            scene.Remove(editPane.shownTile);
+            Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, (int)editPane.Y.Value, editPane.shownTile.PosZ);
+            scene.Add(replacement);
+            editPane.SetTile(replacement);
+        }
+
+        void X_ValueChanged(object sender, EventArgs e)
+        {
+            if (editPane.shownTile == null) return; 
+            scene.Remove(editPane.shownTile);
+            Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, (int)editPane.X.Value, editPane.shownTile.PosY, editPane.shownTile.PosZ);
+            scene.Add(replacement);
+            editPane.SetTile(replacement);
+        }
+
+        void scene_TileSelected(object Sender, TileSelectEventArgs e)
+        {
+            editPane.SetTile(e.tile);
         }
 
         void TileViewer_Resize(object sender, EventArgs e)
