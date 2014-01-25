@@ -5,6 +5,12 @@ using System.Text;
 
 using System.Drawing;
 
+using System.IO;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.Security.Cryptography;
+using System.Timers;
+
 namespace Mundasia.Objects
 {
     /// <summary>
@@ -270,6 +276,107 @@ namespace Mundasia.Objects
             return retVal;
             #endregion
         }
+
+        public void Save()
+        {
+            string path = GetPathForTile(x, y, z);
+            using (FileStream stream = new FileStream(z + ".til", FileMode.Create))
+            {
+                DataContractSerializer ser = new DataContractSerializer(typeof(Tile));
+                ser.WriteObject(stream, this);
+            }
+        }
+
+        public static List<Tile> LoadStack(int X, int Y, int Z)
+        {
+            List<Tile> ret = new List<Tile>();
+            string folder = GetPathForTile(X, Y, Z);
+            if(!Directory.Exists(folder))
+            {
+                return ret;
+            }
+            DataContractSerializer ser = new DataContractSerializer(typeof(Tile));
+            foreach(string file in Directory.GetFiles(folder))
+            {
+                using(FileStream stream = new FileStream(file, FileMode.Open))
+                {
+                    Tile nTile = ser.ReadObject(stream) as Tile;
+                    if (nTile != null)
+                    {
+                        ret.Add(nTile);
+                    }
+                }
+            }
+            if(folder != GetPathForTile(X, Y, Z + 4)) // If we're near enough to where we cut over the folders where tile bodies might bleed over, load both.
+            {
+                foreach (string file in Directory.GetFiles(GetPathForTile(X, Y, Z + 4)))
+                {
+                    using (FileStream stream = new FileStream(file, FileMode.Open))
+                    {
+                        Tile nTile = ser.ReadObject(stream) as Tile;
+                        if (nTile != null)
+                        {
+                            ret.Add(nTile);
+                        }
+                    }
+                }
+            }
+            if (folder != GetPathForTile(X, Y, Z - 4))
+            {
+                foreach (string file in Directory.GetFiles(GetPathForTile(X, Y, Z - 4)))
+                {
+                    using (FileStream stream = new FileStream(file, FileMode.Open))
+                    {
+                        Tile nTile = ser.ReadObject(stream) as Tile;
+                        if (nTile != null)
+                        {
+                            ret.Add(nTile);
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+        public static string GetPathForTile(int X, int Y, int Z)
+        {
+            string ret = Directory.GetCurrentDirectory() + X + "\\" + Y + "\\";
+            Z = Z / 1000;
+            ret += Z + "000\\";
+            return ret;
+        }
+
+        #region Exposed Parts of the Tile
+        public int TileHeight
+        {
+            get { return height; }
+        }
+
+        public int PosX
+        {
+            get { return x; }
+        }
+
+        public int PosY
+        {
+            get { return y; }
+        }
+
+        public int PosZ
+        {
+            get { return z; }
+        }
+
+        public uint CurrentTileSet
+        {
+            get { return tileSet; }
+        }
+
+        public Direction Slope
+        {
+            get { return slopeSide; }
+        }
+        #endregion
 
         #region Tile Definition
         /// <summary>
