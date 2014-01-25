@@ -10,8 +10,17 @@ using Mundasia.Objects;
 
 namespace Mundasia.Interface
 {
+    public class TileSelectEventArgs : EventArgs
+    {
+        public Tile tile;
+    }
+    
+    public delegate void OnTileSelectedHandler(object Sender, TileSelectEventArgs e);
+
     public partial class PlayScene : Panel
     {
+        public event OnTileSelectedHandler TileSelected;
+
         public PlayScene()
         {
             this.DoubleBuffered = true;
@@ -32,6 +41,7 @@ namespace Mundasia.Interface
                 drawableTiles.Add(tile);
                 TileImage image = tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
                 image.SourceTile = tile;
+                image.TileSelected += image_TileSelected;
                 drawableImages.Add(image);
             }
             drawableImages.Sort();
@@ -142,6 +152,15 @@ namespace Mundasia.Interface
                 drawableImages.Remove(ch.CachedImage);
             }
             this.Refresh();
+        }
+
+        void image_TileSelected(object Sender, EventArgs e)
+        {
+            TileImage image = Sender as TileImage;
+            if(image != null)
+            {
+                TileSelected(this, new TileSelectEventArgs() { tile = image.SourceTile });
+            }
         }
 
         /// <summary>
