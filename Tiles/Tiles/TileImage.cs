@@ -7,6 +7,8 @@ using System.Drawing;
 
 namespace Mundasia.Objects
 {
+    public delegate void OnSelectedHandler(object Sender, EventArgs e);
+
     public class TileImage : IPlaySceneDrawable
     {
         public int DrawIndex;
@@ -20,6 +22,8 @@ namespace Mundasia.Objects
 
         public bool MousedOver = true;
         public bool Selected = true;
+
+        public event OnSelectedHandler TileSelected;
 
         /// <summary>
         /// Used to sort a collection of TileImages such that the first objects
@@ -45,6 +49,7 @@ namespace Mundasia.Objects
         public void SetSelected(bool State)
         {
             Selected = State;
+            TileSelected(this, EventArgs.Empty);
         }
 
         public bool GetMousedOver()
