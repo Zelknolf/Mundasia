@@ -280,11 +280,17 @@ namespace Mundasia.Objects
         public void Save()
         {
             string path = GetPathForTile(x, y, z);
-            using (FileStream stream = new FileStream(z + ".til", FileMode.Create))
+            using (FileStream stream = new FileStream(path + z + ".til", FileMode.Create))
             {
                 DataContractSerializer ser = new DataContractSerializer(typeof(Tile));
                 ser.WriteObject(stream, this);
             }
+        }
+
+        public static void Delete(int X, int Y, int Z)
+        {
+            string path = GetPathForTile(X, Y, Z);
+            File.Delete(path + Z + ".til");
         }
 
         public static List<Tile> LoadStack(int X, int Y, int Z)
