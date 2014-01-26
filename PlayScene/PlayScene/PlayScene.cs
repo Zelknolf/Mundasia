@@ -71,6 +71,7 @@ namespace Mundasia.Interface
         {
             drawableTiles.Add(tile);
             TileImage image = tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+            image.TileSelected += image_TileSelected;
             image.SourceTile = tile;
             drawableImages.Add(image);
             drawableImages.Sort();
