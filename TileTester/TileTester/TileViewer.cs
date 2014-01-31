@@ -86,6 +86,9 @@ namespace TileTester
             editPane.X.ValueChanged += X_ValueChanged;
             editPane.Y.ValueChanged += Y_ValueChanged;
             editPane.Z.ValueChanged += Z_ValueChanged;
+            editPane.Set.SelectedValueChanged += Set_SelectedValueChanged;
+            editPane.TileHeight.SelectedValueChanged += TileHeight_SelectedValueChanged;
+            editPane.TileDirection.SelectedValueChanged += TileDirection_SelectedValueChanged;
             this.Controls.Add(editPane);
 
             scene.Size = new Size(this.ClientRectangle.Width - 200, this.ClientRectangle.Height);
@@ -136,8 +139,57 @@ namespace TileTester
             this.Resize += new EventHandler(TileViewer_Resize);
         }
 
+        void TileDirection_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (editPane.SettingNewTile) return;
+            if (editPane.shownTile == null) return;
+            Direction dir;
+            if(Enum.TryParse<Direction>(editPane.TileDirection.SelectedItem.ToString(), out dir))
+            {
+                scene.Remove(editPane.shownTile);
+                Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, dir, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ);
+                scene.Add(replacement);
+                editPane.SetTile(replacement);
+            }
+        }
+
+        void TileHeight_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (editPane.SettingNewTile) return;
+            if (editPane.shownTile == null) return;
+            int height = 0;
+            int.TryParse(editPane.TileHeight.SelectedItem.ToString(), out height);
+            if(height > 0)
+            {
+                scene.Remove(editPane.shownTile);
+                Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, height, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ);
+                scene.Add(replacement);
+                editPane.SetTile(replacement);
+            }
+        }
+
+        void Set_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (editPane.SettingNewTile) return;
+            if (editPane.shownTile == null) return;
+            scene.Remove(editPane.shownTile);
+            uint nTile = 0;
+            foreach(TileSet ts in TileSet.GetSets())
+            {
+                if(editPane.Set.SelectedItem.ToString() == ts.Name)
+                {
+                    nTile = ts.Id;
+                    break;
+                }
+            }
+            Tile replacement = new Tile(nTile, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ);
+            scene.Add(replacement);
+            editPane.SetTile(replacement);
+        }
+
         void Z_ValueChanged(object sender, EventArgs e)
         {
+            if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return;
             scene.Remove(editPane.shownTile);
             Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, (int)editPane.Z.Value);
@@ -147,6 +199,7 @@ namespace TileTester
 
         void Y_ValueChanged(object sender, EventArgs e)
         {
+            if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return;
             scene.Remove(editPane.shownTile);
             Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, (int)editPane.Y.Value, editPane.shownTile.PosZ);
@@ -156,6 +209,7 @@ namespace TileTester
 
         void X_ValueChanged(object sender, EventArgs e)
         {
+            if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return; 
             scene.Remove(editPane.shownTile);
             Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, (int)editPane.X.Value, editPane.shownTile.PosY, editPane.shownTile.PosZ);
