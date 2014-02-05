@@ -89,6 +89,8 @@ namespace TileTester
             editPane.Set.SelectedValueChanged += Set_SelectedValueChanged;
             editPane.TileHeight.SelectedValueChanged += TileHeight_SelectedValueChanged;
             editPane.TileDirection.SelectedValueChanged += TileDirection_SelectedValueChanged;
+            editPane.AddTile.Click += AddTile_Click;
+            editPane.RemoveTile.Click += RemoveTile_Click;
             this.Controls.Add(editPane);
 
             scene.Size = new Size(this.ClientRectangle.Width - 200, this.ClientRectangle.Height);
@@ -137,6 +139,27 @@ namespace TileTester
             this.Controls.Add(scene);
 
             this.Resize += new EventHandler(TileViewer_Resize);
+        }
+
+        void RemoveTile_Click(object sender, EventArgs e)
+        {
+            if (editPane.shownTile == null) return;
+            scene.Remove(editPane.shownTile);
+        }
+
+        void AddTile_Click(object sender, EventArgs e)
+        {
+            Tile newTile = null;
+            if (editPane.shownTile == null)
+            {
+                newTile = new Tile(0, Direction.DirectionLess, 1, 0, 0, 0);
+            }
+            else
+            {
+                newTile = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ + editPane.shownTile.TileHeight);
+            }
+            scene.Add(newTile);
+            editPane.SetTile(newTile);
         }
 
         void TileDirection_SelectedValueChanged(object sender, EventArgs e)

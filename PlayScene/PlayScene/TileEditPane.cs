@@ -142,6 +142,24 @@ namespace Mundasia.Interface
             TileDirection.Location = new Point(tileDirectionLabel.Location.X + tileDirectionLabel.Width + padding, tileDirectionLabel.Location.Y);
             this.Controls.Add(TileDirection);
 
+            AddTile = new Button();
+            AddTile.BackColor = Color.Black;
+            AddTile.ForeColor = Color.White;
+            AddTile.Text = "Add Tile";
+            AddTile.Height = AddTile.PreferredSize.Height;
+            AddTile.Width = this.ClientRectangle.Width - (padding * 2);
+            AddTile.Location = new Point(padding, TileDirection.Location.Y + TileDirection.Height + padding);
+            this.Controls.Add(AddTile);
+
+            RemoveTile = new Button();
+            RemoveTile.BackColor = Color.Black;
+            RemoveTile.ForeColor = Color.White;
+            RemoveTile.Text = "Remove Tile";
+            RemoveTile.Height = RemoveTile.PreferredSize.Height;
+            RemoveTile.Width = this.ClientRectangle.Width - (padding * 2);
+            RemoveTile.Location = new Point(padding, AddTile.Location.Y + AddTile.Height + padding);
+            this.Controls.Add(RemoveTile);
+
             RefreshDisplay();
         }
 
@@ -154,6 +172,9 @@ namespace Mundasia.Interface
         public ComboBox Set;
         public ComboBox TileHeight;
         public ComboBox TileDirection;
+
+        public Button AddTile;
+        public Button RemoveTile;
 
         public bool SettingNewTile = false;
 
