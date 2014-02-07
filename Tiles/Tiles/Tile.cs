@@ -20,6 +20,7 @@ namespace Mundasia.Objects
     /// 
     /// As we expect tiles to be used and re-used frequently, this class should expect the use of caching when possible.
     /// </summary>
+    [DataContract]
     public class Tile
     {
         /// <summary>
@@ -280,6 +281,9 @@ namespace Mundasia.Objects
         public void Save()
         {
             string path = GetPathForTile(x, y, z);
+            
+            if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
+
             using (FileStream stream = new FileStream(path + z + ".til", FileMode.Create))
             {
                 DataContractSerializer ser = new DataContractSerializer(typeof(Tile));
@@ -346,7 +350,7 @@ namespace Mundasia.Objects
 
         public static string GetPathForTile(int X, int Y, int Z)
         {
-            string ret = Directory.GetCurrentDirectory() + X + "\\" + Y + "\\";
+            string ret = Directory.GetCurrentDirectory() + "\\" + X + "\\" + Y + "\\";
             Z = Z / 1000;
             ret += Z + "000\\";
             return ret;
@@ -393,31 +397,37 @@ namespace Mundasia.Objects
         /// <summary>
         /// Storage of the Id of the TileSet that this tile belongs to.
         /// </summary>
+        [DataMember]
         private uint tileSet;
 
         /// <summary>
         /// Storage for which side of the tile is the low point of the slope.
         /// </summary>
+        [DataMember]
         private Direction slopeSide;
 
         /// <summary>
         /// How tall the tile is. Expecting 1 - 4.
         /// </summary>
+        [DataMember]
         private int height;
 
         /// <summary>
         /// The X coordinate of the tile.
         /// </summary>
+        [DataMember]
         private int x;
 
         /// <summary>
         /// The Y coordinate of the tile.
         /// </summary>
+        [DataMember]
         private int y;
 
         /// <summary>
         /// The Z coordinate of the tile.
         /// </summary>
+        [DataMember]
         private int z;
         #endregion
 
