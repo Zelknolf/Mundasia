@@ -278,9 +278,9 @@ namespace Mundasia.Objects
             #endregion
         }
 
-        public void Save()
+        public void Save(string Map)
         {
-            string path = GetPathForTile(x, y, z);
+            string path = GetPathForTile(x, y, z, Map);
             
             if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
 
@@ -291,16 +291,35 @@ namespace Mundasia.Objects
             }
         }
 
-        public static void Delete(int X, int Y, int Z)
+        public void Delete(string Map)
         {
-            string path = GetPathForTile(X, Y, Z);
+            Tile.Delete(x, y, z, Map);
+        }
+
+        public static void Delete(int X, int Y, int Z, string Map)
+        {
+            string path = GetPathForTile(X, Y, Z, Map);
             File.Delete(path + Z + ".til");
         }
 
-        public static List<Tile> LoadStack(int X, int Y, int Z)
+        public static Tile Load(int X, int Y, int Z, string Map)
+        {
+            string filePath = GetPathForTile(X, Y, Z, Map) + Z + ".til";
+            if (!File.Exists(filePath)) return null;
+            else
+            {
+                DataContractSerializer ser = new DataContractSerializer(typeof(Tile));
+                using (FileStream stream = new FileStream(filePath, FileMode.Open))
+                {
+                    return ser.ReadObject(stream) as Tile;
+                }
+            }
+        }
+
+        public static List<Tile> LoadStack(int X, int Y, int Z, string Map)
         {
             List<Tile> ret = new List<Tile>();
-            string folder = GetPathForTile(X, Y, Z);
+            string folder = GetPathForTile(X, Y, Z, Map);
             if(!Directory.Exists(folder))
             {
                 return ret;
@@ -317,9 +336,9 @@ namespace Mundasia.Objects
                     }
                 }
             }
-            if(folder != GetPathForTile(X, Y, Z + 4)) // If we're near enough to where we cut over the folders where tile bodies might bleed over, load both.
+            if(folder != GetPathForTile(X, Y, Z + 4, Map)) // If we're near enough to where we cut over the folders where tile bodies might bleed over, load both.
             {
-                foreach (string file in Directory.GetFiles(GetPathForTile(X, Y, Z + 4)))
+                foreach (string file in Directory.GetFiles(GetPathForTile(X, Y, Z + 4, Map)))
                 {
                     using (FileStream stream = new FileStream(file, FileMode.Open))
                     {
@@ -331,9 +350,9 @@ namespace Mundasia.Objects
                     }
                 }
             }
-            if (folder != GetPathForTile(X, Y, Z - 4))
+            if (folder != GetPathForTile(X, Y, Z - 4, Map))
             {
-                foreach (string file in Directory.GetFiles(GetPathForTile(X, Y, Z - 4)))
+                foreach (string file in Directory.GetFiles(GetPathForTile(X, Y, Z - 4, Map)))
                 {
                     using (FileStream stream = new FileStream(file, FileMode.Open))
                     {
@@ -348,9 +367,9 @@ namespace Mundasia.Objects
             return ret;
         }
 
-        public static string GetPathForTile(int X, int Y, int Z)
+        public static string GetPathForTile(int X, int Y, int Z, string Map)
         {
-            string ret = Directory.GetCurrentDirectory() + "\\" + X + "\\" + Y + "\\";
+            string ret = Directory.GetCurrentDirectory() + "\\" + Map + "\\" + X + "\\" + Y + "\\";
             Z = Z / 1000;
             ret += Z + "000\\";
             return ret;
