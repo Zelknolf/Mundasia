@@ -18,9 +18,10 @@ namespace TileTester
 
         public static uint TestedTileset = 2;
 
-        Direction topDirection = Direction.NorthWest;
         PlayScene scene;
         TileEditPane editPane;
+
+        Map currentMap = new Map();
 
         int timeOfDay = 0;
 
@@ -29,56 +30,7 @@ namespace TileTester
             InitializeComponent();
             scene = new PlayScene();
 
-            // Build four little pyramids to show slopes and blocks of every height
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 4, 5, 5, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 3, 6, 5, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthEast, 4, 6, 6, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.North, 4, 5, 6, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthWest, 4, 4, 6, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.West, 4, 4, 5, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthWest, 4, 4, 4, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.South, 4, 5, 4, 4));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthEast, 4, 6, 4, 4));
-
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 3, 5, 0, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 2, 6, 0, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthEast, 3, 6, 1, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.North, 3, 5, 1, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthWest, 3, 4, 1, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.West, 3, 4, 0, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthWest, 3, 4, -1, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.South, 3, 5, -1, 3));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthEast, 3, 6, -1, 3));
-
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 2, 0, 5, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 1, 1, 5, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthEast, 2, 1, 6, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.North, 2, 0, 6, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthWest, 2, -1, 6, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.West, 2, -1, 5, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthWest, 2, -1, 4, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.South, 2, 0, 4, 2));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthEast, 2, 1, 4, 2));
-
-            drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 1, 0, 0, 1));
-            //drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 1, 1, 0, 0)); // this is just the floor. Bring back if you drop the floor.
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthEast, 1, 1, 1, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.North, 1, 0, 1, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.NorthWest, 1, -1, 1, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.West, 1, -1, 0, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthWest, 1, -1, -1, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.South, 1, 0, -1, 1));
-            drawnTiles.Add(new Tile(TestedTileset, Direction.SouthEast, 1, 1, -1, 1));
-
-
-            // Add a flat floor.
-            for (int x = -7; x < 8; x++)
-            {
-                for (int y = -7; y < 8; y++)
-                {
-                    drawnTiles.Add(new Tile(TestedTileset, Direction.DirectionLess, 1, x, y, 0));
-                }
-            }
+            currentMap.Name = "World";
 
             editPane = new TileEditPane(null);
             editPane.Size = new Size(200, this.ClientRectangle.Height);
@@ -95,18 +47,34 @@ namespace TileTester
 
             scene.Size = new Size(this.ClientRectangle.Width - 200, this.ClientRectangle.Height);
             scene.TileSelected += scene_TileSelected;
-            scene.ViewCenterX = 0;
-            scene.ViewCenterY = 0;
+            scene.ViewCenterX = 20000000;
+            scene.ViewCenterY = 20000000;
             scene.ViewCenterZ = 0;
+
+            currentMap.LoadNearby(scene.ViewCenterX, scene.ViewCenterY, scene.ViewCenterZ);
+            for(int X = scene.ViewCenterX - 40; X < scene.ViewCenterX + 40; X++)
+            {
+                if (!currentMap.Tiles.ContainsKey(X)) continue;
+                for (int Y = scene.ViewCenterY - 40; Y < scene.ViewCenterY + 40; Y++)
+                {
+                    if (!currentMap.Tiles[X].ContainsKey(Y)) continue;
+                    for (int Z = scene.ViewCenterZ - 40; Z < scene.ViewCenterZ + 40; Z++)
+                    {
+                        if (!currentMap.Tiles[X][Y].ContainsKey(Z)) continue;
+                        drawnTiles.Add(currentMap.Tiles[X][Y][Z]);
+                    }
+                }
+            }
             scene.Add(drawnTiles);
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 4 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 4 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 1 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 1 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 3, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 2 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 2, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 2 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 1, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 3 });
-            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 0, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 3 });
+
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 4 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 4 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 1 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 1 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 3, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 2 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 3, x = 2, y = -6, z = 0, Facing = Direction.North, Race = 2, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 2 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 1, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 0, Hair = 1, SkinColor = 0, HairColor = 3 });
+            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 2, x = 0, y = -6, z = 0, Facing = Direction.North, Race = 3, Sex = 1, Hair = 1, SkinColor = 0, HairColor = 3 });
 
             // Uncomment to check for clipping
             //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -5, z = 0, Facing = Direction.South, Race = 0, Sex = 0 });
@@ -144,7 +112,15 @@ namespace TileTester
         void RemoveTile_Click(object sender, EventArgs e)
         {
             if (editPane.shownTile == null) return;
-            scene.Remove(editPane.shownTile);
+            if (currentMap.Remove(editPane.shownTile))
+            {
+                editPane.shownTile.Delete(currentMap.Name);
+                scene.Remove(editPane.shownTile);
+            }
+            else
+            {
+                MessageBox.Show(String.Format("Could not remove the tile at ({0},{1},{2})", editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ));
+            }
         }
 
         void AddTile_Click(object sender, EventArgs e)
@@ -152,14 +128,22 @@ namespace TileTester
             Tile newTile = null;
             if (editPane.shownTile == null)
             {
-                newTile = new Tile(0, Direction.DirectionLess, 1, 0, 0, 0);
+                newTile = new Tile(0, Direction.DirectionLess, 1, 20000000, 20000000, 0);
             }
             else
             {
                 newTile = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ + editPane.shownTile.TileHeight);
             }
-            scene.Add(newTile);
-            editPane.SetTile(newTile);
+            if (currentMap.Add(newTile))
+            {
+                newTile.Save(currentMap.Name);
+                scene.Add(newTile);
+                editPane.SetTile(newTile);
+            }
+            else
+            {
+                MessageBox.Show(String.Format("Could not add the tile at ({0},{1},{2})", editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ));
+            }
         }
 
         void TileDirection_SelectedValueChanged(object sender, EventArgs e)
@@ -169,10 +153,11 @@ namespace TileTester
             Direction dir;
             if(Enum.TryParse<Direction>(editPane.TileDirection.SelectedItem.ToString(), out dir))
             {
-                scene.Remove(editPane.shownTile);
                 Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, dir, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ);
-                scene.Add(replacement);
-                editPane.SetTile(replacement);
+                if (SwapTiles(editPane.shownTile, replacement))
+                {
+                    editPane.SetTile(replacement);
+                }
             }
         }
 
@@ -184,10 +169,11 @@ namespace TileTester
             int.TryParse(editPane.TileHeight.SelectedItem.ToString(), out height);
             if(height > 0)
             {
-                scene.Remove(editPane.shownTile);
                 Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, height, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ);
-                scene.Add(replacement);
-                editPane.SetTile(replacement);
+                if (SwapTiles(editPane.shownTile, replacement))
+                {
+                    editPane.SetTile(replacement);
+                }
             }
         }
 
@@ -195,7 +181,6 @@ namespace TileTester
         {
             if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return;
-            scene.Remove(editPane.shownTile);
             uint nTile = 0;
             foreach(TileSet ts in TileSet.GetSets())
             {
@@ -206,38 +191,43 @@ namespace TileTester
                 }
             }
             Tile replacement = new Tile(nTile, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, editPane.shownTile.PosZ);
-            scene.Add(replacement);
-            editPane.SetTile(replacement);
+            if (SwapTiles(editPane.shownTile, replacement))
+            {
+                editPane.SetTile(replacement);
+            }
         }
 
         void Z_ValueChanged(object sender, EventArgs e)
         {
             if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return;
-            scene.Remove(editPane.shownTile);
             Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, editPane.shownTile.PosY, (int)editPane.Z.Value);
-            scene.Add(replacement);
-            editPane.SetTile(replacement);
+            if (SwapTiles(editPane.shownTile, replacement))
+            {
+                editPane.SetTile(replacement);
+            }
         }
 
         void Y_ValueChanged(object sender, EventArgs e)
         {
             if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return;
-            scene.Remove(editPane.shownTile);
             Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, editPane.shownTile.PosX, (int)editPane.Y.Value, editPane.shownTile.PosZ);
-            scene.Add(replacement);
-            editPane.SetTile(replacement);
+            if (SwapTiles(editPane.shownTile, replacement))
+            {
+                editPane.SetTile(replacement);
+            }
         }
 
         void X_ValueChanged(object sender, EventArgs e)
         {
             if (editPane.SettingNewTile) return;
             if (editPane.shownTile == null) return; 
-            scene.Remove(editPane.shownTile);
             Tile replacement = new Tile(editPane.shownTile.CurrentTileSet, editPane.shownTile.Slope, editPane.shownTile.TileHeight, (int)editPane.X.Value, editPane.shownTile.PosY, editPane.shownTile.PosZ);
-            scene.Add(replacement);
-            editPane.SetTile(replacement);
+            if (SwapTiles(editPane.shownTile, replacement))
+            {
+                editPane.SetTile(replacement);
+            }
         }
 
         void scene_TileSelected(object Sender, TileSelectEventArgs e)
@@ -248,6 +238,24 @@ namespace TileTester
         void TileViewer_Resize(object sender, EventArgs e)
         {
             scene.Size = this.Size;
+        }
+
+        bool SwapTiles(Tile toRemove, Tile toAdd)
+        {
+            if(!currentMap.Remove(toRemove))
+            {
+                return false;
+            }
+            if(!currentMap.Add(toAdd))
+            {
+                currentMap.Add(toRemove);
+                return false;
+            }
+            toRemove.Delete(currentMap.Name);
+            toAdd.Save(currentMap.Name);
+            scene.Remove(toRemove);
+            scene.Add(toAdd);
+            return true;
         }
     }
 }
