@@ -128,16 +128,19 @@ namespace Mundasia.Objects
         }
 
         /// <summary>
-        /// Returns any tile that
+        /// Returns any tile that overlaps the given coordinates
         /// </summary>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="Z"></param>
-        /// <returns></returns>
+        /// <param name="X">The X coordinate of the tile</param>
+        /// <param name="Y">The Y coordinate of the tile</param>
+        /// <param name="Z">The Z coordinate of the tile</param>
+        /// <returns>The overlapping tile, or null if none.</returns>
         public Tile GetTileOverlap(int X, int Y, int Z)
         {
             Tile exact = GetTileExact(X, Y, Z);
             if (exact != null) return exact;
+            if (!Tiles.ContainsKey(X)) return null;
+            if (!Tiles[X].ContainsKey(Y)) return null;
+            if (!Tiles[X][Y].ContainsKey(Z)) return null;
             if(Tiles[X][Y].ContainsKey(Z+1))
             {
                 Tile toCheck = Tiles[X][Y][Z + 1];
@@ -174,51 +177,52 @@ namespace Mundasia.Objects
         /// <returns></returns>
         public void LoadNearby(int X, int Y, int Z)
         {
-            int ZforPath = Z;
-            Z = Z / 1000;
             for (int c = X - 40; c < X + 40; c++)
             {
                 for(int cc = Y - 40; cc < Y + 40; cc++)
                 {
-                    if(!TilesLoaded.ContainsKey(X) ||
-                       !TilesLoaded[X].ContainsKey(Y) ||
-                       !TilesLoaded[X][Y].ContainsKey(Z) ||
-                       !TilesLoaded[X][Y][Z])
+                    for(int ccc = Z - 40; ccc < Z + 40; ccc++)
                     {
-                        List<Tile> nearby = Tile.LoadStack(X, Y, ZforPath);
-                        foreach(Tile tile in nearby)
+                        if (!TilesLoaded.ContainsKey(c) ||
+                            !TilesLoaded[c].ContainsKey(cc) ||
+                            !TilesLoaded[c][cc].ContainsKey(ccc) ||
+                            !TilesLoaded[c][cc][ccc])
                         {
-                            if(Tiles.ContainsKey(X) &&
-                               Tiles[X].ContainsKey(Y) &&
-                               Tiles[X][Y].ContainsKey(tile.PosZ))
+                            Tile nearby = Tile.Load(c, cc, ccc, Name);
+                            if (nearby != null)
                             {
-                                continue;
+                                if (Tiles.ContainsKey(c) &&
+                                    Tiles[c].ContainsKey(cc) &&
+                                    Tiles[c][cc].ContainsKey(nearby.PosZ))
+                                {
+                                    continue;
+                                }
+                                if (!Tiles.ContainsKey(c))
+                                {
+                                    Tiles.Add(c, new Dictionary<int, Dictionary<int, Tile>>());
+                                }
+                                if (!Tiles[c].ContainsKey(cc))
+                                {
+                                    Tiles[c].Add(cc, new Dictionary<int, Tile>());
+                                }
+                                Tiles[c][cc].Add(nearby.PosZ, nearby);
                             }
-                            if(!Tiles.ContainsKey(X))
+                            if (!TilesLoaded.ContainsKey(c))
                             {
-                                Tiles.Add(X, new Dictionary<int, Dictionary<int, Tile>>());
+                                TilesLoaded.Add(c, new Dictionary<int, Dictionary<int, bool>>());
                             }
-                            if(!Tiles[X].ContainsKey(Y))
+                            if (!TilesLoaded[c].ContainsKey(cc))
                             {
-                                Tiles[X].Add(Y, new Dictionary<int, Tile>());
+                                TilesLoaded[c].Add(cc, new Dictionary<int, bool>());
                             }
-                            Tiles[X][Y].Add(tile.PosZ, tile);
-                        }
-                        if(!TilesLoaded.ContainsKey(X))
-                        {
-                            TilesLoaded.Add(X, new Dictionary<int, Dictionary<int, bool>>());
-                        }
-                        if(!TilesLoaded[X].ContainsKey(Y))
-                        {
-                            TilesLoaded[X].Add(Y, new Dictionary<int, bool>());
-                        }
-                        if(!TilesLoaded[X][Y].ContainsKey(Z))
-                        {
-                            TilesLoaded[X][Y].Add(Z, true);
-                        }
-                        else
-                        {
-                            TilesLoaded[X][Y][Z] = true;
+                            if (!TilesLoaded[c][cc].ContainsKey(ccc))
+                            {
+                                TilesLoaded[c][cc].Add(ccc, true);
+                            }
+                            else
+                            {
+                                TilesLoaded[c][cc][ccc] = true;
+                            }
                         }
                     }
                 }
