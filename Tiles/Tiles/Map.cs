@@ -181,14 +181,14 @@ namespace Mundasia.Objects
             {
                 for(int cc = Y - 40; cc < Y + 40; cc++)
                 {
-                    for(int ccc = Z - 40; ccc < Z + 40; ccc++)
+                    if (!TilesLoaded.ContainsKey(c) ||
+                        !TilesLoaded[c].ContainsKey(cc) ||
+                        !TilesLoaded[c][cc].ContainsKey(Z/1000) ||
+                        !TilesLoaded[c][cc][Z/1000])
                     {
-                        if (!TilesLoaded.ContainsKey(c) ||
-                            !TilesLoaded[c].ContainsKey(cc) ||
-                            !TilesLoaded[c][cc].ContainsKey(ccc) ||
-                            !TilesLoaded[c][cc][ccc])
+                        List<Tile> nearbyTiles = Tile.LoadStack(c, cc, Z, Name);
+                        foreach (Tile nearby in nearbyTiles)
                         {
-                            Tile nearby = Tile.Load(c, cc, ccc, Name);
                             if (nearby != null)
                             {
                                 if (Tiles.ContainsKey(c) &&
@@ -207,22 +207,22 @@ namespace Mundasia.Objects
                                 }
                                 Tiles[c][cc].Add(nearby.PosZ, nearby);
                             }
-                            if (!TilesLoaded.ContainsKey(c))
-                            {
-                                TilesLoaded.Add(c, new Dictionary<int, Dictionary<int, bool>>());
-                            }
-                            if (!TilesLoaded[c].ContainsKey(cc))
-                            {
-                                TilesLoaded[c].Add(cc, new Dictionary<int, bool>());
-                            }
-                            if (!TilesLoaded[c][cc].ContainsKey(ccc))
-                            {
-                                TilesLoaded[c][cc].Add(ccc, true);
-                            }
-                            else
-                            {
-                                TilesLoaded[c][cc][ccc] = true;
-                            }
+                        }
+                        if (!TilesLoaded.ContainsKey(c))
+                        {
+                            TilesLoaded.Add(c, new Dictionary<int, Dictionary<int, bool>>());
+                        }
+                        if (!TilesLoaded[c].ContainsKey(cc))
+                        {
+                            TilesLoaded[c].Add(cc, new Dictionary<int, bool>());
+                        }
+                        if (!TilesLoaded[c][cc].ContainsKey(Z/1000))
+                        {
+                            TilesLoaded[c][cc].Add(Z/1000, true);
+                        }
+                        else
+                        {
+                            TilesLoaded[c][cc][Z/1000] = true;
                         }
                     }
                 }
