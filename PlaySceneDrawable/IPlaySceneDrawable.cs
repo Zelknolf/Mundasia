@@ -30,6 +30,12 @@ namespace Mundasia.Objects
         Image GetTwilightImage();
         Image GetSelectedImage();
         Image GetMouseOverImage();
+
+        int GetObjectPositionX();
+        int GetObjectPositionY();
+        int GetObjectPositionZ();
+
+        IPlaySceneDrawable GetNewDrawable();
     }
 
     public static class PlaySceneDrawable

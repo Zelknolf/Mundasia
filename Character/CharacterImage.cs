@@ -91,5 +91,25 @@ namespace Mundasia.Objects
         {
             return MouseOverImage;
         }
+
+        public int GetObjectPositionX()
+        {
+            return SourceCharacter.x;
+        }
+
+        public int GetObjectPositionY()
+        {
+            return SourceCharacter.y;
+        }
+
+        public int GetObjectPositionZ()
+        {
+            return SourceCharacter.z;
+        }
+
+        public IPlaySceneDrawable GetNewDrawable()
+        {
+            return SourceCharacter.CachedImage;
+        }
     }
 }
