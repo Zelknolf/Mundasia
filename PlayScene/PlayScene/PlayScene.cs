@@ -26,6 +26,7 @@ namespace Mundasia.Interface
             this.DoubleBuffered = true;
             this.Paint += new PaintEventHandler(PlayScene_Paint);
             this.MouseClick += new MouseEventHandler(PlayScene_MouseClick);
+            this.MouseDoubleClick += new MouseEventHandler(PlayScene_DoubleClick);
             this.MouseMove += new MouseEventHandler(PlayScene_MouseMove);
             this.Resize += new EventHandler(PlayScene_Resize);
         }
