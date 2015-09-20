@@ -24,6 +24,55 @@ namespace Mundasia.Objects
     public class Tile
     {
         /// <summary>
+        /// Convert a list of tiles to a string to be used to send through the communicatoin.
+        /// </summary>
+        /// <param name="tiles">the list of tiles to be converted</param>
+        /// <returns>a string suitable for sending</returns>
+        public static string TileCollectionToString(List<Tile> tiles)
+        {
+            StringBuilder str = new StringBuilder();
+            foreach(Tile tile in tiles)
+            {
+                str.Append(tile.ToString());
+                str.Append("^");
+            }
+            return str.ToString().Trim('^');
+        }
+
+        /// <summary>
+        /// Convert a string that represents a list of tiles to the list of tiles.
+        /// </summary>
+        /// <param name="builder">the string received from the communication methods</param>
+        /// <returns>the list of tiles</returns>
+        public static List<Tile> TileCollectionFromSTring(string builder)
+        {
+            string[] tileBuilders = builder.Split('^');
+            List<Tile> tiles = new List<Tile>();
+            foreach(string tileBuilder in tileBuilders)
+            {
+                Tile tile = new Tile(tileBuilder);
+                if (tile.height > 0) tiles.Add(tile);
+            }
+            return tiles;
+        }
+        /// <summary>
+        /// This class defines a tile, built from a builder string that would come through communication.
+        /// </summary>
+        /// <param name="builderString">The string that would have come from the communication.</param>
+        public Tile(string builderString)
+        {
+            string[] parts = builderString.Split('|');
+            if (parts.Length != 6) return;
+
+            if (!uint.TryParse(parts[0], out tileSet)) return;
+            if (!Direction.TryParse(parts[1], out slopeSide)) return;
+            if (!int.TryParse(parts[3], out x)) return;
+            if (!int.TryParse(parts[4], out y)) return;
+            if (!int.TryParse(parts[5], out z)) return;
+            if (!int.TryParse(parts[2], out height)) return;
+        }
+        
+        /// <summary>
         /// This class defines a tile, and provides methods which make said tile useful to other parts of the program.
         /// </summary>
         /// <param name="TileSet">a string representing where the images associated with the tile can be located</param>
@@ -404,6 +453,23 @@ namespace Mundasia.Objects
         public Direction Slope
         {
             get { return slopeSide; }
+        }
+
+        public string ToString()
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append(tileSet);
+            str.Append("|");
+            str.Append(slopeSide);
+            str.Append("|");
+            str.Append(height);
+            str.Append("|");
+            str.Append(x);
+            str.Append("|");
+            str.Append(y);
+            str.Append("|");
+            str.Append(z);
+            return str.ToString();
         }
         #endregion
 
