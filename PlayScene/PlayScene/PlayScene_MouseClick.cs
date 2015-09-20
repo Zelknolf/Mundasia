@@ -12,6 +12,8 @@ namespace Mundasia.Interface
 {
     public partial class PlayScene : Panel
     {
+        private IPlaySceneDrawable lastSelected = null;
+
         /// <summary>
         /// Manages selection of tiles and the use of standard buttons.
         /// </summary>
@@ -50,6 +52,11 @@ namespace Mundasia.Interface
                         drawableImages.Add(ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
                     }
                     drawableImages.Sort();
+                    if (lastSelected != null)
+                    {
+                        lastSelected = lastSelected.GetNewDrawable();
+                        lastSelected.SetSelected(true);
+                    }
                     this.Refresh();
                 }
                 // TODO: Don't hard code these values.
@@ -83,11 +90,21 @@ namespace Mundasia.Interface
                         drawableImages.Add(ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
                     }
                     drawableImages.Sort();
+                    if (lastSelected != null)
+                    {
+                        lastSelected = lastSelected.GetNewDrawable();
+                        lastSelected.SetSelected(true);
+                    }
                     this.Refresh();
                 }
                 else if (currentMouseOver != null)
                 {
                     currentMouseOver.SetSelected(!currentMouseOver.GetSelected());
+                    if (lastSelected != null && lastSelected != currentMouseOver) lastSelected.SetSelected(false);
+                    if(lastSelected != null) this.Invalidate(new Rectangle(lastSelected.GetImageLocation(), lastSelected.GetTemplateImage().Size));
+                    this.Invalidate(new Rectangle(currentMouseOver.GetImageLocation(), currentMouseOver.GetTemplateImage().Size));
+                    lastSelected = currentMouseOver;
+
                 }
             }
 
@@ -96,6 +113,34 @@ namespace Mundasia.Interface
             {
                 timeOfDay++;
                 if (timeOfDay > 2) timeOfDay = 0;
+                this.Refresh();
+            }
+        }
+
+        private void PlayScene_DoubleClick(object Sender, MouseEventArgs e)
+        {
+            if(currentMouseOver != null)
+            {
+                ViewCenterX = currentMouseOver.GetObjectPositionX();
+                ViewCenterY = currentMouseOver.GetObjectPositionY();
+                ViewCenterZ = currentMouseOver.GetObjectPositionZ();
+                drawableImages.Clear();
+                foreach (Tile tile in drawableTiles)
+                {
+                    TileImage img = tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+                    img.TileSelected += image_TileSelected;
+                    drawableImages.Add(img);
+                }
+                foreach (DisplayCharacter ch in drawableCharacters)
+                {
+                    drawableImages.Add(ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
+                }
+                drawableImages.Sort();
+                if (lastSelected != null)
+                {
+                    lastSelected = lastSelected.GetNewDrawable();
+                    lastSelected.SetSelected(true);
+                }
                 this.Refresh();
             }
         }
