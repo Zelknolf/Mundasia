@@ -21,9 +21,20 @@ namespace Mundasia.Interface
             drawableImages.Clear();
             foreach (Tile tile in drawableTiles)
             {
-                drawableImages.Add(tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
+                TileImage img = tile.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+                img.TileSelected += image_TileSelected;
+                drawableImages.Add(img);
+            }
+            foreach (DisplayCharacter ch in drawableCharacters)
+            {
+                drawableImages.Add(ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this));
             }
             drawableImages.Sort();
+            if (lastSelected != null)
+            {
+                lastSelected = lastSelected.GetNewDrawable();
+                lastSelected.SetSelected(true);
+            }
             this.Refresh();
         }
     }
