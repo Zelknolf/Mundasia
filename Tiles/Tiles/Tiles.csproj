@@ -53,6 +53,10 @@
     <Compile Include="TileSet.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Character\Character.csproj">
+      <Project>{e46d3910-9e76-4242-b3ee-8af00acbf511}</Project>
+      <Name>Character</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
       <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
       <Name>PlaySceneDrawable</Name>

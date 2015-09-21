@@ -1153,7 +1153,7 @@ namespace Mundasia.Interface
 
             _appearanceScene.Remove(_displayCharacter);
             _displayCharacter.CharacterId = 1;
-            _displayCharacter.Race = (uint)_race;
+            _displayCharacter.CharacterRace = (uint)_race;
             _displayCharacter.Height = Race.GetRace((uint)_race).Height;
             _displayCharacter.Sex = _sex;
             _appearanceScene.Add(_displayCharacter);

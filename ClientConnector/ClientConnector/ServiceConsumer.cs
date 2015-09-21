@@ -249,6 +249,35 @@ namespace Mundasia.Communication
                 return String.Empty;
             }
         }
+
+        public static string SelectCharacter(string character)
+        {
+            RequestCharacter req = new RequestCharacter()
+            {
+                RequestedCharacter = character,
+                SessionId = SessionId,
+                UserId = UserId
+            };
+            try
+            {
+                string wrURI = baseServerTarget + "selectcharacter";
+                string msg = req.ToString();
+                WebRequest wreq = WebRequest.Create(wrURI + "?message=" + msg);
+                wreq.Method = "POST";
+                wreq.ContentLength = 0;
+                WebResponse wresp = wreq.GetResponse();
+                using(TextReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(string), StringNamespace);
+                    string resp = (string)xml.Deserialize(sr);
+                    return resp;
+                }
+            }
+            catch
+            {
+                return String.Empty;
+            }
+        }
     }
 
 }

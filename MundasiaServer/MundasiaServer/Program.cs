@@ -22,6 +22,7 @@ namespace Mundasia.Server
         {
             Service.Open();
             LoadLocalResources();
+            Map.LoadedMaps.Add("Material", new Map() { Name = "Material" });
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Status());
             Service.Close();

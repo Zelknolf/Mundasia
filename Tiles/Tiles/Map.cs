@@ -8,6 +8,11 @@ namespace Mundasia.Objects
     public class Map
     {
         /// <summary>
+        /// A collection of all maps which have been loaded.
+        /// </summary>
+        public static Dictionary<string, Map> LoadedMaps = new Dictionary<string, Map>();
+        
+        /// <summary>
         /// A collection of all of the tiles in the area. Tiles appear as Tiles[X][Y][Z].
         /// </summary>
         public Dictionary<int, Dictionary<int, Dictionary<int, Tile>>> Tiles = new Dictionary<int, Dictionary<int, Dictionary<int, Tile>>>();
@@ -17,6 +22,11 @@ namespace Mundasia.Objects
         /// (all Z coordinates from 0-999 are "0" in this dictionary, per Tile.LoadStack's behavior.)
         /// </summary>
         public Dictionary<int, Dictionary<int, Dictionary<int, bool>>> TilesLoaded = new Dictionary<int, Dictionary<int, Dictionary<int, bool>>>();
+
+        /// <summary>
+        /// This is a list of all characters who are currently logged in and present on this map.
+        /// </summary>
+        public List<Character> PresentCharacters = new List<Character>();
 
         /// <summary>
         /// The name of the map being built.
@@ -235,17 +245,36 @@ namespace Mundasia.Objects
             List<Tile> ret = new List<Tile>();
             for (int c = X - 40; c < X + 40; c++)
             {
-                for (int cc = Y - 40; cc < Y + 40; cc++)
+                if (Tiles.ContainsKey(c))
                 {
-                    // Because Tile.LoadStack will provide an empty collection if there's nothing to load, we can assume
-                    // that LoadNearby will have put tiles into all of these places.
-                    foreach(Tile tile in Tiles[X][Y].Values)
+                    for (int cc = Y - 40; cc < Y + 40; cc++)
                     {
-                        if(Math.Abs(tile.PosZ - Z) < 1000)
+                        if (Tiles[c].ContainsKey(cc))
                         {
-                            ret.Add(tile);
+                            foreach (Tile tile in Tiles[c][cc].Values)
+                            {
+                                if (Math.Abs(tile.PosZ - Z) < 1000)
+                                {
+                                    ret.Add(tile);
+                                }
+                            }
                         }
                     }
+                }
+            }
+            return ret;
+        }
+
+        public List<DisplayCharacter> GetNearbyCharacters(int X, int Y, int Z)
+        {
+            List<DisplayCharacter> ret = new List<DisplayCharacter>();
+            foreach(Character ch in PresentCharacters)
+            {
+                if(ch.LocationX > X - 40 && ch.LocationX < X + 40 &&
+                   ch.LocationY > Y - 40 && ch.LocationY < Y + 40 &&
+                   ch.LocationZ > Z - 40 && ch.LocationZ < Z + 40)
+                {
+                    ret.Add(DisplayCharacter.GetDisplayCharacter(ch));
                 }
             }
             return ret;

@@ -18,6 +18,8 @@ namespace Mundasia.Objects
         private static string keyDelimiter = "]";
         private static char[] keyDelim = new char[] { ']' };
 
+        public DisplayCharacter CachedDisplay = null;
+
         public Character() { }
 
         public Character(string message)
@@ -85,6 +87,11 @@ namespace Mundasia.Objects
             uint.TryParse(split[36], out HairStyle);
             uint.TryParse(split[37], out HairColor);
             uint.TryParse(split[38], out SkinColor);
+            int.TryParse(split[39], out LocationX);
+            int.TryParse(split[40], out LocationY);
+            int.TryParse(split[41], out LocationZ);
+            Direction.TryParse(split[42], out LocationFacing);
+            Map = split[43];
         }
 
         public override string ToString()
@@ -179,6 +186,16 @@ namespace Mundasia.Objects
             str.Append(HairColor);
             str.Append(delimiter);
             str.Append(SkinColor);
+            str.Append(delimiter);
+            str.Append(LocationX);
+            str.Append(delimiter);
+            str.Append(LocationY);
+            str.Append(delimiter);
+            str.Append(LocationZ);
+            str.Append(delimiter);
+            str.Append(LocationFacing);
+            str.Append(delimiter);
+            str.Append(Map);
             return str.ToString();
         }
         
@@ -298,6 +315,21 @@ namespace Mundasia.Objects
 
         [XmlElement]
         public uint SkinColor;
+
+        [XmlElement]
+        public string Map;
+
+        [XmlElement]
+        public int LocationX;
+
+        [XmlElement]
+        public int LocationY;
+
+        [XmlElement]
+        public int LocationZ;
+
+        [XmlElement]
+        public Direction LocationFacing;
 
         public bool ValidateCharacter()
         {
@@ -427,6 +459,12 @@ namespace Mundasia.Objects
             MaxVital = 10;
             DecayedVital = 0;
             DestroyedVital = 0;
+
+            LocationX = 0;
+            LocationY = 0;
+            LocationZ = 0;
+            LocationFacing = Direction.North;
+            Map = "Material";
             return true;
         }
     }

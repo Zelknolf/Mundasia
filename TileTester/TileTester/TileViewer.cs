@@ -47,7 +47,7 @@ namespace TileTester
 
             scene.Size = new Size(this.ClientRectangle.Width - 200, this.ClientRectangle.Height);
             scene.TileSelected += scene_TileSelected;
-            scene.ViewCenterX = 20000000;
+            scene.ViewCenterX = 19999990;
             scene.ViewCenterY = 20000000;
             scene.ViewCenterZ = 0;
 

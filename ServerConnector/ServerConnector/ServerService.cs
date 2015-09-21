@@ -199,6 +199,30 @@ namespace Mundasia.Server.Communication
             return String.Empty;
         }
 
+        public string SelectCharacter(string message)
+        {
+            RequestCharacter upd = new RequestCharacter(message);
+            Account acct = Account.LoadAccount(upd.UserId);
+            if(acct == null)
+            {
+                return String.Empty;
+            }
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if(acct.SessionId != upd.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+            acct.KeepAlive();
+
+            Character cha = acct.LoadCharacter(upd.RequestedCharacter);
+            if (cha != null)
+            {
+                CharacterSelection ret = new CharacterSelection(cha);
+                return ret.ToString();
+            }
+            return String.Empty;
+        }
+
         public string Update(string message)
         {
             SessionUpdate upd = new SessionUpdate(message);

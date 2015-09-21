@@ -10,6 +10,13 @@ namespace Mundasia.Objects
 {
     public class DisplayCharacter
     {
+        private static string delimiter = "|";
+        private static char[] delim = new char[] { '|' };
+        private static string groupDelimiter = "[";
+        private static char[] groupDelim = new char[] { '[' };
+
+        public static uint currentId = 0;
+
         public static Color LineHair = Color.FromArgb(255, 102, 93, 61);
         public static Color LineHair2 = Color.FromArgb(255, 102, 94, 61);
         public static Color DarkHair = Color.FromArgb(255, 127, 116, 76);
@@ -25,6 +32,35 @@ namespace Mundasia.Objects
         public static Color LightSkin = Color.FromArgb(255, 255, 217, 165);
         public static Color LightSkin2 = Color.FromArgb(255, 255, 216, 165);
 
+        public static string DisplayCharacterCollectionToString(List<DisplayCharacter> list)
+        {
+            StringBuilder str = new StringBuilder();
+            foreach(DisplayCharacter dc in list)
+            {
+                str.Append(dc.ToString());
+                str.Append(groupDelimiter);
+            }
+            return str.ToString().Trim(groupDelim);
+        }
+
+        public static List<DisplayCharacter> DisplayCharacterCollectionFromString(string fileString)
+        {
+            string[] charBuilders = fileString.Split(groupDelim);
+            List<DisplayCharacter> dcBuilders = new List<DisplayCharacter>();
+            foreach (string dcBuilder in charBuilders)
+            {
+                DisplayCharacter dc = new DisplayCharacter(dcBuilder);
+                if (dc.Hair >= 0) dcBuilders.Add(dc);
+            }
+            return dcBuilders;
+        }
+
+        public static DisplayCharacter GetDisplayCharacter(Character ch)
+        {
+            if (ch.CachedDisplay != null) return ch.CachedDisplay;
+            return new DisplayCharacter(ch);
+        }
+        
         public DisplayCharacter()
         {
             CharacterId = 0;
@@ -33,7 +69,7 @@ namespace Mundasia.Objects
             y = 0;
             z = 0;
             Facing = Direction.North;
-            Race = 0;
+            CharacterRace = 0;
             SkinColor = 0;
             HairColor = 0;
             Sex = 0;
@@ -42,12 +78,62 @@ namespace Mundasia.Objects
 
         public DisplayCharacter(string fileLine)
         {
-
+            string[] input = fileLine.Split(delim);
+            uint.TryParse(input[0], out CharacterId);
+            int.TryParse(input[1], out Height);
+            int.TryParse(input[2], out x);
+            int.TryParse(input[3], out y);
+            int.TryParse(input[4], out z);
+            Direction.TryParse(input[5], out Facing);
+            uint.TryParse(input[6], out CharacterRace);
+            int.TryParse(input[7], out SkinColor);
+            int.TryParse(input[8], out HairColor);
+            int.TryParse(input[9], out Sex);
+            int.TryParse(input[10], out Hair);
         }
 
-        public DisplayCharacter(Character ch)
+        private DisplayCharacter(Character ch)
         {
+            CharacterId = currentId++;
+            Height = Race.GetRace(ch.CharacterRace).Height;
+            x = ch.LocationX;
+            y = ch.LocationY;
+            z = ch.LocationZ;
+            Facing = ch.LocationFacing;
+            CharacterRace = ch.CharacterRace;
+            SkinColor = (int)ch.SkinColor;
+            HairColor = (int)ch.HairColor;
+            Sex = ch.Sex;
+            Hair = (int)ch.HairStyle;
 
+            ch.CachedDisplay = this;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder ret = new StringBuilder();
+            ret.Append(CharacterId);
+            ret.Append(delimiter);
+            ret.Append(Height);
+            ret.Append(delimiter);
+            ret.Append(x);
+            ret.Append(delimiter);
+            ret.Append(y);
+            ret.Append(delimiter);
+            ret.Append(z);
+            ret.Append(delimiter);
+            ret.Append(Facing);
+            ret.Append(delimiter);
+            ret.Append(CharacterRace);
+            ret.Append(delimiter);
+            ret.Append(SkinColor);
+            ret.Append(delimiter);
+            ret.Append(HairColor);
+            ret.Append(delimiter);
+            ret.Append(Sex);
+            ret.Append(delimiter);
+            ret.Append(Hair);
+            return ret.ToString();
         }
 
         public uint CharacterId;
@@ -58,7 +144,7 @@ namespace Mundasia.Objects
         public int z;
         public Direction Facing;
 
-        public uint Race;
+        public uint CharacterRace;
         public int SkinColor;
         public int HairColor;
         public int Sex;
@@ -66,46 +152,42 @@ namespace Mundasia.Objects
 
         public CharacterImage CachedImage;
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
-
         public Color ConvertPixel(Color startingPixel)
         {
             Color ret = startingPixel;
+            Race currentRace = Race.GetRace(CharacterRace);
             if (ret.A == 0) { }
             else if (startingPixel == LineHair || startingPixel == LineHair2)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].LineColor;
+                ret = currentRace.HairColors[HairColor].LineColor;
             }
             else if (startingPixel == DarkHair)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].DarkColor;
+                ret = currentRace.HairColors[HairColor].DarkColor;
             }
             else if (startingPixel == MediumHair || startingPixel == MediumHair2)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].MedColor;
+                ret = currentRace.HairColors[HairColor].MedColor;
             }
             else if (startingPixel == LightHair || startingPixel == LightHair2)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).HairColors[HairColor].LightColor;
+                ret = currentRace.HairColors[HairColor].LightColor;
             }
             else if(startingPixel == LineSkin)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].LineColor;
+                ret = currentRace.SkinColors[SkinColor].LineColor;
             }
             else if(startingPixel == DarkSkin)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].DarkColor;
+                ret = currentRace.SkinColors[SkinColor].DarkColor;
             }
             else if(startingPixel == MediumSkin || startingPixel == MediumSkin2)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].MedColor;
+                ret = currentRace.SkinColors[SkinColor].MedColor;
             }
             else if(startingPixel == LightSkin || startingPixel == LightSkin2)
             {
-                ret = Mundasia.Objects.Race.GetRace(Race).SkinColors[SkinColor].LightColor;
+                ret = currentRace.SkinColors[SkinColor].LightColor;
             }
             return ret;
         }
@@ -247,10 +329,10 @@ namespace Mundasia.Objects
             // image does not exist already.
             // -------------------------------------------
             #region Get an Image
-            Bitmap Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\"+ Race +"\\" + Sex + "\\stand" + facingSuffix + ".png"));
+            Bitmap Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\"+ CharacterRace +"\\" + Sex + "\\stand" + facingSuffix + ".png"));
             if(Hair > 0)
             {
-                Bitmap HairBottom = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + Race + "\\" + Sex + "\\Hair\\stand_" + Hair + facingSuffix + "_b.png"));
+                Bitmap HairBottom = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + CharacterRace + "\\" + Sex + "\\Hair\\stand_" + Hair + facingSuffix + "_b.png"));
                 for (int c = 0; c < Day.Width; c++)
                 {
                     for (int cc = 0; cc < Day.Height; cc++)
@@ -264,7 +346,7 @@ namespace Mundasia.Objects
                     }
                 }
 
-                Bitmap HairTop = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + Race + "\\" + Sex + "\\Hair\\stand_" + Hair + facingSuffix + "_t.png"));
+                Bitmap HairTop = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + CharacterRace + "\\" + Sex + "\\Hair\\stand_" + Hair + facingSuffix + "_t.png"));
                 for (int c = 0; c < HairTop.Width; c++)
                 {
                     for (int cc = 0; cc < HairTop.Height; cc++)

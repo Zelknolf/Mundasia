@@ -23,6 +23,11 @@ namespace Mundasia.Objects
     [DataContract]
     public class Tile
     {
+        private static string delimiter = "|";
+        private static char[] delim = new char[] { '|' };
+        private static string groupDelimiter = "[";
+        private static char[] groupDelim = new char[] { '[' };
+        
         /// <summary>
         /// Convert a list of tiles to a string to be used to send through the communicatoin.
         /// </summary>
@@ -34,9 +39,9 @@ namespace Mundasia.Objects
             foreach(Tile tile in tiles)
             {
                 str.Append(tile.ToString());
-                str.Append("^");
+                str.Append(groupDelimiter);
             }
-            return str.ToString().Trim('^');
+            return str.ToString().Trim(groupDelim);
         }
 
         /// <summary>
@@ -44,9 +49,9 @@ namespace Mundasia.Objects
         /// </summary>
         /// <param name="builder">the string received from the communication methods</param>
         /// <returns>the list of tiles</returns>
-        public static List<Tile> TileCollectionFromSTring(string builder)
+        public static List<Tile> TileCollectionFromString(string builder)
         {
-            string[] tileBuilders = builder.Split('^');
+            string[] tileBuilders = builder.Split(groupDelim);
             List<Tile> tiles = new List<Tile>();
             foreach(string tileBuilder in tileBuilders)
             {
@@ -55,13 +60,14 @@ namespace Mundasia.Objects
             }
             return tiles;
         }
+
         /// <summary>
         /// This class defines a tile, built from a builder string that would come through communication.
         /// </summary>
         /// <param name="builderString">The string that would have come from the communication.</param>
         public Tile(string builderString)
         {
-            string[] parts = builderString.Split('|');
+            string[] parts = builderString.Split(delim);
             if (parts.Length != 6) return;
 
             if (!uint.TryParse(parts[0], out tileSet)) return;
@@ -459,15 +465,15 @@ namespace Mundasia.Objects
         {
             StringBuilder str = new StringBuilder();
             str.Append(tileSet);
-            str.Append("|");
+            str.Append(delimiter);
             str.Append(slopeSide);
-            str.Append("|");
+            str.Append(delimiter);
             str.Append(height);
-            str.Append("|");
+            str.Append(delimiter);
             str.Append(x);
-            str.Append("|");
+            str.Append(delimiter);
             str.Append(y);
-            str.Append("|");
+            str.Append(delimiter);
             str.Append(z);
             return str.ToString();
         }
