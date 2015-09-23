@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8898DE12-02B0-4C62-86BD-9A39A8848629}</ProjectGuid>
+    <ProjectGuid>{AA36FE31-ABD7-4D9E-9F9D-10B83726B60E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CharacterSelectScreens</RootNamespace>
-    <AssemblyName>CharacterSelectScreens</AssemblyName>
+    <RootNamespace>PlayerInterface</RootNamespace>
+    <AssemblyName>PlayerInterface</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -42,34 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterCreationScreen.cs" />
-    <Compile Include="CharacterSelectScreen.cs" />
+    <Compile Include="PlayerInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Abilities\Abilities.csproj">
-      <Project>{a247c466-dedf-418f-ab97-50a19120cec7}</Project>
-      <Name>Abilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Aspiration\Aspiration.csproj">
-      <Project>{df11733f-5612-4d4f-8eb8-feaa124a6e7b}</Project>
-      <Name>Aspiration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Character\Character.csproj">
       <Project>{e46d3910-9e76-4242-b3ee-8af00acbf511}</Project>
       <Name>Character</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ClientConnector\ClientConnector\ClientConnector.csproj">
-      <Project>{130f1919-0466-47c2-a251-680a81dce1fc}</Project>
-      <Name>ClientConnector</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CommunicationObjects\CommunicationObjects\CommunicationObjects.csproj">
       <Project>{a7febf3f-77ca-4d58-ab45-74a8b0db183e}</Project>
       <Name>CommunicationObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Morals\Morals.csproj">
-      <Project>{1f2756b0-dfec-4e47-a5aa-8afd29422bbe}</Project>
-      <Name>Morals</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
       <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
@@ -79,33 +62,9 @@
       <Project>{eaf38f40-731e-4627-bfe0-ccd6b80e0dc5}</Project>
       <Name>PlayScene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Profession\Profession.csproj">
-      <Project>{c3940b1f-280b-45ef-9ade-399d1feff849}</Project>
-      <Name>Profession</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Race\Race.csproj">
-      <Project>{7ea1bd43-9778-4e02-acdf-c3772ba4e5df}</Project>
-      <Name>Race</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Skill\Skill.csproj">
-      <Project>{e4d21f03-fa7e-41ef-982a-f7604cead3f2}</Project>
-      <Name>Skill</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\StringLibrary\StringLibrary.csproj">
-      <Project>{dc20541d-a02b-4bfe-a22f-f14d2e717acf}</Project>
-      <Name>StringLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Tiles\Tiles\Tiles.csproj">
       <Project>{ac717a5c-c8f4-4b25-b511-3861de2a6c73}</Project>
       <Name>Tiles</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VirtueVice\VirtueVice.csproj">
-      <Project>{39cc4a6b-7d59-4f7a-a947-d8be33059673}</Project>
-      <Name>VirtueVice</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayerInterface\PlayerInterface.csproj">
-      <Project>{aa36fe31-abd7-4d9e-9f9d-10b83726b60e}</Project>
-      <Name>PlayerInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

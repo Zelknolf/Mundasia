@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using Mundasia.Client;
 using Mundasia.Objects;
+using Mundasia.Communication;
 
 namespace Mundasia.Interface
 {
@@ -112,6 +113,7 @@ namespace Mundasia.Interface
             _message.Controls.Clear();
             _description.Controls.Clear();
             _form.Controls.Clear();
+            _form.Resize -= _form_Resize;
         }
 
         public static void PopulateCharacterList()
@@ -256,7 +258,14 @@ namespace Mundasia.Interface
                 return;
             }
             string result = Mundasia.Communication.ServiceConsumer.SelectCharacter(_characterList.SelectedItems[0].SubItems[0].Text);
-            
+            CharacterSelection ch = new CharacterSelection(result);
+            if(ch.CentralCharacter == null || ch.visibleCharacters == null || ch.visibleTiles == null)
+            {
+                MessageBox.Show("An error has occured. This character selection has resulted in no scene to draw.");
+                return;
+            }
+            Clear(_form);
+            PlayerInterface.Set(_form, ch);
         }
 
         private static Font labelFont = new Font(FontFamily.GenericSansSerif, 12.0f);

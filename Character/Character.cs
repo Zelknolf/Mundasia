@@ -460,8 +460,8 @@ namespace Mundasia.Objects
             DecayedVital = 0;
             DestroyedVital = 0;
 
-            LocationX = 0;
-            LocationY = 0;
+            LocationX = 20000000;
+            LocationY = 20000000;
             LocationZ = 0;
             LocationFacing = Direction.North;
             Map = "Material";

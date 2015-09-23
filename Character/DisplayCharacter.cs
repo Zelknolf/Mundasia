@@ -78,7 +78,9 @@ namespace Mundasia.Objects
 
         public DisplayCharacter(string fileLine)
         {
+            if (String.IsNullOrWhiteSpace(fileLine)) return;
             string[] input = fileLine.Split(delim);
+            if (input.Length < 11) return;
             uint.TryParse(input[0], out CharacterId);
             int.TryParse(input[1], out Height);
             int.TryParse(input[2], out x);
