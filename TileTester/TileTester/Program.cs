@@ -24,6 +24,7 @@ namespace TileTester
         {
             Race.Load();
             TileSet.Load();
+            ClothColor.LoadColors();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TileViewer());

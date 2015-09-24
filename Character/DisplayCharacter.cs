@@ -32,6 +32,14 @@ namespace Mundasia.Objects
         public static Color LightSkin = Color.FromArgb(255, 255, 217, 165);
         public static Color LightSkin2 = Color.FromArgb(255, 255, 216, 165);
 
+        public static Color DarkClothA = Color.FromArgb(255, 127, 0, 0);
+        public static Color MediumClothA = Color.FromArgb(255, 255, 0, 0);
+        public static Color LightClothA = Color.FromArgb(255, 255, 100, 100);
+
+        public static Color DarkClothB = Color.FromArgb(255, 127, 51, 0);
+        public static Color MediumClothB = Color.FromArgb(255, 255, 106, 0);
+        public static Color LightClothB = Color.FromArgb(255, 255, 200, 150);
+
         public static string DisplayCharacterCollectionToString(List<DisplayCharacter> list)
         {
             StringBuilder str = new StringBuilder();
@@ -74,6 +82,9 @@ namespace Mundasia.Objects
             HairColor = 0;
             Sex = 0;
             Hair = 0;
+            Clothes = 0;
+            ClothColorA = 0;
+            ClothColorB = 0;
         }
 
         public DisplayCharacter(string fileLine)
@@ -151,6 +162,9 @@ namespace Mundasia.Objects
         public int HairColor;
         public int Sex;
         public int Hair;
+        public int Clothes;
+        public int ClothColorA;
+        public int ClothColorB;
 
         public CharacterImage CachedImage;
 
@@ -190,6 +204,30 @@ namespace Mundasia.Objects
             else if(startingPixel == LightSkin || startingPixel == LightSkin2)
             {
                 ret = currentRace.SkinColors[SkinColor].LightColor;
+            }
+            else if(startingPixel == DarkClothA)
+            {
+                ret = ClothColor.Dark[ClothColorA];
+            }
+            else if(startingPixel == MediumClothA)
+            {
+                ret = ClothColor.Med[ClothColorA];
+            }
+            else if(startingPixel == LightClothA)
+            {
+                ret = ClothColor.Light[ClothColorA];
+            }
+            else if(startingPixel == DarkClothB)
+            {
+                ret = ClothColor.Dark[ClothColorB];
+            }
+            else if(startingPixel == MediumClothB)
+            {
+                ret = ClothColor.Med[ClothColorB];
+            }
+            else if(startingPixel == LightClothB)
+            {
+                ret = ClothColor.Light[ClothColorB];
             }
             return ret;
         }
@@ -343,7 +381,23 @@ namespace Mundasia.Objects
                         if (px.A == 0)
                         {
                             Color hair = HairBottom.GetPixel(c, cc);
-                            Day.SetPixel(c, cc, hair);
+                            Day.SetPixel(c, cc, ConvertPixel(hair));
+                        }
+                    }
+                }
+
+                if (Clothes > 0)
+                {
+                    Bitmap ClothesImage = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Characters\\" + CharacterRace + "\\" + Sex + "\\Clothes\\stand_" + Clothes + facingSuffix + ".png"));
+                    for (int c = 0; c < ClothesImage.Width; c++)
+                    {
+                        for (int cc = 0; cc < ClothesImage.Height; cc++)
+                        {
+                            Color px = ClothesImage.GetPixel(c, cc);
+                            if (px.A != 0)
+                            {
+                                Day.SetPixel(c, cc, ConvertPixel(px));
+                            }
                         }
                     }
                 }
@@ -356,20 +410,8 @@ namespace Mundasia.Objects
                         Color px = HairTop.GetPixel(c, cc);
                         if (px.A != 0)
                         {
-                            Day.SetPixel(c, cc, px);
+                            Day.SetPixel(c, cc, ConvertPixel(px));
                         }
-                    }
-                }
-            }
-
-            for (int c = 0; c < Day.Width; c++)
-            {
-                for (int cc = 0; cc < Day.Height; cc++)
-                {
-                    Color px = Day.GetPixel(c, cc);
-                    if (px.A != 0)
-                    {
-                        Day.SetPixel(c, cc, ConvertPixel(px));
                     }
                 }
             }

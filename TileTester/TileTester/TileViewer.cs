@@ -67,7 +67,7 @@ namespace TileTester
             }
             scene.Add(drawnTiles);
 
-            //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 7, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 4 });
+            scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 20000002, y = 19999992, z = 8, Facing = Direction.North, CharacterRace = 0, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 4, Clothes = 2, ClothColorA = 1, ClothColorB = 0 });
             //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 6, y = -6, z = 0, Facing = Direction.North, Race = 0, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 4 });
             //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 5, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 0, Hair = 2, SkinColor = 0, HairColor = 1 });
             //scene.Add(new DisplayCharacter("") { CharacterId = 1, Height = 4, x = 4, y = -6, z = 0, Facing = Direction.North, Race = 1, Sex = 1, Hair = 2, SkinColor = 0, HairColor = 1 });
