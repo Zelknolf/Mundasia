@@ -118,7 +118,13 @@ namespace Mundasia.Objects
             HairColor = (int)ch.HairColor;
             Sex = ch.Sex;
             Hair = (int)ch.HairStyle;
-
+            if(ch.Equipment.ContainsKey(InventoryItem.EquipKeyWorn))
+            {
+                InventoryItem clothes = ch.Equipment[InventoryItem.EquipKeyWorn];
+                Clothes = clothes.Appearance;
+                ClothColorA = clothes.PrimaryColor;
+                ClothColorB = clothes.SecondaryColor;
+            }
             ch.CachedDisplay = this;
         }
 

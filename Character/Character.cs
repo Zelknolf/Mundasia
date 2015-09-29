@@ -92,6 +92,16 @@ namespace Mundasia.Objects
             int.TryParse(split[41], out LocationZ);
             Direction.TryParse(split[42], out LocationFacing);
             Map = split[43];
+            string[] invDict = split[44].Split(dictDelim);
+            Equipment = new Dictionary<int, InventoryItem>();
+            Inventory = new List<InventoryItem>();
+            foreach (string keyVal in invDict)
+            {
+                if (String.IsNullOrWhiteSpace(keyVal)) continue;
+                InventoryItem it = new InventoryItem(keyVal);
+                if (it.EquipKey > 0) Equipment.Add(it.EquipKey, it);
+                else Inventory.Add(it);
+            }
         }
 
         public override string ToString()
@@ -196,6 +206,23 @@ namespace Mundasia.Objects
             str.Append(LocationFacing);
             str.Append(delimiter);
             str.Append(Map);
+            str.Append(delimiter);
+            if (Equipment != null)
+            {
+                foreach (InventoryItem it in Equipment.Values)
+                {
+                    str.Append(it.ToString());
+                    str.Append(dictDelimiter);
+                }
+            }
+            if (Inventory != null)
+            {
+                foreach (InventoryItem it in Inventory)
+                {
+                    str.Append(it.ToString());
+                    str.Append(dictDelimiter);
+                }
+            }
             return str.ToString();
         }
         
@@ -330,6 +357,12 @@ namespace Mundasia.Objects
 
         [XmlElement]
         public Direction LocationFacing;
+
+        [XmlArray]
+        public Dictionary<int, InventoryItem> Equipment;
+
+        [XmlArray]
+        public List<InventoryItem> Inventory;
 
         public bool ValidateCharacter()
         {
