@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySceneDrawable", "..\Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerInterface", "PlayerInterface\PlayerInterface.csproj", "{AA36FE31-ABD7-4D9E-9F9D-10B83726B60E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryItem", "..\MundasiaServer\InventoryItem\InventoryItem.csproj", "{9906163F-EC57-4AFA-8540-4EB736EE0D16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,10 @@ Global
 		{AA36FE31-ABD7-4D9E-9F9D-10B83726B60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA36FE31-ABD7-4D9E-9F9D-10B83726B60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA36FE31-ABD7-4D9E-9F9D-10B83726B60E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9906163F-EC57-4AFA-8540-4EB736EE0D16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9906163F-EC57-4AFA-8540-4EB736EE0D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9906163F-EC57-4AFA-8540-4EB736EE0D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9906163F-EC57-4AFA-8540-4EB736EE0D16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

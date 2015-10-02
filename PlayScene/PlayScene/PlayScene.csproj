@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlaySceneControl.cs" />
     <Compile Include="PlayScene_Resize.cs">
       <SubType>Component</SubType>
     </Compile>
