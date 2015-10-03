@@ -111,5 +111,10 @@ namespace Mundasia.Objects
         {
             return SourceCharacter.CachedImage;
         }
+
+        public DrawableType GetDrawableType()
+        {
+            return DrawableType.Character;
+        }
     }
 }

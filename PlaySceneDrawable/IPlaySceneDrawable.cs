@@ -36,6 +36,9 @@ namespace Mundasia.Objects
         int GetObjectPositionZ();
 
         IPlaySceneDrawable GetNewDrawable();
+
+
+        DrawableType GetDrawableType();
     }
 
     public static class PlaySceneDrawable
@@ -80,5 +83,12 @@ namespace Mundasia.Objects
             }
             return null;
         }
+    }
+
+    public enum DrawableType
+    {
+        Tile,
+        Character,
+        MoveControl
     }
 }

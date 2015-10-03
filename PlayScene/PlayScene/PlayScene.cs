@@ -88,6 +88,29 @@ namespace Mundasia.Interface
             this.Refresh();
         }
 
+        public void Add(PlaySceneControl ctl)
+        {
+            drawableImages.Add(ctl);
+            drawableImages.Sort();
+            this.Refresh();
+        }
+
+        public void ClearControls()
+        {
+            List<IPlaySceneDrawable> removedControls = new List<IPlaySceneDrawable>();
+            foreach(IPlaySceneDrawable drw in drawableImages)
+            {
+                if(drw.GetType() == typeof(PlaySceneControl))
+                {
+                    removedControls.Add(drw);
+                }
+            }
+            foreach(IPlaySceneDrawable rem in removedControls)
+            {
+                drawableImages.Remove(rem);
+            }
+        }
+
         /// <summary>
         /// Removes tiles from those which are to be drawn in the scene.
         /// </summary>
@@ -158,6 +181,7 @@ namespace Mundasia.Interface
 
         void image_TileSelected(object Sender, EventArgs e)
         {
+            Type sndType = Sender.GetType();
             TileImage image = Sender as TileImage;
             if(image != null)
             {
@@ -170,6 +194,11 @@ namespace Mundasia.Interface
         /// the top of the panel. It is of no interest to the server.
         /// </summary>
         private Direction topDirection = Direction.NorthWest;
+
+        public Direction TopDirection
+        {
+            get { return topDirection; }
+        }
 
         /// <summary>
         /// A sortable collection of images which contains all that should be visible in the current scene.

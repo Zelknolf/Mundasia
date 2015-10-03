@@ -30,25 +30,33 @@ namespace Mundasia.Interface
             playScene.Location = new Point(padding, padding);
             playScene.Size = new Size(host.ClientRectangle.Width - padding * 2, host.ClientRectangle.Height - padding * 2);
             host.Resize += host_Resize;
-            if(_eventsInitialized)
+            if(!_eventsInitialized)
             {
                 _eventsInitialized = true;
+                playScene.TileSelected += playScene_TileSelected;
             }
             playScene.ViewCenterX = initialScene.CentralCharacter.LocationX;
             playScene.ViewCenterY = initialScene.CentralCharacter.LocationY;
             playScene.ViewCenterZ = initialScene.CentralCharacter.LocationZ;
-            playScene.TileSelected += playScene_TileSelected;
+
             host.Controls.Add(playScene);
             playScene.Add(initialScene.visibleTiles);
             playScene.Add(initialScene.visibleCharacters);
             playScene.Add(DisplayCharacter.GetDisplayCharacter(initialScene.CentralCharacter));
-            int foo = 1;
         }
 
         static void playScene_TileSelected(object Sender, TileSelectEventArgs e)
         {
-            MessageBox.Show(e.tile.PosX + "," + e.tile.PosY + "," + e.tile.PosZ);
-            return;
+            playScene.ClearControls();
+            PlaySceneControl ctl = new PlaySceneControl(playScene.ViewCenterX, playScene.ViewCenterY, playScene.ViewCenterZ, e.tile.PosX, e.tile.PosY, e.tile.PosZ, playScene, playScene.TopDirection, Mundasia.Interface.PlaySceneControlType.Move, 1);
+            ctl.ControlSelected += playScene_ControlSelected;
+            playScene.Add(ctl);
+        }
+
+        static void playScene_ControlSelected(object Sender, EventArgs e)
+        {
+            PlaySceneControl ctl = Sender as PlaySceneControl;
+            MessageBox.Show(String.Format("Move selected: {0}, {1}, {2}", ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ()));
         }
 
         public static void Clear(Form primaryForm)

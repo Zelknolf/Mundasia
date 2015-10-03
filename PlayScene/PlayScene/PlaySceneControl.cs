@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Mundasia.Interface
 {
-    class PlaySceneControl : IPlaySceneDrawable
+    public class PlaySceneControl : IPlaySceneDrawable
     {
         // Controls always have a massive draw index to make certain that they draw on top of anything in the scene.
         public int DrawIndex = 10000;
@@ -26,8 +26,14 @@ namespace Mundasia.Interface
         public int PositionY;
         public int PositionZ;
 
+        public event OnSelectedHandler ControlSelected;
+
         public PlaySceneControl(int ViewCenterX, int ViewCenterY, int ViewCenterZ, int ControlTargetX, int ControlTargetY, int ControlTargetZ, Panel targetPanel, Direction topDirection, PlaySceneControlType type, int position) 
         {
+            PositionX = ControlTargetX;
+            PositionY = ControlTargetY;
+            PositionZ = ControlTargetZ;
+
             Bitmap Day;
             switch(type)
             {
@@ -38,9 +44,9 @@ namespace Mundasia.Interface
                     Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\move.png"));
                     break;
             }
-            TemplateImage = Day;
+            TemplateImage = new Bitmap(Day);
 
-            Bitmap MouseOverBmp = Day;
+            Bitmap MouseOverBmp = new Bitmap(Day);
             Bitmap SelectionBmp = Day;
             for (int c = 0; c < MouseOverBmp.Width; c++)
             {
@@ -158,6 +164,10 @@ namespace Mundasia.Interface
         public void SetSelected(bool State)
         {
             Selected = State;
+            if(State && ControlSelected != null)
+            {
+                ControlSelected(this, new EventArgs());
+            }
         }
 
         public Image GetTemplateImage() { return TemplateImage; }
@@ -186,9 +196,14 @@ namespace Mundasia.Interface
         {
             return this;
         }
+
+        public DrawableType GetDrawableType()
+        {
+            return DrawableType.MoveControl;
+        }
     }
 
-    enum PlaySceneControlType
+    public enum PlaySceneControlType
     {
         Move,
     }

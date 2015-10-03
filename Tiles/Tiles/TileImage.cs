@@ -49,7 +49,10 @@ namespace Mundasia.Objects
         public void SetSelected(bool State)
         {
             Selected = State;
-            TileSelected(this, EventArgs.Empty);
+            if (State && TileSelected != null)
+            {
+                TileSelected(this, EventArgs.Empty);
+            }
         }
 
         public bool GetMousedOver()
@@ -115,6 +118,11 @@ namespace Mundasia.Objects
         public IPlaySceneDrawable GetNewDrawable()
         {
             return SourceTile.CachedImage;
+        }
+
+        public DrawableType GetDrawableType()
+        {
+            return DrawableType.Tile;
         }
     }
 }
