@@ -235,5 +235,19 @@ namespace Mundasia.Server.Communication
             acct.KeepAlive();
             return String.Empty;
         }
+
+        public string MoveCharacter(string message)
+        {
+            MoveRequest mv = new MoveRequest(message);
+            Account acct = Account.LoadAccount(mv.AccountName);
+            Character ch = acct.LoadCharacter(mv.CharacterName);
+            ch.LocationX = mv.X;
+            ch.LocationY = mv.Y;
+            ch.LocationZ = mv.Z;
+            acct.SaveCharacter(ch);
+
+            
+            return String.Empty;
+        }
     }
 }

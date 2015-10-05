@@ -45,6 +45,7 @@
     <Compile Include="CharacterCreation.cs" />
     <Compile Include="CharacterSelection.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="MoveRequest.cs" />
     <Compile Include="MundEncoding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestCharacter.cs" />

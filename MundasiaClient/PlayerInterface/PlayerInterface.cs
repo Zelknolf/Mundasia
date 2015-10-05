@@ -16,6 +16,8 @@ namespace Mundasia.Interface
     {
         private static int padding = 5;
 
+        private static Character drivingCharacter;
+
         private static Form host;
         private static PlayScene playScene;
 
@@ -26,6 +28,7 @@ namespace Mundasia.Interface
         public static void Set(Form primaryForm, CharacterSelection initialScene)
         {
             host = primaryForm;
+            drivingCharacter = initialScene.CentralCharacter;
             playScene = new PlayScene();
             playScene.Location = new Point(padding, padding);
             playScene.Size = new Size(host.ClientRectangle.Width - padding * 2, host.ClientRectangle.Height - padding * 2);
@@ -56,7 +59,7 @@ namespace Mundasia.Interface
         static void playScene_ControlSelected(object Sender, EventArgs e)
         {
             PlaySceneControl ctl = Sender as PlaySceneControl;
-            MessageBox.Show(String.Format("Move selected: {0}, {1}, {2}", ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ()));
+            ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ());
         }
 
         public static void Clear(Form primaryForm)

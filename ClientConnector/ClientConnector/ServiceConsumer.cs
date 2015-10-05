@@ -278,6 +278,35 @@ namespace Mundasia.Communication
                 return String.Empty;
             }
         }
+
+        public static string MoveCharacter(string account, string character, int x, int y, int z)
+        {
+            MoveRequest req = new MoveRequest()
+            {
+                AccountName = account,
+                CharacterName = character,
+                X = x,
+                Y = y,
+                Z = z,
+            };
+            try
+            {
+                string wrURI = baseServerTarget + "movecharacter";
+                string msg = req.ToString();
+                WebRequest wreq = WebRequest.Create(wrURI + "?message=" + msg);
+                wreq.Method = "POST";
+                wreq.ContentLength = 0;
+                WebResponse wresp = wreq.GetResponse();
+                using(TextReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(string), StringNamespace);
+                    string resp = (string)xml.Deserialize(sr);
+                    return resp;
+                }
+            }
+            catch { }
+            return String.Empty;
+        }
     }
 
 }

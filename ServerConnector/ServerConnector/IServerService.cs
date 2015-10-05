@@ -47,5 +47,9 @@ namespace Mundasia.Server.Communication
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "Update?message={message}", ResponseFormat = WebMessageFormat.Xml)]
         string Update(string message);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "MoveCharacter?message={message}", ResponseFormat = WebMessageFormat.Xml)]
+        string MoveCharacter(string message);
     }
 }
