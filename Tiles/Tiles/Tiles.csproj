@@ -62,6 +62,10 @@
       <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
       <Name>PlaySceneDrawable</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Race\Race.csproj">
+      <Project>{7ea1bd43-9778-4e02-acdf-c3772ba4e5df}</Project>
+      <Name>Race</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

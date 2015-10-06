@@ -241,13 +241,21 @@ namespace Mundasia.Server.Communication
             MoveRequest mv = new MoveRequest(message);
             Account acct = Account.LoadAccount(mv.AccountName);
             Character ch = acct.LoadCharacter(mv.CharacterName);
-            ch.LocationX = mv.X;
-            ch.LocationY = mv.Y;
-            ch.LocationZ = mv.Z;
-            acct.SaveCharacter(ch);
+            if(!Map.LoadedMaps.ContainsKey(ch.Map))
+            {
+                return "False";
+            }
+            Map currentMap = Map.LoadedMaps[ch.Map];
 
-            
-            return String.Empty;
+            if (currentMap.MoveCharacter(ch, mv.X, mv.Y, mv.Z))
+            {
+                acct.SaveCharacter(ch);
+                return "True";
+            }
+            else 
+            { 
+                return "False";
+            }
         }
     }
 }

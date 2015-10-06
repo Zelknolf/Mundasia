@@ -29,6 +29,11 @@ namespace Mundasia.Objects
         public List<Character> PresentCharacters = new List<Character>();
 
         /// <summary>
+        /// This is a going list of all of the changes made to this map.
+        /// </summary>
+        public Dictionary<Character, MapDelta> MapDeltas = new Dictionary<Character, MapDelta>();
+
+        /// <summary>
         /// The name of the map being built.
         /// </summary>
         public string Name;
@@ -278,6 +283,112 @@ namespace Mundasia.Objects
                 }
             }
             return ret;
+        }
+
+        public bool AddCharacter(Character ch)
+        {
+            DisplayCharacter dch = DisplayCharacter.GetDisplayCharacter(ch);
+            foreach (Character observer in PresentCharacters)
+            {
+                if (!MapDeltas.ContainsKey(observer))
+                {
+                    MapDeltas.Add(observer, new MapDelta());
+                }
+                if (MapDeltas[observer].AddedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].AddedCharacters[dch.CharacterId] = dch;
+                }
+                else
+                {
+                    MapDeltas[observer].AddedCharacters.Add(dch.CharacterId, dch);
+                }
+                if (MapDeltas[observer].RemovedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].RemovedCharacters.Remove(dch.CharacterId);
+                }
+            }
+            if(!PresentCharacters.Contains(ch))
+            {
+                PresentCharacters.Add(ch);
+            }
+            return true;
+        }
+
+        public bool RemoveCharacter(Character ch)
+        {
+            DisplayCharacter dch = DisplayCharacter.GetDisplayCharacter(ch);
+            foreach (Character observer in PresentCharacters)
+            {
+                if (!MapDeltas.ContainsKey(observer))
+                {
+                    MapDeltas.Add(observer, new MapDelta());
+                }
+                if (MapDeltas[observer].RemovedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].RemovedCharacters[dch.CharacterId] = dch;
+                }
+                else
+                {
+                    MapDeltas[observer].RemovedCharacters.Add(dch.CharacterId, dch);
+                }
+                if(MapDeltas[observer].AddedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].AddedCharacters.Remove(dch.CharacterId);
+                }
+                if(MapDeltas[observer].ChangedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].ChangedCharacters.Remove(dch.CharacterId);
+                }
+            }
+            if (PresentCharacters.Contains(ch))
+            {
+                PresentCharacters.Remove(ch);
+            }
+            return true;
+        }
+
+        public bool MoveCharacter(Character ch, int X, int Y, int Z)
+        {
+            Tile targetTile = GetTileExact(X, Y, Z);
+            if(targetTile != null)
+            {
+                int characterHeight = Race.GetRace(ch.CharacterRace).Height;
+                int testedHeight = characterHeight;
+                while(testedHeight > 0)
+                {
+                    if(GetTileOverlap(X, Y, Z + testedHeight) != null)
+                    {
+                        return false;
+                    }
+                    testedHeight--;
+                }
+                ch.LocationX = X;
+                ch.LocationY = Y;
+                ch.LocationZ = Z;
+
+                DisplayCharacter dch = DisplayCharacter.GetDisplayCharacter(ch);
+                foreach(Character observer in PresentCharacters)
+                {
+                    if(!MapDeltas.ContainsKey(observer))
+                    {
+                        MapDeltas.Add(observer, new MapDelta());
+                    }
+                    if (MapDeltas[observer].ChangedCharacters.ContainsKey(dch.CharacterId))
+                    {
+                        MapDeltas[observer].ChangedCharacters[dch.CharacterId] = dch;
+                    }
+                    else
+                    {
+                        MapDeltas[observer].ChangedCharacters.Add(dch.CharacterId, dch);
+                    }
+                    if (MapDeltas[observer].RemovedCharacters.ContainsKey(dch.CharacterId))
+                    {
+                        MapDeltas[observer].RemovedCharacters.Remove(dch.CharacterId);
+                    }
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
