@@ -45,7 +45,6 @@ namespace Mundasia.Interface
             host.Controls.Add(playScene);
             playScene.Add(initialScene.visibleTiles);
             playScene.Add(initialScene.visibleCharacters);
-            playScene.Add(DisplayCharacter.GetDisplayCharacter(initialScene.CentralCharacter));
         }
 
         static void playScene_TileSelected(object Sender, TileSelectEventArgs e)
@@ -59,7 +58,17 @@ namespace Mundasia.Interface
         static void playScene_ControlSelected(object Sender, EventArgs e)
         {
             PlaySceneControl ctl = Sender as PlaySceneControl;
-            ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ());
+            string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ());
+            if(!String.IsNullOrEmpty(resp))
+            {
+                MapDelta changes = new MapDelta(resp);
+                playScene.ClearControls();
+                playScene.Remove(changes.RemovedTiles);
+                playScene.Remove(changes.RemovedCharacters);
+                playScene.Add(changes.AddedTiles);
+                playScene.Add(changes.AddedCharacters);
+                playScene.ManageChanges(changes.ChangedCharacters);
+            }
         }
 
         public static void Clear(Form primaryForm)

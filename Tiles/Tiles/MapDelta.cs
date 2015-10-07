@@ -88,19 +88,22 @@ namespace Mundasia.Objects
         public override string ToString()
         {
             StringBuilder ret = new StringBuilder();
-            foreach(Tile t in AddedTiles)
+            
+            foreach (Tile t in AddedTiles)
             {
                 ret.Append(t.ToString());
                 ret.Append(dictDelimiter);
             }
             ret.Append(delimiter);
-            foreach(Tile t in RemovedTiles)
+
+            foreach (Tile t in RemovedTiles)
             {
                 ret.Append(t.ToString());
                 ret.Append(dictDelimiter);
             }
             ret.Append(delimiter);
-            foreach(KeyValuePair<uint, DisplayCharacter> c in ChangedCharacters)
+
+            foreach (KeyValuePair<uint, DisplayCharacter> c in ChangedCharacters)
             {
                 ret.Append(c.Key);
                 ret.Append(keyDelimiter);
@@ -108,6 +111,7 @@ namespace Mundasia.Objects
                 ret.Append(dictDelimiter);
             }
             ret.Append(delimiter);
+
             foreach (KeyValuePair<uint, DisplayCharacter> c in AddedCharacters)
             {
                 ret.Append(c.Key);
@@ -116,6 +120,7 @@ namespace Mundasia.Objects
                 ret.Append(dictDelimiter);
             }
             ret.Append(delimiter);
+
             foreach (KeyValuePair<uint, DisplayCharacter> c in RemovedCharacters)
             {
                 ret.Append(c.Key);

@@ -65,7 +65,13 @@ namespace Mundasia.Objects
 
         public static DisplayCharacter GetDisplayCharacter(Character ch)
         {
-            if (ch.CachedDisplay != null) return ch.CachedDisplay;
+            if (ch.CachedDisplay != null &&
+                ch.CachedDisplay.x == ch.LocationX &&
+                ch.CachedDisplay.y == ch.LocationY &&
+                ch.CachedDisplay.z == ch.LocationZ)
+            {
+                return ch.CachedDisplay;
+            }
             return new DisplayCharacter(ch);
         }
         
@@ -107,7 +113,14 @@ namespace Mundasia.Objects
 
         private DisplayCharacter(Character ch)
         {
-            CharacterId = currentId++;
+            if(ch.CachedDisplay == null)
+            { 
+                CharacterId = currentId++;
+            }
+            else
+            {
+                CharacterId = ch.CachedDisplay.CharacterId;
+            }
             Height = Race.GetRace(ch.CharacterRace).Height;
             x = ch.LocationX;
             y = ch.LocationY;

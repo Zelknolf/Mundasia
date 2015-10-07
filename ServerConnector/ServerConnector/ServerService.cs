@@ -250,7 +250,17 @@ namespace Mundasia.Server.Communication
             if (currentMap.MoveCharacter(ch, mv.X, mv.Y, mv.Z))
             {
                 acct.SaveCharacter(ch);
-                return "True";
+                string ret = String.Empty;
+                lock(currentMap.MapDeltas[ch])
+                {
+                    ret = currentMap.MapDeltas[ch].ToString();
+                    currentMap.MapDeltas[ch].AddedCharacters.Clear();
+                    currentMap.MapDeltas[ch].AddedTiles.Clear();
+                    currentMap.MapDeltas[ch].ChangedCharacters.Clear();
+                    currentMap.MapDeltas[ch].RemovedCharacters.Clear();
+                    currentMap.MapDeltas[ch].RemovedTiles.Clear();
+                }
+                return ret;
             }
             else 
             { 

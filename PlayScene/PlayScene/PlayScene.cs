@@ -60,6 +60,19 @@ namespace Mundasia.Interface
             }
             drawableImages.Sort();
             this.Refresh();
+        }
+
+        public void Add(Dictionary<uint, DisplayCharacter> chs)
+        {
+            foreach (DisplayCharacter ch in chs.Values)
+            {
+                drawableCharacters.Add(ch);
+                CharacterImage image = ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+                image.SourceCharacter = ch;
+                drawableImages.Add(image);
+            }
+            drawableImages.Sort();
+            this.Refresh();
         }  
 
         /// <summary>
@@ -131,6 +144,22 @@ namespace Mundasia.Interface
             this.Refresh();
         }
 
+        public void Remove(Dictionary<uint, DisplayCharacter> chs)
+        {
+            foreach (DisplayCharacter ch in chs.Values)
+            {
+                if (drawableCharacters.Contains(ch))
+                {
+                    drawableCharacters.Remove(ch);
+                }
+                if (drawableImages.Contains(ch.CachedImage))
+                {
+                    drawableImages.Remove(ch.CachedImage);
+                }
+            }
+            this.Refresh();
+        }
+
         public void Remove(List<DisplayCharacter> chs)
         {
             foreach (DisplayCharacter ch in chs)
@@ -187,6 +216,39 @@ namespace Mundasia.Interface
             {
                 TileSelected(this, new TileSelectEventArgs() { tile = image.SourceTile });
             }
+        }
+
+        public void ManageChanges(Dictionary<uint, DisplayCharacter> chs)
+        {
+            foreach(KeyValuePair<uint, DisplayCharacter> ch in chs)
+            {
+                DisplayCharacter current = null;
+                foreach(DisplayCharacter old in drawableCharacters)
+                {
+                    if(old.CharacterId == ch.Key)
+                    {
+                        current = old;
+                        break;
+                    }
+                }
+                if (current != null)
+                {
+                    drawableCharacters.Remove(current);
+                    if(drawableImages.Contains(current.CachedImage))
+                    {
+                        drawableImages.Remove(current.CachedImage);
+                    }
+                }
+            }
+            foreach (DisplayCharacter ch in chs.Values)
+            {
+                drawableCharacters.Add(ch);
+                CharacterImage image = ch.Image(ViewCenterX, ViewCenterY, ViewCenterZ, topDirection, this);
+                image.SourceCharacter = ch;
+                drawableImages.Add(image);
+            }
+            drawableImages.Sort();
+            this.Refresh();
         }
 
         /// <summary>
