@@ -236,6 +236,41 @@ namespace Mundasia.Server.Communication
             return String.Empty;
         }
 
+        public string UpdatePlayScene(string message)
+        {
+            SessionUpdate upd = new SessionUpdate(message);
+            Account acct = Account.LoadAccount(upd.UserId);
+            Character ch = acct.LoadCharacter(upd.CharacterName);
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if (acct.SessionId != upd.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+            acct.KeepAlive();
+            if (!Map.LoadedMaps.ContainsKey(ch.Map))
+            {
+                return "False";
+            }
+            Map currentMap = Map.LoadedMaps[ch.Map];
+
+            if(!currentMap.MapDeltas.ContainsKey(ch))
+            {
+                return String.Empty;
+            }
+
+            string ret = String.Empty;
+            lock (currentMap.MapDeltas[ch])
+            {
+                ret = currentMap.MapDeltas[ch].ToString();
+                currentMap.MapDeltas[ch].AddedCharacters.Clear();
+                currentMap.MapDeltas[ch].AddedTiles.Clear();
+                currentMap.MapDeltas[ch].ChangedCharacters.Clear();
+                currentMap.MapDeltas[ch].RemovedCharacters.Clear();
+                currentMap.MapDeltas[ch].RemovedTiles.Clear();
+            }
+            return ret;
+        }
+
         public string MoveCharacter(string message)
         {
             MoveRequest mv = new MoveRequest(message);

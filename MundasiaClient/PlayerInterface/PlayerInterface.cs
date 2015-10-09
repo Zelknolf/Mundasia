@@ -8,6 +8,8 @@ using System.Windows.Forms;
 
 using Mundasia.Objects;
 using Mundasia.Communication;
+using System.ComponentModel;
+using System.Threading;
 
 namespace Mundasia.Interface
 {
@@ -21,6 +23,9 @@ namespace Mundasia.Interface
         private static Form host;
         private static PlayScene playScene;
 
+        private static BackgroundWorker Updater;
+        private volatile static MapDelta UpdateResult;
+        
         private static bool _eventsInitialized = false;
 
         public PlayerInterface() { }
@@ -45,6 +50,11 @@ namespace Mundasia.Interface
             host.Controls.Add(playScene);
             playScene.Add(initialScene.visibleTiles);
             playScene.Add(initialScene.visibleCharacters);
+
+            Updater = new BackgroundWorker();
+            Updater.DoWork += Updater_DoWork;
+            Updater.RunWorkerCompleted += Updater_RunWorkerCompleted;
+            Updater.RunWorkerAsync();
         }
 
         static void playScene_TileSelected(object Sender, TileSelectEventArgs e)
@@ -80,5 +90,34 @@ namespace Mundasia.Interface
         {
             playScene.Size = new Size(host.ClientRectangle.Width - padding * 2, host.ClientRectangle.Height - padding * 2);
         }
+
+        #region Background Thread and Passive Updates
+        static void Updater_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Thread.Sleep(100);
+            string result = ServiceConsumer.UpdatePlayScene(drivingCharacter.AccountName, drivingCharacter.CharacterName);
+            if (String.IsNullOrWhiteSpace(result))
+            {
+                UpdateResult = null;
+            }
+            else
+            {
+                UpdateResult = new MapDelta(result);
+            }
+        }
+
+        static void Updater_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (UpdateResult != null)
+            {
+                playScene.Remove(UpdateResult.RemovedTiles);
+                playScene.Remove(UpdateResult.RemovedTiles);
+                playScene.Add(UpdateResult.AddedCharacters);
+                playScene.Add(UpdateResult.AddedTiles);
+                playScene.ManageChanges(UpdateResult.ChangedCharacters);
+            }
+            Updater.RunWorkerAsync();
+        }
+        #endregion
     }
 }

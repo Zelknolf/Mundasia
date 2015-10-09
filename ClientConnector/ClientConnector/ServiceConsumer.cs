@@ -279,6 +279,33 @@ namespace Mundasia.Communication
             }
         }
 
+        public static string UpdatePlayScene(string account, string character)
+        {
+            SessionUpdate req = new SessionUpdate()
+            {
+                CharacterName = character,
+                SessionId = SessionId,
+                UserId = account,
+            };
+            try
+            {
+                string wrURI = baseServerTarget + "updateplayscene";
+                string msg = req.ToString();
+                WebRequest wreq = WebRequest.Create(wrURI + "?message=" + msg);
+                wreq.Method = "POST";
+                wreq.ContentLength = 0;
+                WebResponse wresp = wreq.GetResponse();
+                using (TextReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(string), StringNamespace);
+                    string resp = (string)xml.Deserialize(sr);
+                    return resp;
+                }
+            }
+            catch { }
+            return String.Empty;
+        }
+
         public static string MoveCharacter(string account, string character, int x, int y, int z)
         {
             MoveRequest req = new MoveRequest()

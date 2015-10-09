@@ -51,5 +51,9 @@ namespace Mundasia.Server.Communication
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "MoveCharacter?message={message}", ResponseFormat = WebMessageFormat.Xml)]
         string MoveCharacter(string message);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "UpdatePlayScene?message={message}", ResponseFormat = WebMessageFormat.Xml)]
+        string UpdatePlayScene(string message);
     }
 }
