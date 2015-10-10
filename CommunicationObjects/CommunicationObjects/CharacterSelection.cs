@@ -19,17 +19,17 @@ namespace Mundasia.Communication
         public CharacterSelection(Character character)
         {
             if (!Map.LoadedMaps.ContainsKey(character.Map)) { Map.LoadedMaps.Add(character.Map, new Map() { Name = character.Map }); }
+            // We need to check if this character is already present just in case this is a character
+            // relogging.
             Map currentMap = Map.LoadedMaps[character.Map];
+            if (!currentMap.PresentCharacters.Contains(character))
+            {
+                currentMap.AddCharacter(character);
+            }
+
             visibleTiles = currentMap.GetNearby(character.LocationX, character.LocationY, character.LocationZ);
             visibleCharacters = currentMap.GetNearbyCharacters(character.LocationX, character.LocationY, character.LocationZ);
             CentralCharacter = character;
-            
-            // We need to check if this character is already present just in case this is a character
-            // relogging.
-            if(!currentMap.PresentCharacters.Contains(character))
-            {
-                currentMap.PresentCharacters.Add(character);
-            }
         }
         
         public CharacterSelection(string builder)

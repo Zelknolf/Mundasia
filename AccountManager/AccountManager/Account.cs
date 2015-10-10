@@ -348,8 +348,7 @@ namespace Mundasia
             Account loadedAccount = LoadAccount(userId);
             if (loadedAccount != null)
             {
-                if (ActiveSessions.ContainsKey(loadedAccount.SessionId) &&
-                    ActiveSessions[loadedAccount.SessionId] == loadedAccount)
+                if (ActiveSessions.ContainsKey(loadedAccount.SessionId))
                 {
                     // Player has relogged; clear old session data.
                     ActiveSessions.Remove(loadedAccount.SessionId);
