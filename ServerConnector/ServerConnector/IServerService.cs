@@ -55,5 +55,9 @@ namespace Mundasia.Server.Communication
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "UpdatePlayScene?message={message}", ResponseFormat = WebMessageFormat.Xml)]
         string UpdatePlayScene(string message);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "ChangeTiles?message={message}", ResponseFormat = WebMessageFormat.Xml)]
+        string ChangeTiles(string message);
     }
 }

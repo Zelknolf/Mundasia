@@ -78,13 +78,23 @@ namespace Mundasia.Objects
             if(!Tiles[ToAdd.PosX][ToAdd.PosY].ContainsKey(ToAdd.PosZ))
             {
                 Tiles[ToAdd.PosX][ToAdd.PosY].Add(ToAdd.PosZ, ToAdd);
-                return true;
             }
             else
             {
                 Tiles[ToAdd.PosX][ToAdd.PosY][ToAdd.PosZ] = null;
-                return true;
             }
+
+            foreach (Character observer in PresentCharacters)
+            {
+                if (!MapDeltas.ContainsKey(observer))
+                {
+                    MapDeltas.Add(observer, new MapDelta());
+                }
+                MapDeltas[observer].AddedTiles.Add(ToAdd);
+            }
+
+            return true;
+
         }
 
         /// <summary>
@@ -115,6 +125,16 @@ namespace Mundasia.Objects
             {
                 Tiles.Remove(ToRemove.PosX);
             }
+
+            foreach (Character observer in PresentCharacters)
+            {
+                if (!MapDeltas.ContainsKey(observer))
+                {
+                    MapDeltas.Add(observer, new MapDelta());
+                }
+                MapDeltas[observer].RemovedTiles.Add(ToRemove);
+            }
+
             return true;
         }
 

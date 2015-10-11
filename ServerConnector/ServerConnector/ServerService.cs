@@ -302,5 +302,65 @@ namespace Mundasia.Server.Communication
                 return "False";
             }
         }
+
+        public string ChangeTiles(string message)
+        {
+            TileChange tc = new TileChange(message);
+            Account acct = Account.LoadAccount(tc.AccountName);
+            if(acct == null)
+            {
+                return "Error: invalid account";
+            }
+
+            Character ch = acct.LoadCharacter(tc.CharacterName);
+            if(ch == null)
+            {
+                return "Error: invalid character";
+            }
+
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if (acct.SessionId != tc.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+
+            if(!ch.IsDM)
+            {
+                return "Error: only DMs may change tiles";
+            }
+
+            if (!Map.LoadedMaps.ContainsKey(ch.Map))
+            {
+                return "Error: invalid map";
+            }
+            Map currentMap = Map.LoadedMaps[ch.Map];
+
+            foreach(Tile t in tc.RemovedTiles)
+            {
+                currentMap.Remove(t);
+                t.Delete(currentMap.Name);
+            }
+            foreach(Tile t in tc.AddedTiles)
+            {
+                currentMap.Add(t);
+                t.Save(currentMap.Name);
+            }
+
+            string ret = String.Empty;
+            if(!currentMap.MapDeltas.ContainsKey(ch))
+            {
+                return String.Empty;
+            }
+            lock (currentMap.MapDeltas[ch])
+            {
+                ret = currentMap.MapDeltas[ch].ToString();
+                currentMap.MapDeltas[ch].AddedCharacters.Clear();
+                currentMap.MapDeltas[ch].AddedTiles.Clear();
+                currentMap.MapDeltas[ch].ChangedCharacters.Clear();
+                currentMap.MapDeltas[ch].RemovedCharacters.Clear();
+                currentMap.MapDeltas[ch].RemovedTiles.Clear();
+            }
+            return ret;
+        }
     }
 }

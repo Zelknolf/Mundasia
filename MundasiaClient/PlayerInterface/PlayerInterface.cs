@@ -28,6 +28,8 @@ namespace Mundasia.Interface
         
         private static bool _eventsInitialized = false;
 
+        private static Tile _currentTile;
+
         public PlayerInterface() { }
 
         public static void Set(Form primaryForm, CharacterSelection initialScene)
@@ -41,7 +43,15 @@ namespace Mundasia.Interface
             if(!_eventsInitialized)
             {
                 _eventsInitialized = true;
-                playScene.TileSelected += playScene_TileSelected;
+                if (drivingCharacter.IsDM)
+                {
+                    host.KeyDown += playScene_DM_KeyDown;
+                    playScene.TileSelected += playScene_DM_TileSelected;
+                }
+                else
+                {
+                    playScene.TileSelected += playScene_TileSelected;
+                }
             }
             playScene.ViewCenterX = initialScene.CentralCharacter.LocationX;
             playScene.ViewCenterY = initialScene.CentralCharacter.LocationY;
@@ -55,6 +65,645 @@ namespace Mundasia.Interface
             Updater.DoWork += Updater_DoWork;
             Updater.RunWorkerCompleted += Updater_RunWorkerCompleted;
             Updater.RunWorkerAsync();
+        }
+
+        private static MapDelta _handleDelta(string deltaString)
+        {
+            MapDelta changes = new MapDelta(deltaString);
+            playScene.ClearControls();
+            playScene.Remove(changes.RemovedTiles);
+            playScene.Remove(changes.RemovedCharacters);
+            playScene.Add(changes.AddedTiles);
+            playScene.Add(changes.AddedCharacters);
+            playScene.ManageChanges(changes.ChangedCharacters);
+            return changes;
+        }
+
+        static void playScene_DM_KeyDown(object sender, KeyEventArgs e)
+        {
+            #region Add a Tile
+            if (e.KeyCode == Keys.NumPad0)
+            {
+                // Num pad 0 used to add a tile
+                if (_currentTile == null) return;
+                if (playScene.CollidesWithTile(_currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + _currentTile.TileHeight, _currentTile.TileHeight, true, _currentTile)) return;
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + _currentTile.TileHeight);
+
+                request.AddedTiles.Add(nTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile BL
+            else if(e.KeyCode == Keys.NumPad1)
+            {
+                // Num pad 1 moves tile to bottom left
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch(playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targY--;
+                        break;
+                    case Direction.NorthEast:
+                        targX--;
+                        break;
+                    case Direction.SouthWest:
+                        targX++;
+                        break;
+                    case Direction.SouthEast:
+                        targY++;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile B
+            else if(e.KeyCode == Keys.NumPad2)
+            {
+                // Num pad 2 moves tile to bottom
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targY--;
+                        targX++;
+                        break;
+                    case Direction.NorthEast:
+                        targY--;
+                        targX--;
+                        break;
+                    case Direction.SouthWest:
+                        targY++;
+                        targX++;
+                        break;
+                    case Direction.SouthEast:
+                        targY++;
+                        targX--;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile BR
+            else if(e.KeyCode == Keys.NumPad3)
+            {
+                // Num pad 3 moves tile to bottom right
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targX++;
+                        break;
+                    case Direction.NorthEast:
+                        targY--;
+                        break;
+                    case Direction.SouthWest:
+                        targY++;
+                        break;
+                    case Direction.SouthEast:
+                        targX--;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile L
+            else if(e.KeyCode == Keys.NumPad4)
+            {
+                // Num pad 4 moves tile to left
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targX--;
+                        targY--;
+                        break;
+                    case Direction.NorthEast:
+                        targX--;
+                        targY++;
+                        break;
+                    case Direction.SouthWest:
+                        targX++;
+                        targY--;
+                        break;
+                    case Direction.SouthEast:
+                        targX--;
+                        targY++;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Rotate a Tile
+            else if(e.KeyCode == Keys.NumPad5)
+            {
+                // Num pad 5 rotates the tile
+                if (_currentTile == null) return;
+
+                Direction slopeDirection = _currentTile.Slope;
+
+                switch(_currentTile.Slope)
+                {
+                    case Direction.DirectionLess:
+                        slopeDirection = Direction.North;
+                        break;
+                    case Direction.North:
+                        slopeDirection = Direction.NorthEast;
+                        break;
+                    case Direction.NorthEast:
+                        slopeDirection = Direction.East;
+                        break;
+                    case Direction.East:
+                        slopeDirection = Direction.SouthEast;
+                        break;
+                    case Direction.SouthEast:
+                        slopeDirection = Direction.South;
+                        break;
+                    case Direction.South:
+                        slopeDirection = Direction.SouthWest;
+                        break;
+                    case Direction.SouthWest:
+                        slopeDirection = Direction.West;
+                        break;
+                    case Direction.West:
+                        slopeDirection = Direction.NorthWest;
+                        break;
+                    case Direction.NorthWest:
+                        slopeDirection = Direction.DirectionLess;
+                        break;
+                }
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, slopeDirection, _currentTile.TileHeight, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile R
+            else if(e.KeyCode == Keys.NumPad6)
+            {
+                // Num pad 6 moves tile to right
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targX++;
+                        targY++;
+                        break;
+                    case Direction.NorthEast:
+                        targX++;
+                        targY--;
+                        break;
+                    case Direction.SouthWest:
+                        targX--;
+                        targY++;
+                        break;
+                    case Direction.SouthEast:
+                        targX--;
+                        targY--;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile TL
+            else if(e.KeyCode == Keys.NumPad7)
+            {
+                // Num pad 7 moves tile to top left
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targX--;
+                        break;
+                    case Direction.NorthEast:
+                        targY++;
+                        break;
+                    case Direction.SouthWest:
+                        targY--;
+                        break;
+                    case Direction.SouthEast:
+                        targX++;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile T
+            else if(e.KeyCode == Keys.NumPad8)
+            {
+                // Num pad 8 moves tile to top
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targX--;
+                        targY++;
+                        break;
+                    case Direction.NorthEast:
+                        targX++;
+                        targY++;
+                        break;
+                    case Direction.SouthWest:
+                        targX--;
+                        targY--;
+                        break;
+                    case Direction.SouthEast:
+                        targX++;
+                        targY--;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Move a Tile TR
+            else if(e.KeyCode == Keys.NumPad9)
+            {
+                // Num pad 9 moves tile to top right
+                if (_currentTile == null) return;
+
+                int targX = _currentTile.PosX;
+                int targY = _currentTile.PosY;
+                int targZ = _currentTile.PosZ;
+
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest:
+                        targY++;
+                        break;
+                    case Direction.NorthEast:
+                        targX++;
+                        break;
+                    case Direction.SouthWest:
+                        targX--;
+                        break;
+                    case Direction.SouthEast:
+                        targY--;
+                        break;
+                }
+                if (playScene.CollidesWithTile(targX, targY, targZ, _currentTile.TileHeight, true, _currentTile)) return;
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, targX, targY, targZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Change a Tileset
+            else if(e.KeyCode == Keys.Enter)
+            {
+                // Enter key changes the tileset
+                if (_currentTile == null) return;
+
+                uint tileSet = _currentTile.CurrentTileSet;
+
+                if (tileSet >= TileSet._library.Count - 1) tileSet = 0;
+                else tileSet++;
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(tileSet, _currentTile.Slope, _currentTile.TileHeight, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Remove a Tile
+            else if(e.KeyCode == Keys.Decimal)
+            {
+                // Num pad . deletes the tile
+                if (_currentTile == null) return;
+
+                TileChange request = new TileChange();
+
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Shorten a Tile
+            else if(e.KeyCode == Keys.Divide)
+            {
+                // Divide key shortens the tile
+                if (_currentTile == null) return;
+
+                if (_currentTile.TileHeight <= 1) return;
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight - 1, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ - 1);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Heighten a Tile
+            else if(e.KeyCode == Keys.Multiply)
+            {
+                // Multiply key heightens the tile
+                if (_currentTile == null) return;
+                if (playScene.CollidesWithTile(_currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + 1, _currentTile.TileHeight + 1, true, _currentTile)) return;
+                if (_currentTile.TileHeight >= 4) return;
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight + 1, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + 1);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Lower a Tile
+            else if(e.KeyCode == Keys.Subtract)
+            {
+                // Subtract key decreases the tile's elevation
+                if (_currentTile == null) return;
+                if (playScene.CollidesWithTile(_currentTile.PosX, _currentTile.PosY, _currentTile.PosZ - 1, _currentTile.TileHeight, true, _currentTile)) return;
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ - 1);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+            #region Raise a Tile
+            else if(e.KeyCode == Keys.Add)
+            {
+                // Add key increases the tile's elevation
+                if (_currentTile == null) return;
+                if (playScene.CollidesWithTile(_currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + 1, _currentTile.TileHeight, true, _currentTile)) return;
+
+                TileChange request = new TileChange();
+                Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + 1);
+
+                request.AddedTiles.Add(nTile);
+                request.RemovedTiles.Add(_currentTile);
+                request.CharacterName = drivingCharacter.CharacterName;
+                request.AccountName = drivingCharacter.AccountName;
+                string resp = ServiceConsumer.ChangeTiles(request);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta delta = _handleDelta(resp);
+                    if (delta.AddedTiles.Count > 0)
+                    {
+                        _currentTile = delta.AddedTiles[0];
+                    }
+                }
+                return;
+            }
+            #endregion
+        }
+
+        static void playScene_DM_TileSelected(object Sender, TileSelectEventArgs e)
+        {
+            _currentTile = e.tile;
         }
 
         static void playScene_TileSelected(object Sender, TileSelectEventArgs e)
@@ -110,11 +759,11 @@ namespace Mundasia.Interface
         {
             if (UpdateResult != null)
             {
-                playScene.Remove(UpdateResult.RemovedTiles);
-                playScene.Remove(UpdateResult.RemovedTiles);
-                playScene.Add(UpdateResult.AddedCharacters);
-                playScene.Add(UpdateResult.AddedTiles);
-                playScene.ManageChanges(UpdateResult.ChangedCharacters);
+                if(UpdateResult.RemovedTiles.Count > 0) playScene.Remove(UpdateResult.RemovedTiles);
+                if(UpdateResult.RemovedCharacters.Count > 0) playScene.Remove(UpdateResult.RemovedCharacters);
+                if(UpdateResult.AddedCharacters.Count > 0) playScene.Add(UpdateResult.AddedCharacters);
+                if(UpdateResult.AddedTiles.Count > 0) playScene.Add(UpdateResult.AddedTiles);
+                if(UpdateResult.ChangedCharacters.Count > 0) playScene.ManageChanges(UpdateResult.ChangedCharacters);
             }
             Updater.RunWorkerAsync();
         }

@@ -334,6 +334,28 @@ namespace Mundasia.Communication
             catch { }
             return String.Empty;
         }
+
+        public static string ChangeTiles(TileChange req)
+        {
+            req.SessionId = SessionId;
+            try
+            {
+                string wrURI = baseServerTarget + "changetiles";
+                string msg = req.ToString();
+                WebRequest wreq = WebRequest.Create(wrURI + "?message=" + msg);
+                wreq.Method = "POST";
+                wreq.ContentLength = 0;
+                WebResponse wresp = wreq.GetResponse();
+                using (TextReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(string), StringNamespace);
+                    string resp = (string)xml.Deserialize(sr);
+                    return resp;
+                }
+            }
+            catch { }
+            return String.Empty;
+        }
     }
 
 }

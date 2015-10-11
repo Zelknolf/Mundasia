@@ -130,15 +130,25 @@ namespace Mundasia.Interface
         /// <param name="tiles">A list of tiles to remove.</param>
         public void Remove(List<Tile> tiles)
         {
-            foreach(Tile tile in tiles)
+            foreach(Tile toRemove in tiles)
             {
-                if (drawableTiles.Contains(tile))
+                List<Tile> removing = new List<Tile>();
+                foreach(Tile currentTile in drawableTiles)
                 {
-                    drawableTiles.Remove(tile);
+                    if(currentTile.PosX == toRemove.PosX &&
+                       currentTile.PosY == toRemove.PosY &&
+                       currentTile.PosZ == toRemove.PosZ)
+                    {
+                        removing.Add(currentTile);
+                    }
                 }
-                if (drawableImages.Contains(tile.CachedImage))
+                foreach(Tile t in removing)
                 {
-                    drawableImages.Remove(tile.CachedImage);
+                    drawableTiles.Remove(t);
+                    if (drawableImages.Contains(t.CachedImage))
+                    {
+                        drawableImages.Remove(t.CachedImage);
+                    }
                 }
             }
             this.Refresh();
@@ -182,15 +192,25 @@ namespace Mundasia.Interface
         /// If many tiles are to be removed, they should be removed as a list to reduce redrawing.
         /// </summary>
         /// <param name="tile">A tile to remove</param>
-        public void Remove(Tile tile)
+        public void Remove(Tile toRemove)
         {
-            if (drawableTiles.Contains(tile))
+            List<Tile> removing = new List<Tile>();
+            foreach (Tile currentTile in drawableTiles)
             {
-                drawableTiles.Remove(tile);
+                if (currentTile.PosX == toRemove.PosX &&
+                   currentTile.PosY == toRemove.PosY &&
+                   currentTile.PosZ == toRemove.PosZ)
+                {
+                    removing.Add(currentTile);
+                }
             }
-            if (drawableImages.Contains(tile.CachedImage))
+            foreach (Tile t in removing)
             {
-                drawableImages.Remove(tile.CachedImage);
+                drawableTiles.Remove(t);
+                if (drawableImages.Contains(t.CachedImage))
+                {
+                    drawableImages.Remove(t.CachedImage);
+                }
             }
             this.Refresh();
         }
@@ -249,6 +269,39 @@ namespace Mundasia.Interface
             }
             drawableImages.Sort();
             this.Refresh();
+        }
+
+        public bool CollidesWithTile(int x, int y, int z, int height, bool isTile, Tile exceptionTile)
+        {
+            if (isTile)
+            {
+                foreach (Tile t in drawableTiles)
+                {
+                    if (t != exceptionTile &&
+                        t.PosX == x &&
+                        t.PosY == y &&
+                        t.PosZ > z - height &&
+                        t.PosZ <= z + t.TileHeight)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                foreach(Tile t in drawableTiles)
+                {
+                    if (t != exceptionTile &&
+                        t.PosX == x &&
+                       t.PosY == y &&
+                       t.PosZ <= z &&
+                       t.PosZ > z + height + t.TileHeight)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /// <summary>

@@ -102,6 +102,7 @@ namespace Mundasia.Objects
                 if (it.EquipKey > 0) Equipment.Add(it.EquipKey, it);
                 else Inventory.Add(it);
             }
+            bool.TryParse(split[45], out IsDM);
         }
 
         public override string ToString()
@@ -223,6 +224,8 @@ namespace Mundasia.Objects
                     str.Append(dictDelimiter);
                 }
             }
+            str.Append(delimiter);
+            str.Append(IsDM);
             return str.ToString();
         }
         
@@ -363,6 +366,9 @@ namespace Mundasia.Objects
 
         [XmlArray]
         public List<InventoryItem> Inventory;
+
+        [XmlElement]
+        public bool IsDM;
 
         public bool ValidateCharacter()
         {
