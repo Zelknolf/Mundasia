@@ -30,6 +30,8 @@ namespace Mundasia.Interface
 
         private static Tile _currentTile;
 
+        public static InventoryForm InventoryWindow = null;
+
         public PlayerInterface() { }
 
         public static void Set(Form primaryForm, CharacterSelection initialScene)
@@ -50,6 +52,7 @@ namespace Mundasia.Interface
                 }
                 else
                 {
+                    host.KeyDown += playScene_KeyDown;
                     playScene.TileSelected += playScene_TileSelected;
                 }
             }
@@ -699,6 +702,22 @@ namespace Mundasia.Interface
                 return;
             }
             #endregion
+        }
+
+        static void playScene_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.I)
+            {
+                if(InventoryWindow != null)
+                {
+                    InventoryWindow.Focus();
+                }
+                else
+                {
+                    InventoryWindow = new InventoryForm(drivingCharacter);
+                    InventoryWindow.Show();
+                }
+            }
         }
 
         static void playScene_DM_TileSelected(object Sender, TileSelectEventArgs e)

@@ -25,6 +25,8 @@ namespace Mundasia.Objects
             int.TryParse(pieces[2], out Appearance);
             int.TryParse(pieces[3], out PrimaryColor);
             int.TryParse(pieces[4], out SecondaryColor);
+            Name = pieces[5];
+            Identifier = pieces[6];
         }
 
         public override string ToString()
@@ -39,11 +41,19 @@ namespace Mundasia.Objects
             str.Append(PrimaryColor);
             str.Append(delimiter);
             str.Append(SecondaryColor);
+            str.Append(delimiter);
+            str.Append(Name);
+            str.Append(delimiter);
+            str.Append(Identifier);
             return str.ToString();
         }
 
         public int EquipKey;
         public ItemType ItType;
+
+        public string Name;
+        public string Identifier;
+        public string Icon;
 
         public int Appearance;
         public int PrimaryColor;
@@ -52,6 +62,11 @@ namespace Mundasia.Objects
 
     public enum ItemType
     {
-        Clothing,
+        Clothing = 0,
+        Necklace = 1,
+        Belt = 2,
+        Ring = 3,
+        OneHand = 4,
+        TwoHand = 5,
     }
 }
