@@ -68,6 +68,10 @@
       <Project>{a7febf3f-77ca-4d58-ab45-74a8b0db183e}</Project>
       <Name>CommunicationObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
+      <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
+      <Name>PlaySceneDrawable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tiles\Tiles\Tiles.csproj">
       <Project>{ac717a5c-c8f4-4b25-b511-3861de2a6c73}</Project>
       <Name>Tiles</Name>

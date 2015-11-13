@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Xml.Serialization;
 using System.Xml;
 using System.ComponentModel;
+using Mundasia.Objects;
 
 namespace Mundasia.Communication
 {
@@ -79,7 +80,7 @@ namespace Mundasia.Communication
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -306,7 +307,7 @@ namespace Mundasia.Communication
             return String.Empty;
         }
 
-        public static string MoveCharacter(string account, string character, int x, int y, int z)
+        public static string MoveCharacter(string account, string character, int x, int y, int z, Direction facing)
         {
             MoveRequest req = new MoveRequest()
             {
@@ -315,6 +316,7 @@ namespace Mundasia.Communication
                 X = x,
                 Y = y,
                 Z = z,
+                Facing = facing,
             };
             try
             {

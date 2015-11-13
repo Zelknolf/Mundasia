@@ -282,7 +282,7 @@ namespace Mundasia.Server.Communication
             }
             Map currentMap = Map.LoadedMaps[ch.Map];
 
-            if (currentMap.MoveCharacter(ch, mv.X, mv.Y, mv.Z))
+            if (currentMap.MoveCharacter(ch, mv.X, mv.Y, mv.Z, mv.Facing))
             {
                 acct.SaveCharacter(ch);
                 string ret = String.Empty;

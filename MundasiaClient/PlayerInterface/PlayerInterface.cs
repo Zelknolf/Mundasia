@@ -736,16 +736,111 @@ namespace Mundasia.Interface
         static void playScene_ControlSelected(object Sender, EventArgs e)
         {
             PlaySceneControl ctl = Sender as PlaySceneControl;
-            string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ());
-            if(!String.IsNullOrEmpty(resp))
+            if(ctl.ControlType == PlaySceneControlType.Move)
             {
-                MapDelta changes = new MapDelta(resp);
                 playScene.ClearControls();
-                playScene.Remove(changes.RemovedTiles);
-                playScene.Remove(changes.RemovedCharacters);
-                playScene.Add(changes.AddedTiles);
-                playScene.Add(changes.AddedCharacters);
-                playScene.ManageChanges(changes.ChangedCharacters);
+                PlaySceneControl bl = new PlaySceneControl(playScene.ViewCenterX, playScene.ViewCenterY, playScene.ViewCenterZ, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), playScene, playScene.TopDirection, PlaySceneControlType.FaceBottomLeft, 5);
+                PlaySceneControl br = new PlaySceneControl(playScene.ViewCenterX, playScene.ViewCenterY, playScene.ViewCenterZ, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), playScene, playScene.TopDirection, PlaySceneControlType.FaceBottomRight, 6);
+                PlaySceneControl tl = new PlaySceneControl(playScene.ViewCenterX, playScene.ViewCenterY, playScene.ViewCenterZ, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), playScene, playScene.TopDirection, PlaySceneControlType.FaceTopLeft, 7);
+                PlaySceneControl tr = new PlaySceneControl(playScene.ViewCenterX, playScene.ViewCenterY, playScene.ViewCenterZ, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), playScene, playScene.TopDirection, PlaySceneControlType.FaceTopRight, 8);
+                bl.ControlSelected += playScene_ControlSelected;
+                br.ControlSelected += playScene_ControlSelected;
+                tl.ControlSelected += playScene_ControlSelected;
+                tr.ControlSelected += playScene_ControlSelected;
+                List<PlaySceneControl> ctls = new List<PlaySceneControl>() { bl, br, tl, tr };
+                playScene.Add(ctls);
+            }
+            else if(ctl.ControlType == PlaySceneControlType.FaceBottomLeft)
+            {
+                Direction facing = Direction.DirectionLess;
+                switch(playScene.TopDirection)
+                {
+                    case Direction.NorthWest: facing = Direction.South; break;
+                    case Direction.SouthWest: facing = Direction.East;  break;
+                    case Direction.NorthEast: facing = Direction.West;  break;
+                    case Direction.SouthEast: facing = Direction.North; break;
+                    default:                  facing = Direction.North; break;
+                }
+                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta changes = new MapDelta(resp);
+                    playScene.ClearControls();
+                    playScene.Remove(changes.RemovedTiles);
+                    playScene.Remove(changes.RemovedCharacters);
+                    playScene.Add(changes.AddedTiles);
+                    playScene.Add(changes.AddedCharacters);
+                    playScene.ManageChanges(changes.ChangedCharacters);
+                }
+            }
+            else if (ctl.ControlType == PlaySceneControlType.FaceBottomRight)
+            {
+                Direction facing = Direction.DirectionLess;
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest: facing = Direction.East;  break;
+                    case Direction.SouthWest: facing = Direction.North; break;
+                    case Direction.NorthEast: facing = Direction.South; break;
+                    case Direction.SouthEast: facing = Direction.West;  break;
+                    default: facing = Direction.North; break;
+                }
+                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta changes = new MapDelta(resp);
+                    playScene.ClearControls();
+                    playScene.Remove(changes.RemovedTiles);
+                    playScene.Remove(changes.RemovedCharacters);
+                    playScene.Add(changes.AddedTiles);
+                    playScene.Add(changes.AddedCharacters);
+                    playScene.ManageChanges(changes.ChangedCharacters);
+                }
+            }
+            else if (ctl.ControlType == PlaySceneControlType.FaceTopLeft)
+            {
+                Direction facing = Direction.DirectionLess;
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest: facing = Direction.West;  break;
+                    case Direction.SouthWest: facing = Direction.South; break;
+                    case Direction.NorthEast: facing = Direction.North; break;
+                    case Direction.SouthEast: facing = Direction.East;  break;
+                    default: facing = Direction.North; break;
+                }
+                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta changes = new MapDelta(resp);
+                    playScene.ClearControls();
+                    playScene.Remove(changes.RemovedTiles);
+                    playScene.Remove(changes.RemovedCharacters);
+                    playScene.Add(changes.AddedTiles);
+                    playScene.Add(changes.AddedCharacters);
+                    playScene.ManageChanges(changes.ChangedCharacters);
+                }
+            }
+            else if (ctl.ControlType == PlaySceneControlType.FaceTopRight)
+            {
+                Direction facing = Direction.DirectionLess;
+                switch (playScene.TopDirection)
+                {
+                    case Direction.NorthWest: facing = Direction.North; break;
+                    case Direction.SouthWest: facing = Direction.West; break;
+                    case Direction.NorthEast: facing = Direction.East; break;
+                    case Direction.SouthEast: facing = Direction.South; break;
+                    default: facing = Direction.North; break;
+                }
+                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                if (!String.IsNullOrEmpty(resp))
+                {
+                    MapDelta changes = new MapDelta(resp);
+                    playScene.ClearControls();
+                    playScene.Remove(changes.RemovedTiles);
+                    playScene.Remove(changes.RemovedCharacters);
+                    playScene.Add(changes.AddedTiles);
+                    playScene.Add(changes.AddedCharacters);
+                    playScene.ManageChanges(changes.ChangedCharacters);
+                }
             }
         }
 

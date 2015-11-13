@@ -51,6 +51,10 @@
       <Project>{a7febf3f-77ca-4d58-ab45-74a8b0db183e}</Project>
       <Name>CommunicationObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
+      <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
+      <Name>PlaySceneDrawable</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

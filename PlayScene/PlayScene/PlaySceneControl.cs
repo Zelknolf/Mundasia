@@ -28,17 +28,32 @@ namespace Mundasia.Interface
 
         public event OnSelectedHandler ControlSelected;
 
+        public PlaySceneControlType ControlType;
+
         public PlaySceneControl(int ViewCenterX, int ViewCenterY, int ViewCenterZ, int ControlTargetX, int ControlTargetY, int ControlTargetZ, Panel targetPanel, Direction topDirection, PlaySceneControlType type, int position) 
         {
             PositionX = ControlTargetX;
             PositionY = ControlTargetY;
             PositionZ = ControlTargetZ;
+            ControlType = type;
 
             Bitmap Day;
             switch(type)
             {
                 case PlaySceneControlType.Move:
                     Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\move.png"));
+                    break;
+                case PlaySceneControlType.FaceBottomLeft:
+                    Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\arrow_bl.png"));
+                    break;
+                case PlaySceneControlType.FaceBottomRight:
+                    Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\arrow_br.png"));
+                    break;
+                case PlaySceneControlType.FaceTopLeft:
+                    Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\arrow_tl.png"));
+                    break;
+                case PlaySceneControlType.FaceTopRight:
+                    Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\arrow_tr.png"));
                     break;
                 default:
                     Day = new Bitmap(System.Drawing.Image.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Images\\Controls\\move.png"));
@@ -119,6 +134,22 @@ namespace Mundasia.Interface
                     break;
                 case 4:
                     imagePosX -= 40;
+                    break;
+                case 5:
+                    imagePosX -= 30;
+                    imagePosY += 15;
+                    break;
+                case 6:
+                    imagePosX += 30;
+                    imagePosY += 15;
+                    break;
+                case 7:
+                    imagePosX -= 30;
+                    imagePosY -= 15;
+                    break;
+                case 8:
+                    imagePosX += 30;
+                    imagePosY -= 15;
                     break;
             }
 
@@ -206,5 +237,9 @@ namespace Mundasia.Interface
     public enum PlaySceneControlType
     {
         Move,
+        FaceBottomLeft,
+        FaceBottomRight,
+        FaceTopLeft,
+        FaceTopRight,        
     }
 }

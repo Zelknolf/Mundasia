@@ -17,16 +17,18 @@ namespace Mundasia.Communication
         public int X;
         public int Y;
         public int Z;
+        public Direction Facing;
 
         public MoveRequest() { }
 
-        public MoveRequest(Character ch, int x, int y, int z)
+        public MoveRequest(Character ch, int x, int y, int z, Direction facing)
         {
             AccountName = ch.AccountName;
             CharacterName = ch.CharacterName;
             X = x;
             Y = y;
             Z = z;
+            Facing = facing;
         }
 
         public MoveRequest(string fileLine)
@@ -38,6 +40,7 @@ namespace Mundasia.Communication
             Int32.TryParse(inputs[2], out X);
             Int32.TryParse(inputs[3], out Y);
             Int32.TryParse(inputs[4], out Z);
+            Enum.TryParse<Direction>(inputs[5], out Facing);
         }
 
         public override string ToString()
@@ -52,6 +55,8 @@ namespace Mundasia.Communication
             st.Append(Y);
             st.Append(delimiter);
             st.Append(Z);
+            st.Append(delimiter);
+            st.Append(Facing);
             return st.ToString();
         }
 

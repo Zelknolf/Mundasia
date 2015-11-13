@@ -367,7 +367,7 @@ namespace Mundasia.Objects
             return true;
         }
 
-        public bool MoveCharacter(Character ch, int X, int Y, int Z)
+        public bool MoveCharacter(Character ch, int X, int Y, int Z, Direction Facing)
         {
             Tile targetTile = GetTileExact(X, Y, Z);
             if(targetTile != null)
@@ -385,6 +385,7 @@ namespace Mundasia.Objects
                 ch.LocationX = X;
                 ch.LocationY = Y;
                 ch.LocationZ = Z;
+                ch.LocationFacing = Facing;
 
                 DisplayCharacter dch = DisplayCharacter.GetDisplayCharacter(ch);
                 foreach(Character observer in PresentCharacters)

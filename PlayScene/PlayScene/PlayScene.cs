@@ -75,6 +75,16 @@ namespace Mundasia.Interface
             this.Refresh();
         }  
 
+        public void Add(List<PlaySceneControl> ctls)
+        {
+            foreach(PlaySceneControl ctl in ctls)
+            {
+                drawableImages.Add(ctl);
+            }
+            drawableImages.Sort();
+            this.Refresh();
+        }
+
         /// <summary>
         /// Adds tiles to those which are to be drawn in the scene.
         /// 
