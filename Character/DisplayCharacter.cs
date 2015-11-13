@@ -350,6 +350,7 @@ namespace Mundasia.Objects
                         case Direction.East: facingSuffix = "_br"; break;
                         case Direction.South: facingSuffix = "_bl"; break;
                         case Direction.West: facingSuffix = "_tl"; break;
+                        default: facingSuffix = "_bl"; break;
                     }
                     break;
                 case Direction.SouthEast:
@@ -359,6 +360,7 @@ namespace Mundasia.Objects
                         case Direction.East: facingSuffix = "_tl"; break;
                         case Direction.South: facingSuffix = "_tr"; break;
                         case Direction.West: facingSuffix = "_br"; break;
+                        default: facingSuffix = "_bl"; break;
                     }
                     break;
                 case Direction.SouthWest:
@@ -368,6 +370,7 @@ namespace Mundasia.Objects
                         case Direction.East: facingSuffix = "_bl"; break;
                         case Direction.South: facingSuffix = "_tl"; break;
                         case Direction.West: facingSuffix = "_tr"; break;
+                        default: facingSuffix = "_bl"; break;
                     }
                     break;
                 case Direction.NorthEast:
@@ -377,6 +380,7 @@ namespace Mundasia.Objects
                         case Direction.East: facingSuffix = "_tr"; break;
                         case Direction.South: facingSuffix = "_br"; break;
                         case Direction.West: facingSuffix = "_bl"; break;
+                        default: facingSuffix = "_bl"; break;
                     }
                     break;
             }
