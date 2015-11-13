@@ -461,7 +461,7 @@ namespace Mundasia.Objects
             get { return slopeSide; }
         }
 
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder str = new StringBuilder();
             str.Append(tileSet);
