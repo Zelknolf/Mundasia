@@ -108,8 +108,30 @@ namespace Mundasia.Interface
             RightHandPanel.Location = new Point(InventoryPadding * 3 + IconSize.Width * 2, InventoryPadding * 2 + IconSize.Height);
             RightRingPanel.Location = new Point(InventoryPadding * 3 + IconSize.Width * 2, InventoryPadding * 3 + IconSize.Height * 2);
 
+            ImageList imgs = new ImageList();
+            imgs.ImageSize = IconSize;
+            imgs.ColorDepth = ColorDepth.Depth32Bit;
+            unequippedItems.Location = new Point(InventoryPadding * 4 + IconSize.Width * 3, InventoryPadding);
+            unequippedItems.Width = 300;
+            unequippedItems.Height = InventoryPadding * 2 + IconSize.Height * 3;
+            StyleListView(unequippedItems);
+            int imageIndex = 0;
+
+            foreach(InventoryItem item in ch.Inventory)
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { "", item.Name });
+                toAdd.Tag = item.Identifier;
+                toAdd.ImageIndex = imageIndex;
+                StyleListViewItem(toAdd);
+                imgs.Images.Add(GetInventoryIconByTag(item.Icon));
+                imageIndex++;
+                unequippedItems.Items.Add(toAdd);
+            }
+            unequippedItems.SmallImageList = imgs;
+
+
             this.BackColor = Color.Black;
-            this.Size = new Size(InventoryPadding * 4 + IconSize.Width * 3 + this.Size.Width - this.ClientRectangle.Size.Width, InventoryPadding * 4 + IconSize.Height * 3 + this.Size.Height - this.ClientRectangle.Size.Height);
+            this.Size = new Size(InventoryPadding * 5 + IconSize.Width * 3 + 300 + this.Size.Width - this.ClientRectangle.Size.Width, InventoryPadding * 4 + IconSize.Height * 3 + this.Size.Height - this.ClientRectangle.Size.Height);
 
             Controls.Add(NeckSlotPanel);
             Controls.Add(LeftRingPanel);
@@ -118,6 +140,7 @@ namespace Mundasia.Interface
             Controls.Add(RightHandPanel);
             Controls.Add(ChestPanel);
             Controls.Add(BeltPanel);
+            Controls.Add(unequippedItems);
 
             this.FormClosed += InventoryForm_OnClosed;
             this.KeyDown += InventoryForm_KeyPress;
@@ -125,11 +148,21 @@ namespace Mundasia.Interface
         
         public static Image GetInventoryIconByTag(string Tag)
         {
+            string path = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + "Icons" + Path.DirectorySeparatorChar + "Items" + Path.DirectorySeparatorChar + Tag + ".png";
             if(IconCache.ContainsKey(Tag))
             {
                 return IconCache[Tag];
             }
-            return Image.FromFile(Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + "Icons" + Path.DirectorySeparatorChar + "Items" + Path.DirectorySeparatorChar + Tag + ".png");
+            if(!File.Exists(path))
+            {
+                if(IconCache.ContainsKey("Unknown"))
+                {
+                    IconCache.Add("Unknown", Image.FromFile(Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + "Icons" + Path.DirectorySeparatorChar + "Items" + Path.DirectorySeparatorChar + "Unknown.png"));
+                }
+                return IconCache["Unknown"];
+            }
+            IconCache.Add(Tag, Image.FromFile(path));
+            return IconCache[Tag];
         }
 
         public static Dictionary<string, Image> IconCache = new Dictionary<string, Image>();
@@ -156,6 +189,30 @@ namespace Mundasia.Interface
             {
                 this.Close();
             }
+        }
+
+        private static Font labelFont = new Font(FontFamily.GenericSansSerif, 14.0f);
+
+        private static void StyleListView(ListView listView)
+        {
+            listView.Clear();
+            listView.Columns.Add("");
+            listView.Columns.Add("");
+            listView.View = View.Details;
+            listView.FullRowSelect = true;
+            listView.BackColor = Color.Black;
+            listView.ForeColor = Color.White;
+            listView.HeaderStyle = ColumnHeaderStyle.None;
+            listView.Font = labelFont;
+            listView.Columns[0].Width = 64;
+            listView.Columns[1].Width = listView.ClientRectangle.Width - SystemInformation.VerticalScrollBarWidth - 64;
+        }
+
+        private static void StyleListViewItem(ListViewItem item)
+        {
+            item.BackColor = Color.Black;
+            item.ForeColor = Color.White;
+            item.Font = labelFont;
         }
     }
 }
