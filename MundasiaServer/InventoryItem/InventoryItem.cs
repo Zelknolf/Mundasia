@@ -68,5 +68,18 @@ namespace Mundasia.Objects
         Ring = 3,
         OneHand = 4,
         TwoHand = 5,
+        OffHand = 6,
+        Misc = 99,
+    }
+
+    public enum InventorySlot
+    {
+        Chest = 0,
+        Neck = 1,
+        Belt = 2,
+        LeftRing = 3,
+        RightRing = 4,
+        LeftHand = 5,
+        RightHand = 6,
     }
 }

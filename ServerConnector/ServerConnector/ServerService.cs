@@ -362,5 +362,62 @@ namespace Mundasia.Server.Communication
             }
             return ret;
         }
+
+        public string EquipItem(string message)
+        {
+            string ret = String.Empty;
+            EquipRequest req = new EquipRequest(message);
+            Account acct = Account.LoadAccount(req.RequestingAccount);
+            if (acct == null)
+            {
+                return "Error: invalid account";
+            }
+
+            string ip = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+            if (acct.SessionId != req.SessionId || acct.Address != ip)
+            {
+                return "Error: incorrect address or session Id";
+            }
+
+            acct.KeepAlive();
+            Character ch = acct.LoadCharacter(req.RequestingCharacter);
+            if(ch == null)
+            {
+                return "Error: invalid character";
+            }
+
+            if(!ch.IsDM)
+            {
+                if(ch.EquipItem(req.InventorySlot, req.Identifier))
+                {
+                    return ch.ToString();
+                }
+                else
+                {
+                    return "Error: cannot equip item";
+                }
+            }
+            else
+            {
+                Account tgAcct = Account.LoadAccount(req.ChangedAccount);
+                if(tgAcct == null)
+                {
+                    return "Error: invalid account";
+                }
+                Character tgCh = tgAcct.LoadCharacter(req.ChangedCharacter);
+                if(tgCh == null)
+                {
+                    return "Error: invalid character";
+                }
+                if(tgCh.EquipItem(req.InventorySlot, req.Identifier))
+                {
+                    return ch.ToString();
+                }
+                else
+                {
+                    return "Error: cannot equip item";
+                }
+            }
+        }
     }
 }

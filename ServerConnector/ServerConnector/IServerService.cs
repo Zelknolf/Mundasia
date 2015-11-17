@@ -59,5 +59,9 @@ namespace Mundasia.Server.Communication
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "ChangeTiles?message={message}", ResponseFormat = WebMessageFormat.Xml)]
         string ChangeTiles(string message);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "EquipItem?message={message}", ResponseFormat = WebMessageFormat.Xml)]
+        string EquipItem(string message);
     }
 }

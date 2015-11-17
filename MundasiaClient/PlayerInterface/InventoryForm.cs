@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Mundasia.Communication;
 using Mundasia.Objects;
 using System.Drawing;
 using System.IO;
@@ -25,8 +26,11 @@ namespace Mundasia.Interface
         Panel ChestPanel = new Panel();
         Panel BeltPanel = new Panel();
 
+        Character ChInv;
+
         public InventoryForm(Character ch)
         {
+            ChInv = ch;
             if(ch.Equipment.ContainsKey((int)InventorySlot.Chest))
             {
                 ChestPanel.BackgroundImage = GetInventoryIconByTag(ch.Equipment[(int)InventorySlot.Chest].Icon);
@@ -115,6 +119,7 @@ namespace Mundasia.Interface
             unequippedItems.Width = 300;
             unequippedItems.Height = InventoryPadding * 2 + IconSize.Height * 3;
             StyleListView(unequippedItems);
+            unequippedItems.DoubleClick += unequippedItems_DoubleClick;
             int imageIndex = 0;
 
             foreach(InventoryItem item in ch.Inventory)
@@ -145,6 +150,178 @@ namespace Mundasia.Interface
             this.FormClosed += InventoryForm_OnClosed;
             this.KeyDown += InventoryForm_KeyPress;
         }
+
+        void RefreshInventory()
+        {
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.Chest))
+            {
+                ChestPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.Chest].Icon);
+            }
+            else
+            {
+                ChestPanel.BackgroundImage = GetInventoryIconByTag("EmptyChest");
+            }
+
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.Neck))
+            {
+                NeckSlotPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.Neck].Icon);
+            }
+            else
+            {
+                NeckSlotPanel.BackgroundImage = GetInventoryIconByTag("EmptyNeck");
+            }
+
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.Belt))
+            {
+                BeltPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.Belt].Icon);
+            }
+            else
+            {
+                BeltPanel.BackgroundImage = GetInventoryIconByTag("EmptyBelt");
+            }
+
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.LeftRing))
+            {
+                LeftRingPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.LeftRing].Icon);
+            }
+            else
+            {
+                LeftRingPanel.BackgroundImage = GetInventoryIconByTag("EmptyRing");
+            }
+
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.RightRing))
+            {
+                RightRingPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.RightRing].Icon);
+            }
+            else
+            {
+                RightRingPanel.BackgroundImage = GetInventoryIconByTag("EmptyRing");
+            }
+
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.LeftHand))
+            {
+                LeftHandPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.LeftHand].Icon);
+            }
+            else
+            {
+                LeftHandPanel.BackgroundImage = GetInventoryIconByTag("EmptyHand");
+            }
+
+            if (ChInv.Equipment.ContainsKey((int)InventorySlot.RightHand))
+            {
+                RightHandPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.RightHand].Icon);
+            }
+            else
+            {
+                RightHandPanel.BackgroundImage = GetInventoryIconByTag("EmptyHand");
+            }
+
+            ImageList imgs = new ImageList();
+            int imageIndex = 0;
+
+            unequippedItems.Clear();
+            foreach (InventoryItem item in ChInv.Inventory)
+            {
+                ListViewItem toAdd = new ListViewItem(new string[] { "", item.Name });
+                toAdd.Tag = item.Identifier;
+                toAdd.ImageIndex = imageIndex;
+                StyleListViewItem(toAdd);
+                imgs.Images.Add(GetInventoryIconByTag(item.Icon));
+                imageIndex++;
+                unequippedItems.Items.Add(toAdd);
+            }
+            unequippedItems.SmallImageList = imgs;
+        }
+
+        void unequippedItems_DoubleClick(object sender, EventArgs e)
+        {
+            foreach(ListViewItem it in unequippedItems.SelectedItems)
+            {
+                foreach(InventoryItem item in ChInv.Inventory)
+                {
+                    if(it.Tag.ToString() == item.Identifier)
+                    {
+                        if(item.ItType == ItemType.Clothing)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.Chest);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                        else if (item.ItType == ItemType.Belt)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.Belt);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                        else if(item.ItType == ItemType.Necklace)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.Neck);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                        else if(item.ItType == ItemType.OneHand)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.RightHand);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                        else if(item.ItType == ItemType.OffHand)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.LeftHand);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                        else if(item.ItType == ItemType.Ring)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.RightRing);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                        else if(item.ItType == ItemType.TwoHand)
+                        {
+                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.RightHand);
+                            if (ret.StartsWith("Error")) return;
+                            else
+                            {
+                                ChInv = new Character(ret);
+                                RefreshInventory();
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
         public static Image GetInventoryIconByTag(string Tag)
         {
@@ -166,17 +343,6 @@ namespace Mundasia.Interface
         }
 
         public static Dictionary<string, Image> IconCache = new Dictionary<string, Image>();
-
-        enum InventorySlot
-        {
-            Chest = 0,
-            Neck = 1,
-            Belt = 2,
-            LeftRing = 3,
-            RightRing = 4,
-            LeftHand = 5,
-            RightHand = 6,
-        }
 
         private void InventoryForm_OnClosed(object Sender, EventArgs e)
         {

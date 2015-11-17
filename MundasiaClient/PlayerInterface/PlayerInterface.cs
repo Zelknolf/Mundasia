@@ -18,7 +18,7 @@ namespace Mundasia.Interface
     {
         private static int padding = 5;
 
-        private static Character drivingCharacter;
+        public static Character DrivingCharacter;
 
         private static Form host;
         private static PlayScene playScene;
@@ -37,7 +37,7 @@ namespace Mundasia.Interface
         public static void Set(Form primaryForm, CharacterSelection initialScene)
         {
             host = primaryForm;
-            drivingCharacter = initialScene.CentralCharacter;
+            DrivingCharacter = initialScene.CentralCharacter;
             playScene = new PlayScene();
             playScene.Location = new Point(padding, padding);
             playScene.Size = new Size(host.ClientRectangle.Width - padding * 2, host.ClientRectangle.Height - padding * 2);
@@ -45,7 +45,7 @@ namespace Mundasia.Interface
             if(!_eventsInitialized)
             {
                 _eventsInitialized = true;
-                if (drivingCharacter.IsDM)
+                if (DrivingCharacter.IsDM)
                 {
                     host.KeyDown += playScene_DM_KeyDown;
                     playScene.TileSelected += playScene_DM_TileSelected;
@@ -95,8 +95,8 @@ namespace Mundasia.Interface
                 Tile nTile = new Tile(_currentTile.CurrentTileSet, _currentTile.Slope, _currentTile.TileHeight, _currentTile.PosX, _currentTile.PosY, _currentTile.PosZ + _currentTile.TileHeight);
 
                 request.AddedTiles.Add(nTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -140,8 +140,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -189,8 +189,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -234,8 +234,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -283,8 +283,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -341,8 +341,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -390,8 +390,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -435,8 +435,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -484,8 +484,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -529,8 +529,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -559,8 +559,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -582,8 +582,8 @@ namespace Mundasia.Interface
                 TileChange request = new TileChange();
 
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -609,8 +609,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -636,8 +636,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -662,8 +662,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -688,8 +688,8 @@ namespace Mundasia.Interface
 
                 request.AddedTiles.Add(nTile);
                 request.RemovedTiles.Add(_currentTile);
-                request.CharacterName = drivingCharacter.CharacterName;
-                request.AccountName = drivingCharacter.AccountName;
+                request.CharacterName = DrivingCharacter.CharacterName;
+                request.AccountName = DrivingCharacter.AccountName;
                 string resp = ServiceConsumer.ChangeTiles(request);
                 if (!String.IsNullOrEmpty(resp))
                 {
@@ -714,7 +714,7 @@ namespace Mundasia.Interface
                 }
                 else
                 {
-                    InventoryWindow = new InventoryForm(drivingCharacter);
+                    InventoryWindow = new InventoryForm(DrivingCharacter);
                     InventoryWindow.Show();
                 }
             }
@@ -761,7 +761,7 @@ namespace Mundasia.Interface
                     case Direction.SouthEast: facing = Direction.North; break;
                     default:                  facing = Direction.North; break;
                 }
-                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                string resp = ServiceConsumer.MoveCharacter(DrivingCharacter.AccountName, DrivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
                 if (!String.IsNullOrEmpty(resp))
                 {
                     MapDelta changes = new MapDelta(resp);
@@ -784,7 +784,7 @@ namespace Mundasia.Interface
                     case Direction.SouthEast: facing = Direction.West;  break;
                     default: facing = Direction.North; break;
                 }
-                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                string resp = ServiceConsumer.MoveCharacter(DrivingCharacter.AccountName, DrivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
                 if (!String.IsNullOrEmpty(resp))
                 {
                     MapDelta changes = new MapDelta(resp);
@@ -807,7 +807,7 @@ namespace Mundasia.Interface
                     case Direction.SouthEast: facing = Direction.East;  break;
                     default: facing = Direction.North; break;
                 }
-                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                string resp = ServiceConsumer.MoveCharacter(DrivingCharacter.AccountName, DrivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
                 if (!String.IsNullOrEmpty(resp))
                 {
                     MapDelta changes = new MapDelta(resp);
@@ -830,7 +830,7 @@ namespace Mundasia.Interface
                     case Direction.SouthEast: facing = Direction.South; break;
                     default: facing = Direction.North; break;
                 }
-                string resp = ServiceConsumer.MoveCharacter(drivingCharacter.AccountName, drivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
+                string resp = ServiceConsumer.MoveCharacter(DrivingCharacter.AccountName, DrivingCharacter.CharacterName, ctl.GetObjectPositionX(), ctl.GetObjectPositionY(), ctl.GetObjectPositionZ(), facing);
                 if (!String.IsNullOrEmpty(resp))
                 {
                     MapDelta changes = new MapDelta(resp);
@@ -858,7 +858,7 @@ namespace Mundasia.Interface
         static void Updater_DoWork(object sender, DoWorkEventArgs e)
         {
             Thread.Sleep(100);
-            string result = ServiceConsumer.UpdatePlayScene(drivingCharacter.AccountName, drivingCharacter.CharacterName);
+            string result = ServiceConsumer.UpdatePlayScene(DrivingCharacter.AccountName, DrivingCharacter.CharacterName);
             if (String.IsNullOrWhiteSpace(result))
             {
                 UpdateResult = null;

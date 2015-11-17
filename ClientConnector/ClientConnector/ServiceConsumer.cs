@@ -358,6 +358,26 @@ namespace Mundasia.Communication
             catch { }
             return String.Empty;
         }
-    }
 
+        public static string EquipItem(string ReqAccount, string ReqChar, string Account, string Character, string Tag, int InventorySlot)
+        {
+            try
+            {
+                string wrURI = baseServerTarget + "equipitem";
+                string msg = new EquipRequest(ReqChar, ReqAccount, Character, Account, Tag, InventorySlot, SessionId).ToString();
+                WebRequest wreq = WebRequest.Create(wrURI + "?message=" + msg);
+                wreq.Method = "POST";
+                wreq.ContentLength = 0;
+                WebResponse wresp = wreq.GetResponse();
+                using (TextReader sr = new StreamReader(wresp.GetResponseStream()))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(string), StringNamespace);
+                    string resp = (string)xml.Deserialize(sr);
+                    return resp;
+                }
+            }
+            catch { }
+            return String.Empty;
+        }
+    }
 }

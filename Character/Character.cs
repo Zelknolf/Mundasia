@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace Mundasia.Objects
 {
-    public class Character
+    public partial class Character
     {
         private static string delimiter = "|";
         private static char[] delim = new char[] { '|' };

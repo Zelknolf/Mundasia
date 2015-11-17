@@ -44,6 +44,7 @@
     <Compile Include="AccountCreation.cs" />
     <Compile Include="CharacterCreation.cs" />
     <Compile Include="CharacterSelection.cs" />
+    <Compile Include="EquipRequest.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="MoveRequest.cs" />
     <Compile Include="MundEncoding.cs" />
