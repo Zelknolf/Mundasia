@@ -20,34 +20,45 @@ namespace Mundasia.Objects
 
         public bool EquipItem(int InventorySlot, string ItemIdentifier)
         {
-            foreach (InventoryItem it in Inventory)
+            if (String.IsNullOrWhiteSpace(ItemIdentifier))
             {
-                if (it.Identifier == ItemIdentifier)
+                if(Equipment.ContainsKey(InventorySlot))
                 {
-                    if(ItemSlotAllowance[(InventorySlot)InventorySlot].Contains(it.ItType))
+                    Equipment.Remove(InventorySlot);
+                    return true;
+                }
+            }
+            else
+            {
+                foreach (InventoryItem it in Inventory)
+                {
+                    if (it.Identifier == ItemIdentifier)
                     {
-                        if(Equipment.ContainsKey(InventorySlot))
+                        if (ItemSlotAllowance[(InventorySlot)InventorySlot].Contains(it.ItType))
                         {
-                            if(Equipment[InventorySlot] != null)
+                            if (Equipment.ContainsKey(InventorySlot))
                             {
-                                Inventory.Add(Equipment[InventorySlot]);
+                                if (Equipment[InventorySlot] != null)
+                                {
+                                    Inventory.Add(Equipment[InventorySlot]);
+                                }
+                                Equipment[InventorySlot] = it;
+                                return true;
                             }
-                            Equipment[InventorySlot] = it;
-                            return true;
+                            else
+                            {
+                                Equipment.Add(InventorySlot, it);
+                                return true;
+                            }
                         }
                         else
                         {
-                            Equipment.Add(InventorySlot, it);
-                            return true;
+                            return false;
                         }
-                    }
-                    else
-                    {
-                        return false;
                     }
                 }
             }
-            return true;
+            return false;
         }
     }
 }

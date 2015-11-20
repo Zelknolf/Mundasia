@@ -153,6 +153,13 @@ namespace Mundasia.Interface
 
         void RefreshInventory()
         {
+            ChestPanel.DoubleClick += ChestPanel_DoubleClick;
+            NeckSlotPanel.DoubleClick += NeckSlotPanel_DoubleClick;
+            BeltPanel.DoubleClick += BeltPanel_DoubleClick;
+            LeftRingPanel.DoubleClick += LeftRingPanel_DoubleClick;
+            RightRingPanel.DoubleClick += RightRingPanel_DoubleClick;
+            LeftHandPanel.DoubleClick += LeftHandPanel_DoubleClick;
+            RightHandPanel.DoubleClick += RightHandPanel_DoubleClick;
             if (ChInv.Equipment.ContainsKey((int)InventorySlot.Chest))
             {
                 ChestPanel.BackgroundImage = GetInventoryIconByTag(ChInv.Equipment[(int)InventorySlot.Chest].Icon);
@@ -233,6 +240,61 @@ namespace Mundasia.Interface
             unequippedItems.SmallImageList = imgs;
         }
 
+        private void unequipItem(InventorySlot slot)
+        {
+            equipItem(slot, String.Empty);
+        }
+
+        private void equipItem(InventorySlot slot, string identifier)
+        {
+            if (ChInv.Equipment.ContainsKey((int)slot))
+            {
+                string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, identifier, (int)slot);
+                if (ret.StartsWith("Error")) return;
+                else
+                {
+                    ChInv = new Character(ret);
+                    RefreshInventory();
+                    return;
+                }
+            }
+        }
+
+        void ChestPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.Chest);
+        }
+
+        void NeckSlotPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.Neck);
+        }
+
+        void BeltPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.Belt);
+        }
+
+        void LeftRingPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.LeftRing);
+        }
+
+        void RightRingPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.RightRing);
+        }
+
+        void LeftHandPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.LeftHand);
+        }
+
+        void RightHandPanel_DoubleClick(object sender, EventArgs e)
+        {
+            unequipItem(InventorySlot.RightHand);
+        }
+
         void unequippedItems_DoubleClick(object sender, EventArgs e)
         {
             foreach(ListViewItem it in unequippedItems.SelectedItems)
@@ -243,80 +305,31 @@ namespace Mundasia.Interface
                     {
                         if(item.ItType == ItemType.Clothing)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.Chest);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.Chest, item.Identifier);
                         }
                         else if (item.ItType == ItemType.Belt)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.Belt);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.Belt, item.Identifier);
                         }
                         else if(item.ItType == ItemType.Necklace)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.Neck);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.Neck, item.Identifier);
                         }
                         else if(item.ItType == ItemType.OneHand)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.RightHand);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.RightHand, item.Identifier);
                         }
                         else if(item.ItType == ItemType.OffHand)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.LeftHand);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.LeftHand, item.Identifier);
                         }
                         else if(item.ItType == ItemType.Ring)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.RightRing);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.LeftRing, item.Identifier);
                         }
                         else if(item.ItType == ItemType.TwoHand)
                         {
-                            string ret = ServiceConsumer.EquipItem(PlayerInterface.DrivingCharacter.AccountName, PlayerInterface.DrivingCharacter.CharacterName, ChInv.AccountName, ChInv.CharacterName, item.Identifier, (int)InventorySlot.RightHand);
-                            if (ret.StartsWith("Error")) return;
-                            else
-                            {
-                                ChInv = new Character(ret);
-                                RefreshInventory();
-                                return;
-                            }
+                            equipItem(InventorySlot.RightHand, item.Identifier);
                         }
                     }
                 }
