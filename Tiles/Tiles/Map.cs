@@ -411,5 +411,30 @@ namespace Mundasia.Objects
             }
             return false;
         }
+
+        public bool ChangeCharacterAppearance(Character ch)
+        {
+            DisplayCharacter dch = DisplayCharacter.GetDisplayCharacter(ch);
+            foreach(Character observer in PresentCharacters)
+            {
+                if (!MapDeltas.ContainsKey(observer))
+                {
+                    MapDeltas.Add(observer, new MapDelta());
+                }
+                if (MapDeltas[observer].ChangedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].ChangedCharacters[dch.CharacterId] = dch;
+                }
+                else
+                {
+                    MapDeltas[observer].ChangedCharacters.Add(dch.CharacterId, dch);
+                }
+                if (MapDeltas[observer].RemovedCharacters.ContainsKey(dch.CharacterId))
+                {
+                    MapDeltas[observer].RemovedCharacters.Remove(dch.CharacterId);
+                }
+            }
+            return true;
+        }
     }
 }

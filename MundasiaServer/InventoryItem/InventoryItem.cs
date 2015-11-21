@@ -11,8 +11,6 @@ namespace Mundasia.Objects
         private static string delimiter = "]";
         private static char[] delim = new char[] { ']' };
 
-        public const int EquipKeyWorn = 1;
-
         public InventoryItem() { }
 
         public InventoryItem(string FileLine) 

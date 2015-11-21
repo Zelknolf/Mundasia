@@ -390,6 +390,13 @@ namespace Mundasia.Server.Communication
             {
                 if(ch.EquipItem(req.InventorySlot, req.Identifier))
                 {
+                    if(req.InventorySlot == (int)InventorySlot.Chest)
+                    {
+                        if (Map.LoadedMaps.ContainsKey(ch.Map))
+                        {
+                            Map.LoadedMaps[ch.Map].ChangeCharacterAppearance(ch);
+                        }
+                    }
                     return ch.ToString();
                 }
                 else

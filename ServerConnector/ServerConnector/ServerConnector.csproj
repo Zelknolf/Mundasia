@@ -68,6 +68,10 @@
       <Project>{a7febf3f-77ca-4d58-ab45-74a8b0db183e}</Project>
       <Name>CommunicationObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MundasiaServer\InventoryItem\InventoryItem.csproj">
+      <Project>{9906163f-ec57-4afa-8540-4eb736ee0d16}</Project>
+      <Name>InventoryItem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PlaySceneDrawable\PlaySceneDrawable.csproj">
       <Project>{b4742abd-ea42-4eee-bf7a-11613bd35c36}</Project>
       <Name>PlaySceneDrawable</Name>

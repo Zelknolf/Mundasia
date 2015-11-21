@@ -68,9 +68,21 @@ namespace Mundasia.Objects
             if (ch.CachedDisplay != null &&
                 ch.CachedDisplay.x == ch.LocationX &&
                 ch.CachedDisplay.y == ch.LocationY &&
-                ch.CachedDisplay.z == ch.LocationZ)
+                ch.CachedDisplay.z == ch.LocationZ &&
+                ch.CachedDisplay.Facing == ch.LocationFacing)
             {
-                return ch.CachedDisplay;
+                if(ch.Equipment != null && 
+                   ch.Equipment.ContainsKey((int)InventorySlot.Chest) &&
+                   ch.Equipment[(int)InventorySlot.Chest].Appearance == ch.CachedDisplay.Clothes &&
+                   ch.Equipment[(int)InventorySlot.Chest].PrimaryColor == ch.CachedDisplay.ClothColorA &&
+                   ch.Equipment[(int)InventorySlot.Chest].SecondaryColor == ch.CachedDisplay.ClothColorB)
+                {
+                    return ch.CachedDisplay;
+                }
+                else if((ch.Equipment == null || ch.Equipment.ContainsKey((int)InventorySlot.Chest)) && ch.CachedDisplay.Clothes == 0)
+                {
+                    return ch.CachedDisplay;
+                }
             }
             return new DisplayCharacter(ch);
         }
@@ -131,9 +143,9 @@ namespace Mundasia.Objects
             HairColor = (int)ch.HairColor;
             Sex = ch.Sex;
             Hair = (int)ch.HairStyle;
-            if(ch.Equipment != null && ch.Equipment.ContainsKey(InventoryItem.EquipKeyWorn))
+            if(ch.Equipment != null && ch.Equipment.ContainsKey((int)InventorySlot.Chest))
             {
-                InventoryItem clothes = ch.Equipment[InventoryItem.EquipKeyWorn];
+                InventoryItem clothes = ch.Equipment[(int)InventorySlot.Chest];
                 Clothes = clothes.Appearance;
                 ClothColorA = clothes.PrimaryColor;
                 ClothColorB = clothes.SecondaryColor;
